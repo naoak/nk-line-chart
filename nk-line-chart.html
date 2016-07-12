@@ -1,0 +1,222 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`nk-line-chart`
+Very simple line chart web component
+
+@demo demo/index.html
+-->
+
+<dom-module id="nk-line-chart">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <div id="container"></div>
+  </template>
+</dom-module>
+
+<script>
+(function() {
+  'use strict';
+
+  var NS = 'http://www.w3.org/2000/svg';
+
+  Polymer({
+
+    is: 'nk-line-chart',
+
+    properties: {
+
+      /**
+       * Data rows
+       *
+       * ```
+       * (ex)
+       * [
+       *   {x: 0, y: 0}, {x: 1, y: 1}
+       * ]
+       * ```
+       */
+      rows: {
+        type: Array,
+        value: [
+          {x: 0, y: 0},
+          {x: 1, y: 1},
+          {x: 2, y: 1},
+          {x: 3, y: 2},
+          {x: 4, y: 3},
+          {x: 5, y: 5},
+          {x: 6, y: 8},
+          {x: 7, y: 13},
+          {x: 8, y: 21},
+          {x: 9, y: 34}
+        ]
+      },
+
+      /**
+       * Style of point
+       */
+      circleStyle: {
+        type: Object,
+        value: {
+          r: '3',
+          stroke: 'none',
+          strokeWidth: '0',
+          fill: '#e08080'
+        }
+      },
+
+      /**
+       * Style of line
+       */
+      pathStyle: {
+        type: Object,
+        value: {
+          stroke: '#e08080',
+          strokeWidth: '2',
+          fillOpacity: '1',
+          fill: 'none'
+        }
+      },
+
+      _width: {
+        type: Number,
+        value: 360
+      },
+
+      _height: {
+        type: Number,
+        value: 100
+      }
+    },
+
+    observers: [
+      '_rowsAndStyleChanged(rows, circleStyle, pathStyle)'
+    ],
+
+    _rowsAndStyleChanged: function(rows, circleStyle, pathStyle) {
+      this.debounce('draw', function() {
+        if (this._svg) {
+          Polymer.dom(this.$.container).remove(this._svg);
+        }
+        this._svg = this._draw(
+          calcPoints(rows, this._width, this._height), toAttributes(circleStyle), toAttributes(pathStyle)
+        );
+        this.$.container.appendChild(this._svg);
+      });
+    },
+
+    _draw: function(points, circleAttrs, pathAttrs) {
+      var container = this.$.container;
+      var svg = document.createElementNS(NS, 'svg');
+      var g0 = document.createElementNS(NS, 'g');
+      var g1c = document.createElementNS(NS, 'g');
+
+      svg.setAttribute('viewBox', '0 0 ' + this._width + ' ' + this._height);
+      svg.appendChild(descartes(g0, this._width, this._height));
+      g0.appendChild(g1c);
+      points.forEach(function(p) {
+        g1c.appendChild(this._drawCircle(document.createElementNS(NS, 'circle'), p, circleAttrs));
+      }.bind(this));
+      g0.appendChild(this._drawPath(document.createElementNS(NS, 'path'), points[0], pointsToMoves(points), pathAttrs));
+      return svg;
+    },
+
+    _drawPath: function(path, startPoint, moves, attrs) {
+      var d = 'M' + startPoint.x + ',' + startPoint.y;
+      d = moves.reduce(function(memo, vector) {
+        console.log('vector', vector);
+        return memo + 'l' + vector.x + ',' + vector.y;
+      }, d);
+      path.setAttribute('d', d);
+      setAttributes(path, attrs);
+      return path;
+    },
+
+    _drawCircle: function(circle, point, attrs) {
+      circle.setAttribute('cx', point.x);
+      circle.setAttribute('cy', point.y);
+      setAttributes(circle, attrs);
+      return circle;
+    }
+  });
+
+  function calcPoints(rows, width, height) {
+    console.log('rows', rows);
+    var minX = Number.MAX_VALUE;
+    var minY = Number.MAX_VALUE;
+    var maxX = Number.MIN_VALUE;
+    var maxY = Number.MIN_VALUE;
+    var factorX;
+    var factorY;
+
+    if (rows && rows.length < 2) {
+      throw Exception('rows length must be at least two.');
+    }
+    rows.forEach(function(r) {
+      if (r.x < minX) {
+        minX = r.x;
+      }
+      if (r.x > maxX) {
+        maxX = r.x;
+      }
+      if (r.y < minY) {
+        minY = r.y;
+      }
+      if (r.y > maxY) {
+        maxY = r.y;
+      }
+    });
+    factorX = width / (maxX - minX);
+    factorY = height / (maxY - minY);
+
+    var points = rows.map(function(r) {
+      return {
+        x: r.x * factorX,
+        y: r.y * factorY
+      };
+    });
+    console.log('points', points);
+    return points;
+  }
+
+  function pointsToMoves(points) {
+    var moves = [];
+    var prevP;
+    points.forEach(function(p) {
+      if (prevP) {
+        var move = {
+          x: p.x - prevP.x,
+          y: p.y - prevP.y
+        };
+        moves.push(move);
+      }
+      prevP = p;
+    });
+    console.log('moves', moves);
+    return moves;
+  }
+
+  function setAttributes(element, attrs) {
+    Object.keys(attrs).forEach(function(attrName) {
+      element.setAttribute(attrName, attrs[attrName]);
+    });
+  }
+
+  function toAttributes(properties) {
+    return Object.keys(properties).reduce(function(memo, propName) {
+      var attrName = Polymer.CaseMap.camelToDashCase(propName);
+      memo[attrName] = properties[propName];
+      return memo;
+    }, {});
+  }
+
+  function descartes(element, width, height) {
+    element.setAttribute('transform', 'translate(0,' + height + ') scale(1, -1)');
+    return element;
+  }
+})();
+</script>
