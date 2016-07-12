@@ -1,7 +1,21 @@
 {
   "name": "nk-line-chart",
   "description": "A very simple web component for drawing line chart",
+  "version": "0.0.1",
+  "author": "Naoaki Yamada",
+  "keywords": [
+    "web-components",
+    "polymer",
+    "chart"
+  ],
   "main": "nk-line-chart.html",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/naoak/nk-line-chart"
+  },
+  "lincense": "MIT",
+  "homepage": "https://github.com/naoak/nk-line-chart",
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0"
   },
