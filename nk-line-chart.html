@@ -57,7 +57,7 @@ Very simple line chart web component
       },
 
       /**
-       * Style of point
+       * Style of points
        */
       circleStyle: {
         type: Object,
@@ -70,7 +70,7 @@ Very simple line chart web component
       },
 
       /**
-       * Style of line
+       * Style of a polygonal line
        */
       pathStyle: {
         type: Object,
@@ -82,14 +82,17 @@ Very simple line chart web component
         }
       },
 
-      _width: {
-        type: Number,
-        value: 360
-      },
-
-      _height: {
-        type: Number,
-        value: 100
+      /**
+       * Chart Area. `top`, `left`, `width` and `height` are required.
+       */
+      chartArea: {
+        type: Object,
+        value: {
+          top: 20,
+          left: 20,
+          width: 320,
+          height: 100
+        }
       }
     },
 
@@ -103,7 +106,7 @@ Very simple line chart web component
           Polymer.dom(this.$.container).remove(this._svg);
         }
         this._svg = this._draw(
-          calcPoints(rows, this._width, this._height), toAttributes(circleStyle), toAttributes(pathStyle)
+          calcPoints(rows, this.chartArea), toAttributes(circleStyle), toAttributes(pathStyle)
         );
         this.$.container.appendChild(this._svg);
       });
@@ -115,8 +118,9 @@ Very simple line chart web component
       var g0 = document.createElementNS(NS, 'g');
       var g1c = document.createElementNS(NS, 'g');
 
-      svg.setAttribute('viewBox', '0 0 ' + this._width + ' ' + this._height);
-      svg.appendChild(descartes(g0, this._width, this._height));
+      svg.setAttribute('width', 'auto');
+      svg.setAttribute('height', 'auto');
+      svg.appendChild(descartes(g0, this.chartArea));
       g0.appendChild(g1c);
       points.forEach(function(p) {
         g1c.appendChild(this._drawCircle(document.createElementNS(NS, 'circle'), p, circleAttrs));
@@ -128,7 +132,6 @@ Very simple line chart web component
     _drawPath: function(path, startPoint, moves, attrs) {
       var d = 'M' + startPoint.x + ',' + startPoint.y;
       d = moves.reduce(function(memo, vector) {
-        console.log('vector', vector);
         return memo + 'l' + vector.x + ',' + vector.y;
       }, d);
       path.setAttribute('d', d);
@@ -144,8 +147,11 @@ Very simple line chart web component
     }
   });
 
-  function calcPoints(rows, width, height) {
-    console.log('rows', rows);
+  function calcPoints(rows, chartArea) {
+    var top = chartArea.top;
+    var left = chartArea.left;
+    var width = chartArea.width;
+    var height = chartArea.height;
     var minX = Number.MAX_VALUE;
     var minY = Number.MAX_VALUE;
     var maxX = Number.MIN_VALUE;
@@ -173,14 +179,12 @@ Very simple line chart web component
     factorX = width / (maxX - minX);
     factorY = height / (maxY - minY);
 
-    var points = rows.map(function(r) {
+    return rows.map(function(r) {
       return {
-        x: r.x * factorX,
-        y: r.y * factorY
+        x: r.x * factorX + left,
+        y: r.y * factorY + top
       };
     });
-    console.log('points', points);
-    return points;
   }
 
   function pointsToMoves(points) {
@@ -196,7 +200,6 @@ Very simple line chart web component
       }
       prevP = p;
     });
-    console.log('moves', moves);
     return moves;
   }
 
@@ -214,8 +217,8 @@ Very simple line chart web component
     }, {});
   }
 
-  function descartes(element, width, height) {
-    element.setAttribute('transform', 'translate(0,' + height + ') scale(1, -1)');
+  function descartes(element, chartArea) {
+    element.setAttribute('transform', 'translate(0,' + (chartArea.height + 2 * chartArea.top) + ') scale(1, -1)');
     return element;
   }
 })();
