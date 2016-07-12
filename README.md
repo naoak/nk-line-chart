@@ -32,7 +32,7 @@ A very simple web component for drawing line chart
 </nk-line-chart>
 ```
 
-![Sample](sample.svg)
+![Sample](https://raw.githubusercontent.com/naoak/nk-line-chart/master/sample.svg)
 
 ## Install the Polymer-CLI
 
