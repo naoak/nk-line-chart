@@ -1,6 +1,6 @@
 # \<nk-line-chart\>
 
-Very simple line chart web component
+A very simple web component for drawing line chart
 
 ## Install the Polymer-CLI
 

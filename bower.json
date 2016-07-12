@@ -1,6 +1,6 @@
 {
   "name": "nk-line-chart",
-  "description": "Very simple line chart web component",
+  "description": "A very simple web component for drawing line chart",
   "main": "nk-line-chart.html",
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0"
