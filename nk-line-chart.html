@@ -124,10 +124,12 @@ Very simple line chart web component
           p, circleAttrs
         ));
       }.bind(this));
-      g0.appendChild(this._drawPath(
-        document.createElementNS(NS, 'path'),
-        points[0], pointsToMoves(points), pathAttrs
-      ));
+      if (points.length > 0) {
+        g0.appendChild(this._drawPath(
+          document.createElementNS(NS, 'path'),
+          points[0], pointsToMoves(points), pathAttrs
+        ));
+      }
       return svg;
     },
 
@@ -159,10 +161,9 @@ Very simple line chart web component
     var maxY = Number.MIN_VALUE;
     var factorX;
     var factorY;
+    var constantX = width / 2 + left;
+    var constantY = height / 2 + top;
 
-    if (rows && rows.length < 2) {
-      throw 'rows length must be at least two.';
-    }
     rows.forEach(function(r) {
       if (r.x < minX) {
         minX = r.x;
@@ -182,8 +183,8 @@ Very simple line chart web component
 
     return rows.map(function(r) {
       return {
-        x: r.x * factorX + left,
-        y: r.y * factorY + top
+        x: isFinite(factorX) ? r.x * factorX + left : constantX,
+        y: isFinite(factorY) ? r.y * factorY + top : constantY
       };
     });
   }
