@@ -45,6 +45,27 @@ Very simple line chart web component
       },
 
       /**
+       * An object to configure the placement and size of the chart area.
+       *
+       * The following members are required.
+       * `top`, `left`, `width`, `height`
+       * Currently, the supported format is only a number of pixels.
+       *
+       * Example:
+       * ```
+       * {
+       *   top: 10,
+       *   left: 10,
+       *   width: 320,
+       *   height: 100
+       * }
+       * ```
+       */
+      chartArea: {
+        type: Object
+      },
+
+      /**
        * Style of points
        */
       circleStyle: {
@@ -68,35 +89,28 @@ Very simple line chart web component
           fillOpacity: '1',
           fill: 'none'
         }
-      },
-
-      /**
-       * Chart Area. `top`, `left`, `width` and `height` are required.
-       */
-      chartArea: {
-        type: Object
       }
     },
 
     observers: [
-      '_rowsAndStyleChanged(rows, circleStyle, pathStyle)'
+      '_rowsAndStylesChanged(rows, chartArea.*, circleStyle, pathStyle)'
     ],
 
-    _rowsAndStyleChanged: function(rows, circleStyle, pathStyle) {
+    _rowsAndStylesChanged: function(rows, chartArea_, circleStyle, pathStyle) {
       this.debounce('draw', function() {
+        var container = this.$.container;
         if (this._svg) {
-          Polymer.dom(this.$.container).remove(this._svg);
+          Polymer.dom(container).remove(this._svg);
         }
         this._svg = this._draw(
+          document.createElementNS(NS, 'svg'),
           calcPoints(rows, this.chartArea), toAttributes(circleStyle), toAttributes(pathStyle)
         );
-        this.$.container.appendChild(this._svg);
+        container.appendChild(this._svg);
       });
     },
 
-    _draw: function(points, circleAttrs, pathAttrs) {
-      var container = this.$.container;
-      var svg = document.createElementNS(NS, 'svg');
+    _draw: function(svg, points, circleAttrs, pathAttrs) {
       var g0 = document.createElementNS(NS, 'g');
       var g1c = document.createElementNS(NS, 'g');
 
@@ -105,17 +119,22 @@ Very simple line chart web component
       svg.appendChild(descartes(g0, this.chartArea));
       g0.appendChild(g1c);
       points.forEach(function(p) {
-        g1c.appendChild(this._drawCircle(document.createElementNS(NS, 'circle'), p, circleAttrs));
+        g1c.appendChild(this._drawCircle(
+          document.createElementNS(NS, 'circle'),
+          p, circleAttrs
+        ));
       }.bind(this));
-      g0.appendChild(this._drawPath(document.createElementNS(NS, 'path'), points[0], pointsToMoves(points), pathAttrs));
+      g0.appendChild(this._drawPath(
+        document.createElementNS(NS, 'path'),
+        points[0], pointsToMoves(points), pathAttrs
+      ));
       return svg;
     },
 
     _drawPath: function(path, startPoint, moves, attrs) {
-      var d = 'M' + startPoint.x + ',' + startPoint.y;
-      d = moves.reduce(function(memo, vector) {
+      var d = moves.reduce(function(memo, vector) {
         return memo + 'l' + vector.x + ',' + vector.y;
-      }, d);
+      }, 'M' + startPoint.x + ',' + startPoint.y);
       path.setAttribute('d', d);
       setAttributes(path, attrs);
       return path;
@@ -142,7 +161,7 @@ Very simple line chart web component
     var factorY;
 
     if (rows && rows.length < 2) {
-      throw Exception('rows length must be at least two.');
+      throw 'rows length must be at least two.';
     }
     rows.forEach(function(r) {
       if (r.x < minX) {
@@ -170,8 +189,9 @@ Very simple line chart web component
   }
 
   function pointsToMoves(points) {
-    var moves = [];
     var prevP;
+    var moves = [];
+
     points.forEach(function(p) {
       if (prevP) {
         var move = {
