@@ -100,8 +100,8 @@ Very simple line chart web component
       var g0 = document.createElementNS(NS, 'g');
       var g1c = document.createElementNS(NS, 'g');
 
-      svg.setAttribute('width', 'auto');
-      svg.setAttribute('height', 'auto');
+      svg.setAttribute('width', '100%');
+      svg.setAttribute('height', '100%');
       svg.appendChild(descartes(g0, this.chartArea));
       g0.appendChild(g1c);
       points.forEach(function(p) {
