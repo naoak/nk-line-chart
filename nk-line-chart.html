@@ -130,6 +130,12 @@ A very lightweight polymer component for drawing line chart.
       svg.setAttribute('width', '100%');
       svg.setAttribute('height', '100%');
       svg.appendChild(transformCoordinates(g0, this.chartArea, this.origin));
+      if (points.length > 0) {
+        g0.appendChild(this._drawPath(
+          document.createElementNS(NS, 'path'),
+          points[0], pointsToMoves(points), pathAttrs
+        ));
+      }
       g0.appendChild(g1c);
       points.forEach(function(p) {
         g1c.appendChild(this._drawCircle(
@@ -137,12 +143,6 @@ A very lightweight polymer component for drawing line chart.
           p, circleAttrs
         ));
       }.bind(this));
-      if (points.length > 0) {
-        g0.appendChild(this._drawPath(
-          document.createElementNS(NS, 'path'),
-          points[0], pointsToMoves(points), pathAttrs
-        ));
-      }
       return svg;
     },
 
