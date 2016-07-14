@@ -66,6 +66,19 @@ A very lightweight polymer component for drawing line chart.
       },
 
       /**
+       * The origin of coordinates. The possible values are,
+       *
+       * ```
+       * left-bottom: cartesian cordinates
+       * left-top: cordinates of display
+       * ```
+       */
+      origin: {
+        type: String,
+        value: 'left-bottom'
+      },
+
+      /**
        * Style of points
        */
       circleStyle: {
@@ -93,14 +106,14 @@ A very lightweight polymer component for drawing line chart.
     },
 
     observers: [
-      '_rowsAndStylesChanged(rows, chartArea.*, circleStyle, pathStyle)'
+      '_rowsAndStylesChanged(rows, chartArea.*, origin, circleStyle, pathStyle)'
     ],
 
-    _rowsAndStylesChanged: function(rows, chartArea_, circleStyle, pathStyle) {
+    _rowsAndStylesChanged: function(rows, chartArea_, origin, circleStyle, pathStyle) {
       this.debounce('draw', function() {
         var container = this.$.container;
         if (this._svg) {
-          Polymer.dom(container).remove(this._svg);
+          container.removeChild(this._svg);
         }
         this._svg = this._draw(
           document.createElementNS(NS, 'svg'),
@@ -116,7 +129,7 @@ A very lightweight polymer component for drawing line chart.
 
       svg.setAttribute('width', '100%');
       svg.setAttribute('height', '100%');
-      svg.appendChild(descartes(g0, this.chartArea));
+      svg.appendChild(transformCoordinates(g0, this.chartArea, this.origin));
       g0.appendChild(g1c);
       points.forEach(function(p) {
         g1c.appendChild(this._drawCircle(
@@ -151,8 +164,8 @@ A very lightweight polymer component for drawing line chart.
   });
 
   function calcPoints(rows, chartArea) {
-    var top = chartArea.top;
-    var left = chartArea.left;
+    var top = chartArea.top || 0;
+    var left = chartArea.left || 0;
     var width = chartArea.width;
     var height = chartArea.height;
     var minX = Number.MAX_VALUE;
@@ -220,8 +233,16 @@ A very lightweight polymer component for drawing line chart.
     }, {});
   }
 
-  function descartes(element, chartArea) {
-    element.setAttribute('transform', 'translate(0,' + (chartArea.height + 2 * chartArea.top) + ') scale(1, -1)');
+  function transformCoordinates(element, chartArea, origin) {
+    var transform = 'none';
+
+    if (origin === 'left-bottom') {
+      transform = 'translate(0,' + (chartArea.height + 2 * (chartArea.top || 0)) + ') scale(1, -1)';
+    }
+    else if (origin === 'left-top') {
+      transform = 'none';
+    }
+    element.setAttribute('transform', transform);
     return element;
   }
 })();
