@@ -2,7 +2,7 @@
 
 A very lightweight polymer component for drawing line chart.
 
-This component directly uses SVG tag to draw charts without grapchic libraries.
+This component directly uses SVG tag to draw charts without graphic libraries.
 
 ```html
 <style is="custom-style">
