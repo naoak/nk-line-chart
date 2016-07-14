@@ -14,18 +14,288 @@
 
     <test-fixture id="basic">
       <template>
+        <style>
+          nk-line-chart {
+            width: 200px;
+            height: 100px;
+          }
+        </style>
         <nk-line-chart></nk-line-chart>
       </template>
     </test-fixture>
 
     <script>
-      suite('nk-line-chart', function() {
+      describe('nk-line-chart', function() {
+        var chart;
+        var sandbox;
 
-        test('instantiating the element works', function() {
-          var element = fixture('basic');
-          assert.equal(element.is, 'nk-line-chart');
+        beforeEach(function() {
+          sandbox = sinon.sandbox.create();
+          chart = fixture('basic')[1];
         });
 
+        it('SVG tag will be created if rows and chartAreas are set', function(done) {
+          var container = chart.$.container;
+          var appendChild = sandbox.spy(container, 'appendChild');
+
+          chart.rows = [
+            {x: '0', y: '0'}, {x: '1', y: '1'}
+          ];
+          chart.chartArea = {
+            width: 200,
+            height: 100
+          };
+          expect(appendChild).not.to.be.called;
+          chart.async(function() {
+            expect(appendChild).to.be.calledOnce;
+            expect(container.children.length).to.equal(1);
+            expect(container.children[0].tagName).to.equal('svg');
+            done();
+          });
+        });
+
+        it('SVG tags never exist more than one', function(done) {
+          var container = chart.$.container;
+          var appendChild = sandbox.spy(container, 'appendChild');
+          var removeChild = sandbox.spy(container, 'removeChild');
+
+          chart.rows = [
+            {x: '0', y: '0'}, {x: '1', y: '1'}
+          ];
+          chart.chartArea = {
+            width: 200,
+            height: 100
+          };
+          expect(appendChild).not.to.be.called;
+          chart.async(function() {
+            expect(appendChild).to.be.calledOnce;
+            expect(removeChild).not.to.be.called;
+            expect(container.children.length).to.equal(1);
+            expect(container.children[0].tagName).to.equal('svg');
+            chart.chartArea = {
+              width: 100,
+              height: 100
+            };
+            chart.async(function() {
+              expect(appendChild).to.be.calledTwice;
+              expect(removeChild).to.be.calledOnce;
+              expect(container.children.length).to.equal(1);
+              expect(container.children[0].tagName).to.equal('svg');
+              done();
+            });
+          });
+        });
+
+        it('Points just fit in the chart area when top and left are not specified', function(done) {
+          var container = chart.$.container;
+
+          chart.rows = [
+            {x: '0', y: '0'}, {x: '1', y: '1'}, {x: '2', y: '2'}
+          ];
+          chart.chartArea = {
+            width: 200,
+            height: 100
+          };
+          chart.async(function() {
+            var svg = container.children[0];
+            var circles = Polymer.dom(svg).querySelectorAll('circle');
+            expect(circles.length).to.equal(3);
+            var c0 = circles[0];
+            expect(c0.getAttribute('cx')).to.equal('0');
+            expect(c0.getAttribute('cy')).to.equal('0');
+            var c1 = circles[1];
+            expect(c1.getAttribute('cx')).to.equal('100');
+            expect(c1.getAttribute('cy')).to.equal('50');
+            var c2 = circles[2];
+            expect(c2.getAttribute('cx')).to.equal('200');
+            expect(c2.getAttribute('cy')).to.equal('100');
+            done();
+          });
+        });
+
+        it('Points just fit in the chart area when top and left are 0', function(done) {
+          var container = chart.$.container;
+
+          chart.rows = [
+            {x: '0', y: '0'}, {x: '1', y: '1'}, {x: '2', y: '2'}
+          ];
+          chart.chartArea = {
+            top: 0,
+            left: 0,
+            width: 200,
+            height: 100
+          };
+          chart.async(function() {
+            var svg = container.children[0];
+            var circles = Polymer.dom(svg).querySelectorAll('circle');
+            expect(circles.length).to.equal(3);
+            var c0 = circles[0];
+            expect(c0.getAttribute('cx')).to.equal('0');
+            expect(c0.getAttribute('cy')).to.equal('0');
+            var c1 = circles[1];
+            expect(c1.getAttribute('cx')).to.equal('100');
+            expect(c1.getAttribute('cy')).to.equal('50');
+            var c2 = circles[2];
+            expect(c2.getAttribute('cx')).to.equal('200');
+            expect(c2.getAttribute('cy')).to.equal('100');
+            done();
+          });
+        });
+
+        it('Points just fit in the chart area despite top and left are not 0', function(done) {
+          var container = chart.$.container;
+
+          chart.rows = [
+            {x: '0', y: '0'}, {x: '1', y: '1'}, {x: '2', y: '2'}
+          ];
+          chart.chartArea = {
+            top: 10,
+            left: 10,
+            width: 180,
+            height: 80
+          };
+          chart.async(function() {
+            var svg = container.children[0];
+            var circles = Polymer.dom(svg).querySelectorAll('circle');
+            expect(circles.length).to.equal(3);
+            var c0 = circles[0];
+            expect(c0.getAttribute('cx')).to.equal('10');
+            expect(c0.getAttribute('cy')).to.equal('10');
+            var c1 = circles[1];
+            expect(c1.getAttribute('cx')).to.equal('100');
+            expect(c1.getAttribute('cy')).to.equal('50');
+            var c2 = circles[2];
+            expect(c2.getAttribute('cx')).to.equal('190');
+            expect(c2.getAttribute('cy')).to.equal('90');
+            done();
+          });
+        });
+
+        it('The length of rows can be 0', function(done) {
+          var container = chart.$.container;
+
+          chart.rows = [];
+          chart.chartArea = {
+            width: 200,
+            height: 100
+          };
+          chart.async(function() {
+            var svg = container.children[0];
+            expect(svg.tagName).to.equal('svg');
+            var circles = Polymer.dom(svg).querySelectorAll('circle');
+            expect(circles.length).to.equal(0);
+            done();
+          });
+        });
+
+        it('A point will be located in the center when the lengh of rows is 1', function(done) {
+          var container = chart.$.container;
+
+          chart.rows = [
+            {x: 0, y: 0}
+          ];
+          chart.chartArea = {
+            width: 200,
+            height: 100
+          };
+          chart.async(function() {
+            var svg = container.children[0];
+            expect(svg.tagName).to.equal('svg');
+            var circles = Polymer.dom(svg).querySelectorAll('circle');
+            expect(circles.length).to.equal(1);
+            var c0 = circles[0];
+            expect(c0.getAttribute('cx')).to.equal('100');
+            expect(c0.getAttribute('cy')).to.equal('50');
+            done();
+          });
+        });
+
+        it('The change of origin invokes the recalculation of transform', function(done) {
+          var container = chart.$.container;
+
+          chart.rows = [
+            {x: '0', y: '0'}, {x: '1', y: '1'}
+          ];
+          chart.chartArea = {
+            top: 10,
+            left: 10,
+            width: 180,
+            height: 80
+          };
+          expect(chart.origin).to.equal('left-bottom');
+          chart.async(function() {
+            var svg = container.children[0];
+            var g = svg.children[0];
+            expect(g.getAttribute('transform')).to.equal('translate(0,100) scale(1, -1)');
+            chart.origin = 'left-top';
+            chart.async(function() {
+              var svg = container.children[0];
+              var g = svg.children[0];
+              expect(g.getAttribute('transform')).to.equal('none');
+              done();
+            });
+          });
+        });
+
+        it('The style of points can be changed', function(done) {
+          var container = chart.$.container;
+
+          chart.rows = [
+            {x: '0', y: '0'}, {x: '1', y: '1'}
+          ];
+          chart.chartArea = {
+            top: 10,
+            left: 10,
+            width: 180,
+            height: 80
+          };
+          chart.circleStyle = {
+            r: '5',
+            stroke: 'none',
+            strokeWidth: '0',
+            fill: '#00f'
+          };
+          chart.async(function() {
+            var svg = container.children[0];
+            var circles = Polymer.dom(svg).querySelectorAll('circle');
+            circles.forEach(function(c) {
+              expect(c.getAttribute('r')).to.equal('5');
+              expect(c.getAttribute('stroke')).to.equal('none');
+              expect(c.getAttribute('stroke-width')).to.equal('0');
+              expect(c.getAttribute('fill')).to.equal('#00f');
+            });
+            done();
+          });
+        });
+
+        it('The style of a polygonal line can be changed', function(done) {
+          var container = chart.$.container;
+
+          chart.rows = [
+            {x: '0', y: '0'}, {x: '1', y: '1'}
+          ];
+          chart.chartArea = {
+            top: 10,
+            left: 10,
+            width: 180,
+            height: 80
+          };
+          chart.pathStyle = {
+            stroke: '#0f0',
+            strokeWidth: '5',
+            fillOpacity: '1',
+            fill: 'none'
+          };
+          chart.async(function() {
+            var svg = container.children[0];
+            var path = Polymer.dom(svg).querySelector('path');
+            expect(path.getAttribute('stroke')).to.equal('#0f0');
+            expect(path.getAttribute('stroke-width')).to.equal('5');
+            expect(path.getAttribute('fill-opacity')).to.equal('1');
+            expect(path.getAttribute('fill')).to.equal('none');
+            done();
+          });
+        });
       });
     </script>
   </body>
