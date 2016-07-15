@@ -36,7 +36,7 @@ A very lightweight polymer component for drawing line charts.
        * ```
        * (ex)
        * [
-       *   {x: 0, y: 0}, {x: 1, y: 1}
+       *   [0, 0], [1, 1]
        * ]
        * ```
        */
@@ -181,17 +181,17 @@ A very lightweight polymer component for drawing line charts.
     var constantY = height / 2 + top;
 
     rows.forEach(function(r) {
-      if (r.x < minX) {
-        minX = r.x;
+      if (r[0] < minX) {
+        minX = r[0];
       }
-      if (r.x > maxX) {
-        maxX = r.x;
+      if (r[0] > maxX) {
+        maxX = r[0];
       }
-      if (r.y < minY) {
-        minY = r.y;
+      if (r[1] < minY) {
+        minY = r[1];
       }
-      if (r.y > maxY) {
-        maxY = r.y;
+      if (r[1] > maxY) {
+        maxY = r[1];
       }
     });
     factorX = width / (maxX - minX);
@@ -199,8 +199,8 @@ A very lightweight polymer component for drawing line charts.
 
     return rows.map(function(r) {
       return {
-        x: isFinite(factorX) ? (r.x - minX) * factorX + left : constantX,
-        y: isFinite(factorY) ? (r.y - minY) * factorY + top : constantY
+        x: isFinite(factorX) ? (r[0] - minX) * factorX + left : constantX,
+        y: isFinite(factorY) ? (r[1] - minY) * factorY + top : constantY
       };
     });
   }
