@@ -243,7 +243,7 @@ A very lightweight polymer component for drawing line charts.
       transform = 'translate(0,' + (chartArea.height + 2 * (chartArea.top || 0)) + ') scale(1, -1)';
     }
     else if (origin === 'left-top') {
-      transform = 'none';
+      transform = '';
     }
     element.setAttribute('transform', transform);
     return element;
