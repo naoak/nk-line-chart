@@ -113,6 +113,33 @@
           });
         });
 
+        it('Points just fit in the chart area when the minimums of x and y are not 0', function(done) {
+          var container = chart.$.container;
+
+          chart.rows = [
+            {x: '-1', y: '-1'}, {x: '0', y: '0'}, {x: '1', y: '1'}
+          ];
+          chart.chartArea = {
+            width: 200,
+            height: 100
+          };
+          chart.async(function() {
+            var svg = container.children[0];
+            var circles = Polymer.dom(svg).querySelectorAll('circle');
+            expect(circles.length).to.equal(3);
+            var c0 = circles[0];
+            expect(c0.getAttribute('cx')).to.equal('0');
+            expect(c0.getAttribute('cy')).to.equal('0');
+            var c1 = circles[1];
+            expect(c1.getAttribute('cx')).to.equal('100');
+            expect(c1.getAttribute('cy')).to.equal('50');
+            var c2 = circles[2];
+            expect(c2.getAttribute('cx')).to.equal('200');
+            expect(c2.getAttribute('cy')).to.equal('100');
+            done();
+          });
+        });
+
         it('Points just fit in the chart area when top and left are 0', function(done) {
           var container = chart.$.container;
 
@@ -142,7 +169,7 @@
           });
         });
 
-        it('Points just fit in the chart area despite top and left are not 0', function(done) {
+        it('Points just fit in the chart area even when top and left are not 0', function(done) {
           var container = chart.$.container;
 
           chart.rows = [

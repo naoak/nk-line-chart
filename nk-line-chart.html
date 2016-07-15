@@ -196,8 +196,8 @@ A very lightweight polymer component for drawing line charts.
 
     return rows.map(function(r) {
       return {
-        x: isFinite(factorX) ? r.x * factorX + left : constantX,
-        y: isFinite(factorY) ? r.y * factorY + top : constantY
+        x: isFinite(factorX) ? (r.x - minX) * factorX + left : constantX,
+        y: isFinite(factorY) ? (r.y - minY) * factorY + top : constantY
       };
     });
   }
