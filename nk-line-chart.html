@@ -70,7 +70,9 @@ A very lightweight polymer component for drawing line charts.
        *
        * ```
        * left-bottom: cartesian cordinates
-       * left-top: cordinates of display
+       * left-top: screen cordinates
+       * right-top
+       * right-bottom
        * ```
        */
       origin: {
@@ -116,7 +118,7 @@ A very lightweight polymer component for drawing line charts.
           container.removeChild(this._svg);
         }
         this._svg = null;
-        if (rows && this.chartArea && origin && circleStyle && pathStyle) {
+        if (rows && this.chartArea && circleStyle && pathStyle) {
           this._svg = this._draw(
             document.createElementNS(NS, 'svg'),
             calcPoints(rows, this.chartArea), toAttributes(circleStyle), toAttributes(pathStyle)
@@ -237,13 +239,29 @@ A very lightweight polymer component for drawing line charts.
   }
 
   function transformCoordinates(element, chartArea, origin) {
-    var transform = 'none';
+    var transform;
 
-    if (origin === 'left-bottom') {
-      transform = 'translate(0,' + (chartArea.height + 2 * (chartArea.top || 0)) + ') scale(1, -1)';
-    }
-    else if (origin === 'left-top') {
-      transform = '';
+    switch (origin) {
+      // cartesian coordinates
+      case 'left-bottom':
+        transform = 'translate(' +
+          '0,' + (chartArea.height + 2 * (chartArea.top || 0)) +
+        ') scale(1,-1)';
+        break;
+      case 'right-bottom':
+        transform = 'translate(' +
+          (chartArea.width + 2 * (chartArea.left || 0)) + ',' + (chartArea.height + 2 * (chartArea.top || 0)) +
+        ') scale(-1,-1)';
+        break;
+      case 'right-top':
+        transform = 'translate(' +
+          (chartArea.width + 2 * (chartArea.left || 0)) + ',0' +
+        ') scale(-1,1)';
+        break;
+      // screen coordinates
+      case 'left-top':
+      default:
+        transform = '';
     }
     element.setAttribute('transform', transform);
     return element;

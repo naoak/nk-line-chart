@@ -289,17 +289,31 @@
           };
           expect(chart.origin).to.equal('left-bottom');
           chart.async(function() {
-            var svg = container.children[0];
-            var g = svg.children[0];
-            expect(g.getAttribute('transform')).to.equal('translate(0,100) scale(1, -1)');
+            expect(getTransform()).to.equal('translate(0,100) scale(1,-1)');
             chart.origin = 'left-top';
             chart.async(function() {
-              var svg = container.children[0];
-              var g = svg.children[0];
-              expect(g.getAttribute('transform')).to.equal('none');
-              done();
+              expect(getTransform()).to.equal('');
+              chart.origin = 'right-top';
+              chart.async(function() {
+                expect(getTransform()).to.equal('translate(200,0) scale(-1,1)');
+                chart.origin = 'right-bottom';
+                chart.async(function() {
+                  expect(getTransform()).to.equal('translate(200,100) scale(-1,-1)');
+                  chart.origin = '';
+                  chart.async(function() {
+                    expect(getTransform()).to.equal('');
+                    done();
+                  });
+                });
+              });
             });
           });
+
+          function getTransform() {
+            var svg = container.children[0];
+            var g = svg.children[0];
+            return g.getAttribute('transform');
+          }
         });
 
         it('The style of points can be changed', function(done) {
