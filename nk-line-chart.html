@@ -115,11 +115,14 @@ A very lightweight polymer component for drawing line charts.
         if (this._svg) {
           container.removeChild(this._svg);
         }
-        this._svg = this._draw(
-          document.createElementNS(NS, 'svg'),
-          calcPoints(rows, this.chartArea), toAttributes(circleStyle), toAttributes(pathStyle)
-        );
-        container.appendChild(this._svg);
+        this._svg = null;
+        if (rows && this.chartArea && origin && circleStyle && pathStyle) {
+          this._svg = this._draw(
+            document.createElementNS(NS, 'svg'),
+            calcPoints(rows, this.chartArea), toAttributes(circleStyle), toAttributes(pathStyle)
+          );
+          container.appendChild(this._svg);
+        }
       });
     },
 
