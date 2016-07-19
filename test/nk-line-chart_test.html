@@ -316,6 +316,37 @@
           }
         });
 
+        it('The style of the background can be changed', function(done) {
+          var container = chart.$.container;
+
+          chart.rows = [
+            [0, 0], [1, 1]
+          ];
+          chart.chartArea = {
+            top: 10,
+            left: 10,
+            width: 180,
+            height: 80
+          };
+          chart.backgroundRectStyle = {
+            fill: "#00f",
+            fillOpacity: 0.1,
+            stroke: "#00f",
+            strokeOpacity: 0.3,
+            strokeWidth: 5
+          };
+          chart.async(function() {
+            var svg = container.children[0];
+            var rect = Polymer.dom(svg).querySelector('rect');
+            expect(rect.getAttribute('fill')).to.equal('#00f');
+            expect(rect.getAttribute('fill-opacity')).to.equal('0.1');
+            expect(rect.getAttribute('stroke')).to.equal('#00f');
+            expect(rect.getAttribute('stroke-opacity')).to.equal('0.3');
+            expect(rect.getAttribute('stroke-width')).to.equal('5');
+            done();
+          });
+        });
+
         it('The style of points can be changed', function(done) {
           var container = chart.$.container;
 
@@ -329,19 +360,19 @@
             height: 80
           };
           chart.circleStyle = {
+            fill: '#00f',
             r: '5',
             stroke: 'none',
-            strokeWidth: '0',
-            fill: '#00f'
+            strokeWidth: '0'
           };
           chart.async(function() {
             var svg = container.children[0];
             var circles = Polymer.dom(svg).querySelectorAll('circle');
             circles.forEach(function(c) {
+              expect(c.getAttribute('fill')).to.equal('#00f');
               expect(c.getAttribute('r')).to.equal('5');
               expect(c.getAttribute('stroke')).to.equal('none');
               expect(c.getAttribute('stroke-width')).to.equal('0');
-              expect(c.getAttribute('fill')).to.equal('#00f');
             });
             done();
           });
@@ -360,18 +391,18 @@
             height: 80
           };
           chart.pathStyle = {
-            stroke: '#0f0',
-            strokeWidth: '5',
+            fill: 'none',
             fillOpacity: '1',
-            fill: 'none'
+            stroke: '#0f0',
+            strokeWidth: '5'
           };
           chart.async(function() {
             var svg = container.children[0];
             var path = Polymer.dom(svg).querySelector('path');
+            expect(path.getAttribute('fill')).to.equal('none');
+            expect(path.getAttribute('fill-opacity')).to.equal('1');
             expect(path.getAttribute('stroke')).to.equal('#0f0');
             expect(path.getAttribute('stroke-width')).to.equal('5');
-            expect(path.getAttribute('fill-opacity')).to.equal('1');
-            expect(path.getAttribute('fill')).to.equal('none');
             done();
           });
         });

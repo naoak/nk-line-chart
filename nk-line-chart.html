@@ -81,37 +81,53 @@ A very lightweight polymer component for drawing line charts.
       },
 
       /**
-       * Style of points
+       * Style for the background rect of the chart area
        */
-      circleStyle: {
+      backgroundRectStyle: {
         type: Object,
-        value: {
-          r: '3',
-          stroke: 'none',
-          strokeWidth: '0',
-          fill: '#e08080'
+        value: function() {
+          return {
+            fill: 'none',
+            stroke: 'none'
+          };
         }
       },
 
       /**
-       * Style of a polygonal line
+       * Style for points
+       */
+      circleStyle: {
+        type: Object,
+        value: function() {
+          return {
+            fill: '#e08080',
+            r: '3',
+            stroke: 'none',
+            strokeWidth: 0
+          };
+        }
+      },
+
+      /**
+       * Style for polygonal lines
        */
       pathStyle: {
         type: Object,
-        value: {
-          stroke: '#e08080',
-          strokeWidth: '2',
-          fillOpacity: '1',
-          fill: 'none'
+        value: function() {
+          return {
+            fill: 'none',
+            stroke: '#e08080',
+            strokeWidth: 2,
+          };
         }
       }
     },
 
     observers: [
-      '_rowsAndStylesChanged(rows, chartArea.*, origin, circleStyle, pathStyle)'
+      '_rowsAndStylesChanged(rows, chartArea.*, origin, backgroundRectStyle, circleStyle, pathStyle)'
     ],
 
-    _rowsAndStylesChanged: function(rows, chartArea_, origin, circleStyle, pathStyle) {
+    _rowsAndStylesChanged: function(rows, chartArea_, origin, backgroundRectStyle, circleStyle, pathStyle) {
       this.debounce('draw', function() {
         var container = this.$.container;
         if (this._svg) {
@@ -121,20 +137,24 @@ A very lightweight polymer component for drawing line charts.
         if (rows && this.chartArea && circleStyle && pathStyle) {
           this._svg = this._draw(
             document.createElementNS(NS, 'svg'),
-            calcPoints(rows, this.chartArea), toAttributes(circleStyle), toAttributes(pathStyle)
+            calcPoints(rows, this.chartArea), toAttributes(backgroundRectStyle), toAttributes(circleStyle), toAttributes(pathStyle)
           );
           container.appendChild(this._svg);
         }
       });
     },
 
-    _draw: function(svg, points, circleAttrs, pathAttrs) {
+    _draw: function(svg, points, backgroundRectAttrs, circleAttrs, pathAttrs) {
       var g0 = document.createElementNS(NS, 'g');
       var g1c = document.createElementNS(NS, 'g');
 
       svg.setAttribute('width', '100%');
       svg.setAttribute('height', '100%');
       svg.appendChild(transformCoordinates(g0, this.chartArea, this.origin));
+      g0.appendChild(this._drawBackgroundRect(
+        document.createElementNS(NS, 'rect'),
+        this.chartArea, backgroundRectAttrs
+      ));
       if (points.length > 0) {
         g0.appendChild(this._drawPath(
           document.createElementNS(NS, 'path'),
@@ -149,6 +169,15 @@ A very lightweight polymer component for drawing line charts.
         ));
       }.bind(this));
       return svg;
+    },
+
+    _drawBackgroundRect(rect, chartArea, attrs) {
+      rect.setAttribute('x', chartArea.left);
+      rect.setAttribute('y', chartArea.top);
+      rect.setAttribute('width', chartArea.width);
+      rect.setAttribute('height', chartArea.height);
+      setAttributes(rect, attrs);
+      return rect;
     },
 
     _drawPath: function(path, startPoint, moves, attrs) {
