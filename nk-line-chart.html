@@ -180,7 +180,7 @@ A very lightweight polymer component for drawing line charts.
       return svg;
     },
 
-    _drawBackgroundRect(rect, chartArea, attrs) {
+    _drawBackgroundRect: function(rect, chartArea, attrs) {
       rect.setAttribute('x', chartArea.left);
       rect.setAttribute('y', chartArea.top);
       rect.setAttribute('width', chartArea.width);
