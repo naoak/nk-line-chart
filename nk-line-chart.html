@@ -146,6 +146,11 @@ A very lightweight polymer component for drawing line charts.
       yRange: {
         type: Object,
         value: null
+      },
+
+      _transformer: {
+        type: Function,
+        computed: '_computeTransformer(origin, chartArea)'
       }
     },
 
@@ -153,13 +158,17 @@ A very lightweight polymer component for drawing line charts.
       '_rowsAndStylesChanged(backgroundRectStyle, chartArea.*, circleStyle, origin, pathStyle, rows, xRange, yRange)'
     ],
 
+    _computeTransformer: function(origin, chartArea) {
+      return getTransformer(origin, chartArea);
+    },
+
     _draw: function(svg, points, backgroundRectAttrs, circleAttrs, pathAttrs) {
       var g0 = document.createElementNS(NS, 'g');
       var g1c = document.createElementNS(NS, 'g');
 
       svg.setAttribute('width', '100%');
       svg.setAttribute('height', '100%');
-      svg.appendChild(transformCoordinates(g0, this.chartArea, this.origin));
+      svg.appendChild(g0);
       g0.appendChild(this._drawBackgroundRect(
         document.createElementNS(NS, 'rect'),
         this.chartArea, backgroundRectAttrs
@@ -190,6 +199,7 @@ A very lightweight polymer component for drawing line charts.
     },
 
     _drawCircle: function(circle, point, attrs) {
+      point = this._transformer.convertPoint(point);
       circle.setAttribute('cx', point.x);
       circle.setAttribute('cy', point.y);
       setAttributes(circle, attrs);
@@ -197,7 +207,10 @@ A very lightweight polymer component for drawing line charts.
     },
 
     _drawPath: function(path, startPoint, moves, attrs) {
+      var transformer = this._transformer;
+      startPoint = transformer.convertPoint(startPoint);
       var d = moves.reduce(function(memo, vector) {
+        vector = transformer.convertVector(vector);
         return memo + 'l' + vector.x + ',' + vector.y;
       }, 'M' + startPoint.x + ',' + startPoint.y);
       path.setAttribute('d', d);
@@ -270,6 +283,83 @@ A very lightweight polymer component for drawing line charts.
     });
   }
 
+  function getTransformer(origin, chartArea) {
+    var transformer;
+
+    switch (origin) {
+
+      // cartesian coordinates
+      case 'left-bottom':
+        transformer = [
+          function(point) {
+            var result = {};
+            result.x = point.x;
+            result.y = chartArea.height + 2 * (chartArea.top || 0) - point.y;
+            return result;
+          },
+          function(vector) {
+            var result = {};
+            result.x = vector.x;
+            result.y = -vector.y;
+            return result;
+          }
+        ];
+        break;
+
+      case 'right-bottom':
+        transformer = [
+          function(point) {
+            var result = {};
+            result.x = chartArea.width + 2 * (chartArea.left || 0) - point.x;
+            result.y = chartArea.height + 2 * (chartArea.top || 0) - point.y;
+            return result;
+          },
+          function(vector) {
+            var result = {};
+            result.x = -vector.x;
+            result.y = -vector.y;
+            return result;
+          }
+        ];
+        break;
+
+      case 'right-top':
+        transformer = [
+          function(point) {
+            var result = {};
+            result.x = chartArea.width + 2 * (chartArea.left || 0) - point.x;
+            result.y = point.y;
+            return result;
+          },
+          function(vector) {
+            var result = {};
+            result.x = -vector.x;
+            result.y = vector.y;
+            return result;
+          }
+        ];
+        break;
+
+      // screen coordinates
+      case 'left-top':
+      default:
+        transformer = [
+          function(point) {
+            return point;
+          },
+          function(vector) {
+            return vector;
+          }
+        ];
+        break;
+    }
+
+    return {
+      convertPoint: transformer[0],
+      convertVector: transformer[1]
+    };
+  }
+
   function pointsToMoves(points) {
     var prevP;
     var moves = [];
@@ -301,33 +391,5 @@ A very lightweight polymer component for drawing line charts.
     }, {});
   }
 
-  function transformCoordinates(element, chartArea, origin) {
-    var transform;
-
-    switch (origin) {
-      // cartesian coordinates
-      case 'left-bottom':
-        transform = 'translate(' +
-          '0,' + (chartArea.height + 2 * (chartArea.top || 0)) +
-        ') scale(1,-1)';
-        break;
-      case 'right-bottom':
-        transform = 'translate(' +
-          (chartArea.width + 2 * (chartArea.left || 0)) + ',' + (chartArea.height + 2 * (chartArea.top || 0)) +
-        ') scale(-1,-1)';
-        break;
-      case 'right-top':
-        transform = 'translate(' +
-          (chartArea.width + 2 * (chartArea.left || 0)) + ',0' +
-        ') scale(-1,1)';
-        break;
-      // screen coordinates
-      case 'left-top':
-      default:
-        transform = '';
-    }
-    element.setAttribute('transform', transform);
-    return element;
-  }
 })();
 </script>

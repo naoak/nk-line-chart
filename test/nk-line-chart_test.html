@@ -134,6 +134,7 @@
             width: 200,
             height: 100
           };
+          chart.origin = 'left-top';
           chart.async(function() {
             var svg = container.children[0];
             var circles = Polymer.dom(svg).querySelectorAll('circle');
@@ -161,6 +162,7 @@
             width: 200,
             height: 100
           };
+          chart.origin = 'left-top';
           chart.async(function() {
             var svg = container.children[0];
             var circles = Polymer.dom(svg).querySelectorAll('circle');
@@ -190,6 +192,7 @@
             width: 200,
             height: 100
           };
+          chart.origin = 'left-top';
           chart.async(function() {
             var svg = container.children[0];
             var circles = Polymer.dom(svg).querySelectorAll('circle');
@@ -219,6 +222,7 @@
             width: 180,
             height: 80
           };
+          chart.origin = 'left-top';
           chart.async(function() {
             var svg = container.children[0];
             var circles = Polymer.dom(svg).querySelectorAll('circle');
@@ -248,6 +252,7 @@
             width: 200,
             height: 100
           };
+          chart.origin = 'left-top';
           chart.xRange = {
             min: -1,
             max: 4
@@ -281,6 +286,7 @@
             width: 200,
             height: 100
           };
+          chart.origin = 'left-top';
           chart.yRange = {
             min: -1,
             max: 4
@@ -345,7 +351,7 @@
           var container = chart.$.container;
 
           chart.rows = [
-            {x: '0', y: '0'}, {x: '1', y: '1'}
+            ['0', '0'], ['1', '1']
           ];
           chart.chartArea = {
             top: 10,
@@ -355,19 +361,49 @@
           };
           expect(chart.origin).to.equal('left-bottom');
           chart.async(function() {
-            expect(getTransform()).to.equal('translate(0,100) scale(1,-1)');
+            var circles = getCircles(container);
+            var c0 = circles[0];
+            var c1 = circles[1];
+            expect(c0.getAttribute('cx')).to.equal('10');
+            expect(c0.getAttribute('cy')).to.equal('90');
+            expect(c1.getAttribute('cx')).to.equal('190');
+            expect(c1.getAttribute('cy')).to.equal('10');
             chart.origin = 'left-top';
             chart.async(function() {
-              expect(getTransform()).to.equal('');
+              var circles = getCircles(container);
+              var c0 = circles[0];
+              var c1 = circles[1];
+              expect(c0.getAttribute('cx')).to.equal('10');
+              expect(c0.getAttribute('cy')).to.equal('10');
+              expect(c1.getAttribute('cx')).to.equal('190');
+              expect(c1.getAttribute('cy')).to.equal('90');
               chart.origin = 'right-top';
               chart.async(function() {
-                expect(getTransform()).to.equal('translate(200,0) scale(-1,1)');
+                var circles = getCircles(container);
+                var c0 = circles[0];
+                var c1 = circles[1];
+                expect(c0.getAttribute('cx')).to.equal('190');
+                expect(c0.getAttribute('cy')).to.equal('10');
+                expect(c1.getAttribute('cx')).to.equal('10');
+                expect(c1.getAttribute('cy')).to.equal('90');
                 chart.origin = 'right-bottom';
                 chart.async(function() {
-                  expect(getTransform()).to.equal('translate(200,100) scale(-1,-1)');
+                  var circles = getCircles(container);
+                  var c0 = circles[0];
+                  var c1 = circles[1];
+                  expect(c0.getAttribute('cx')).to.equal('190');
+                  expect(c0.getAttribute('cy')).to.equal('90');
+                  expect(c1.getAttribute('cx')).to.equal('10');
+                  expect(c1.getAttribute('cy')).to.equal('10');
                   chart.origin = '';
                   chart.async(function() {
-                    expect(getTransform()).to.equal('');
+                    var circles = getCircles(container);
+                    var c0 = circles[0];
+                    var c1 = circles[1];
+                    expect(c0.getAttribute('cx')).to.equal('10');
+                    expect(c0.getAttribute('cy')).to.equal('10');
+                    expect(c1.getAttribute('cx')).to.equal('190');
+                    expect(c1.getAttribute('cy')).to.equal('90');
                     done();
                   });
                 });
@@ -375,10 +411,12 @@
             });
           });
 
-          function getTransform() {
+          function getCircles(container) {
             var svg = container.children[0];
-            var g = svg.children[0];
-            return g.getAttribute('transform');
+            expect(svg.tagName).to.equal('svg');
+            var circles = Polymer.dom(svg).querySelectorAll('circle');
+            expect(circles.length).to.equal(2);
+            return circles;
           }
         });
 
