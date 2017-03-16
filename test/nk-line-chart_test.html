@@ -124,7 +124,7 @@
           });
         });
 
-        it('Points just fit in the chart area when top and left are not specified', function(done) {
+        it('Automatic Axis Range: Points just fit in the chart area when top and left are not specified', function(done) {
           var container = chart.$.container;
 
           chart.rows = [
@@ -151,7 +151,7 @@
           });
         });
 
-        it('Points just fit in the chart area when the minimums of x and y are not 0', function(done) {
+        it('Automatic Axis Range: Points just fit in the chart area when the minimums of x and y are not 0', function(done) {
           var container = chart.$.container;
 
           chart.rows = [
@@ -178,7 +178,7 @@
           });
         });
 
-        it('Points just fit in the chart area when top and left are 0', function(done) {
+        it('Automatic Axis Range: Points just fit in the chart area when top and left are 0', function(done) {
           var container = chart.$.container;
 
           chart.rows = [
@@ -207,7 +207,7 @@
           });
         });
 
-        it('Points just fit in the chart area even when top and left are not 0', function(done) {
+        it('Automatic Axis Range: Points just fit in the chart area even when top and left are not 0', function(done) {
           var container = chart.$.container;
 
           chart.rows = [
@@ -232,6 +232,72 @@
             var c2 = circles[2];
             expect(c2.getAttribute('cx')).to.equal('190');
             expect(c2.getAttribute('cy')).to.equal('90');
+            done();
+          });
+        });
+
+        it('X-axis range can be explicitly set', function(done) {
+          var container = chart.$.container;
+
+          chart.rows = [
+            [0, 0], [1, 1], [2, 2]
+          ];
+          chart.chartArea = {
+            top: 0,
+            left: 0,
+            width: 200,
+            height: 100
+          };
+          chart.xRange = {
+            min: -1,
+            max: 4
+          };
+          chart.async(function() {
+            var svg = container.children[0];
+            var circles = Polymer.dom(svg).querySelectorAll('circle');
+            expect(circles.length).to.equal(3);
+            var c0 = circles[0];
+            expect(c0.getAttribute('cx')).to.equal('40');
+            expect(c0.getAttribute('cy')).to.equal('0');
+            var c1 = circles[1];
+            expect(c1.getAttribute('cx')).to.equal('80');
+            expect(c1.getAttribute('cy')).to.equal('50');
+            var c2 = circles[2];
+            expect(c2.getAttribute('cx')).to.equal('120');
+            expect(c2.getAttribute('cy')).to.equal('100');
+            done();
+          });
+        });
+
+        it('Y-axis range can be explicitly set', function(done) {
+          var container = chart.$.container;
+
+          chart.rows = [
+            [0, 0], [1, 1], [2, 2]
+          ];
+          chart.chartArea = {
+            top: 0,
+            left: 0,
+            width: 200,
+            height: 100
+          };
+          chart.yRange = {
+            min: -1,
+            max: 4
+          };
+          chart.async(function() {
+            var svg = container.children[0];
+            var circles = Polymer.dom(svg).querySelectorAll('circle');
+            expect(circles.length).to.equal(3);
+            var c0 = circles[0];
+            expect(c0.getAttribute('cx')).to.equal('0');
+            expect(c0.getAttribute('cy')).to.equal('20');
+            var c1 = circles[1];
+            expect(c1.getAttribute('cx')).to.equal('100');
+            expect(c1.getAttribute('cy')).to.equal('40');
+            var c2 = circles[2];
+            expect(c2.getAttribute('cx')).to.equal('200');
+            expect(c2.getAttribute('cy')).to.equal('60');
             done();
           });
         });

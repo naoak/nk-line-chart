@@ -120,11 +120,37 @@ A very lightweight polymer component for drawing line charts.
        */
       rows: {
         type: Array
+      },
+
+      /**
+       * X-axis range of chart area. If not specified, the range will be computed by data rows.
+       *
+       * ```
+       * min: X-axis value at the left (right if the origin is right) of chart area
+       * max: X-axis value at the right (left if the origin is right) of chart area
+       * ```
+       */
+      xRange: {
+        type: Object,
+        value: null
+      },
+
+      /**
+       * Y-axis range of chart area. If not specified, the range will be computed by data rows.
+       *
+       * ```
+       * min: Y-axis value at the bottom (top if the origin is top) of chart area
+       * max: Y-axis value at the top (bottom if the origin is top) of chart area
+       * ```
+       */
+      yRange: {
+        type: Object,
+        value: null
       }
     },
 
     observers: [
-      '_rowsAndStylesChanged(rows, chartArea.*, origin, backgroundRectStyle, circleStyle, pathStyle)'
+      '_rowsAndStylesChanged(backgroundRectStyle, chartArea.*, circleStyle, origin, pathStyle, rows, xRange, yRange)'
     ],
 
     _draw: function(svg, points, backgroundRectAttrs, circleAttrs, pathAttrs) {
@@ -179,7 +205,7 @@ A very lightweight polymer component for drawing line charts.
       return path;
     },
 
-    _rowsAndStylesChanged: function(rows, chartArea_, origin, backgroundRectStyle, circleStyle, pathStyle) {
+    _rowsAndStylesChanged: function(backgroundRectStyle, chartArea_, circleStyle, origin, pathStyle, rows, xRange, yRange) {
       this.debounce('draw', function() {
         var container = this.$.container;
         if (this._svg) {
@@ -189,7 +215,7 @@ A very lightweight polymer component for drawing line charts.
         if (rows && this.chartArea && circleStyle && pathStyle) {
           this._svg = this._draw(
             document.createElementNS(NS, 'svg'),
-            calcPoints(rows, this.chartArea), toAttributes(backgroundRectStyle), toAttributes(circleStyle), toAttributes(pathStyle)
+            calcPoints(rows, this.chartArea, xRange, yRange), toAttributes(backgroundRectStyle), toAttributes(circleStyle), toAttributes(pathStyle)
           );
           container.appendChild(this._svg);
         }
@@ -197,7 +223,7 @@ A very lightweight polymer component for drawing line charts.
     }
   });
 
-  function calcPoints(rows, chartArea) {
+  function calcPoints(rows, chartArea, xRange, yRange) {
     var top = chartArea.top || 0;
     var left = chartArea.left || 0;
     var width = chartArea.width;
@@ -225,6 +251,14 @@ A very lightweight polymer component for drawing line charts.
         maxY = r[1];
       }
     });
+    if (xRange) {
+      minX = typeof(xRange.min) === 'number' ? xRange.min : minX;
+      maxX = typeof(xRange.max) === 'number' ? xRange.max : maxX;
+    }
+    if (yRange) {
+      minY = typeof(yRange.min) === 'number' ? yRange.min : minY;
+      maxY = typeof(yRange.max) === 'number' ? yRange.max : maxY;
+    }
     factorX = width / (maxX - minX);
     factorY = height / (maxY - minY);
 

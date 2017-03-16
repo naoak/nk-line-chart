@@ -41,6 +41,52 @@
     </div>
 
     <div class="vertical-section-container centered">
+      <h3>X-axis Range</h3>
+      <demo-snippet>
+        <template>
+          <nk-line-chart
+            rows='[
+              [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
+            ]'
+            chart-area='{
+              "top": 10,
+              "left": 10,
+              "width": 320,
+              "height": 100
+            }'
+            x-range='{
+              "min": 0,
+              "max": 10
+            }'>
+          </nk-line-chart>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Y-axis Range</h3>
+      <demo-snippet>
+        <template>
+          <nk-line-chart
+            rows='[
+              [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
+            ]'
+            chart-area='{
+              "top": 10,
+              "left": 10,
+              "width": 320,
+              "height": 100
+            }'
+            y-range='{
+              "min": 0,
+              "max": 10
+            }'>
+          </nk-line-chart>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
       <h3>Origin: left-bottom (cartesian coordinates)</h3>
       <demo-snippet>
         <template>
