@@ -31,17 +31,16 @@ A very lightweight polymer component for drawing line charts.
     properties: {
 
       /**
-       * Data rows
-       *
-       * ```
-       * (ex)
-       * [
-       *   [0, 0], [1, 1]
-       * ]
-       * ```
+       * Style for the background rect of the chart area
        */
-      rows: {
-        type: Array
+      backgroundRectStyle: {
+        type: Object,
+        value: function() {
+          return {
+            fill: 'none',
+            stroke: 'none'
+          };
+        }
       },
 
       /**
@@ -66,34 +65,6 @@ A very lightweight polymer component for drawing line charts.
       },
 
       /**
-       * The origin of coordinates. The possible values are,
-       *
-       * ```
-       * left-bottom: cartesian cordinates
-       * left-top: screen cordinates
-       * right-top
-       * right-bottom
-       * ```
-       */
-      origin: {
-        type: String,
-        value: 'left-bottom'
-      },
-
-      /**
-       * Style for the background rect of the chart area
-       */
-      backgroundRectStyle: {
-        type: Object,
-        value: function() {
-          return {
-            fill: 'none',
-            stroke: 'none'
-          };
-        }
-      },
-
-      /**
        * Style for points
        */
       circleStyle: {
@@ -109,6 +80,21 @@ A very lightweight polymer component for drawing line charts.
       },
 
       /**
+       * The origin of coordinates. The possible values are,
+       *
+       * ```
+       * left-bottom: cartesian cordinates
+       * left-top: screen cordinates
+       * right-top
+       * right-bottom
+       * ```
+       */
+      origin: {
+        type: String,
+        value: 'left-bottom'
+      },
+
+      /**
        * Style for polygonal lines
        */
       pathStyle: {
@@ -120,29 +106,26 @@ A very lightweight polymer component for drawing line charts.
             strokeWidth: 2,
           };
         }
+      },
+
+      /**
+       * Data rows
+       *
+       * ```
+       * (ex)
+       * [
+       *   [0, 0], [1, 1]
+       * ]
+       * ```
+       */
+      rows: {
+        type: Array
       }
     },
 
     observers: [
       '_rowsAndStylesChanged(rows, chartArea.*, origin, backgroundRectStyle, circleStyle, pathStyle)'
     ],
-
-    _rowsAndStylesChanged: function(rows, chartArea_, origin, backgroundRectStyle, circleStyle, pathStyle) {
-      this.debounce('draw', function() {
-        var container = this.$.container;
-        if (this._svg) {
-          container.removeChild(this._svg);
-        }
-        this._svg = null;
-        if (rows && this.chartArea && circleStyle && pathStyle) {
-          this._svg = this._draw(
-            document.createElementNS(NS, 'svg'),
-            calcPoints(rows, this.chartArea), toAttributes(backgroundRectStyle), toAttributes(circleStyle), toAttributes(pathStyle)
-          );
-          container.appendChild(this._svg);
-        }
-      });
-    },
 
     _draw: function(svg, points, backgroundRectAttrs, circleAttrs, pathAttrs) {
       var g0 = document.createElementNS(NS, 'g');
@@ -180,6 +163,13 @@ A very lightweight polymer component for drawing line charts.
       return rect;
     },
 
+    _drawCircle: function(circle, point, attrs) {
+      circle.setAttribute('cx', point.x);
+      circle.setAttribute('cy', point.y);
+      setAttributes(circle, attrs);
+      return circle;
+    },
+
     _drawPath: function(path, startPoint, moves, attrs) {
       var d = moves.reduce(function(memo, vector) {
         return memo + 'l' + vector.x + ',' + vector.y;
@@ -189,11 +179,21 @@ A very lightweight polymer component for drawing line charts.
       return path;
     },
 
-    _drawCircle: function(circle, point, attrs) {
-      circle.setAttribute('cx', point.x);
-      circle.setAttribute('cy', point.y);
-      setAttributes(circle, attrs);
-      return circle;
+    _rowsAndStylesChanged: function(rows, chartArea_, origin, backgroundRectStyle, circleStyle, pathStyle) {
+      this.debounce('draw', function() {
+        var container = this.$.container;
+        if (this._svg) {
+          container.removeChild(this._svg);
+        }
+        this._svg = null;
+        if (rows && this.chartArea && circleStyle && pathStyle) {
+          this._svg = this._draw(
+            document.createElementNS(NS, 'svg'),
+            calcPoints(rows, this.chartArea), toAttributes(backgroundRectStyle), toAttributes(circleStyle), toAttributes(pathStyle)
+          );
+          container.appendChild(this._svg);
+        }
+      });
     }
   });
 
