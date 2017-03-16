@@ -510,6 +510,111 @@
             done();
           });
         });
+
+        it('The label at point can be enabled', function(done) {
+          var container = chart.$.container;
+
+          chart.rows = [
+            [1, 2], [3, 4]
+          ];
+          chart.chartArea = {
+            top: 10,
+            left: 10,
+            width: 180,
+            height: 80
+          };
+          chart.labelAtPoint.enable = true;
+          chart.async(function() {
+            var svg = container.children[0];
+            var texts = Polymer.dom(svg).querySelectorAll('text');
+            expect(texts.length).to.equal(2);
+            expect(texts[0].textContent).to.equal('[1,2]');
+            expect(texts[1].textContent).to.equal('[3,4]');
+            done();
+          });
+        });
+
+        it('The offset of label at point can be changed', function(done) {
+          var container = chart.$.container;
+
+          chart.rows = [
+            [1, 2], [3, 4]
+          ];
+          chart.chartArea = {
+            top: 10,
+            left: 10,
+            width: 180,
+            height: 80
+          };
+          chart.origin = 'left-bottom';
+          chart.labelAtPoint.enable = true;
+          chart.labelAtPoint.offset = {
+            x: 1,
+            y: 1
+          };
+          chart.async(function() {
+            var svg = container.children[0];
+            var texts = Polymer.dom(svg).querySelectorAll('text');
+            expect(texts.length).to.equal(2);
+            expect(texts[0].getAttribute('x')).to.equal('11');
+            expect(texts[0].getAttribute('y')).to.equal('91');
+            expect(texts[1].getAttribute('x')).to.equal('191');
+            expect(texts[1].getAttribute('y')).to.equal('11');
+            done();
+          });
+        });
+
+        it('The text formater of label at point can be changed', function(done) {
+          var container = chart.$.container;
+
+          chart.rows = [
+            [1, 2], [3, 4]
+          ];
+          chart.chartArea = {
+            top: 10,
+            left: 10,
+            width: 180,
+            height: 80
+          };
+          chart.labelAtPoint.enable = true;
+          chart.labelAtPoint.textFormat = function(row, index) {
+            return '[' + index + ',' + row + ']';
+          };
+          chart.async(function() {
+            var svg = container.children[0];
+            var texts = Polymer.dom(svg).querySelectorAll('text');
+            expect(texts.length).to.equal(2);
+            expect(texts[0].textContent).to.equal('[0,1,2]');
+            expect(texts[1].textContent).to.equal('[1,3,4]');
+            done();
+          });
+        });
+
+        it('The text style of label at point can be changed', function(done) {
+          var container = chart.$.container;
+
+          chart.rows = [
+            [1, 2], [3, 4]
+          ];
+          chart.chartArea = {
+            top: 10,
+            left: 10,
+            width: 180,
+            height: 80
+          };
+          chart.labelAtPoint.enable = true;
+          chart.labelAtPoint.textStyle = {
+            fill: 'blue'
+          };
+          chart.async(function() {
+            var svg = container.children[0];
+            var texts = Polymer.dom(svg).querySelectorAll('text');
+            expect(texts.length).to.equal(2);
+            expect(texts[0].getAttribute('fill')).to.equal('blue');
+            expect(texts[1].getAttribute('fill')).to.equal('blue');
+            done();
+          });
+        });
       });
     </script>
   </body>

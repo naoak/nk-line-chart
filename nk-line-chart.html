@@ -109,6 +109,33 @@ A very lightweight polymer component for drawing line charts.
       },
 
       /**
+       * Option for labels at points
+       *
+       * ```
+       * enable: whether show labels or not (boolean)
+       * textFormat: function for label formatter (function(row, index))
+       * offset: offset from label ({x, y})
+       * textStyle: text styles (object)
+       * ```
+       */
+      labelAtPoint: {
+        type: Object,
+        value: function() {
+          return {
+            enable: false,
+            offset: {
+              y: -10
+            },
+            textFormat: formatLabel,
+            textStyle: {
+              fill: '#333',
+              textAnchor: 'middle'
+            }
+          };
+        }
+      },
+
+      /**
        * Data rows
        *
        * ```
@@ -155,7 +182,7 @@ A very lightweight polymer component for drawing line charts.
     },
 
     observers: [
-      '_rowsAndStylesChanged(backgroundRectStyle, chartArea.*, circleStyle, origin, pathStyle, rows, xRange, yRange)'
+      '_paramsChanged(backgroundRectStyle, chartArea.*, circleStyle, origin, pathStyle, labelAtPoint.*, rows, xRange, yRange)'
     ],
 
     _computeTransformer: function(origin, chartArea) {
@@ -165,6 +192,7 @@ A very lightweight polymer component for drawing line charts.
     _draw: function(svg, points, backgroundRectAttrs, circleAttrs, pathAttrs) {
       var g0 = document.createElementNS(NS, 'g');
       var g1c = document.createElementNS(NS, 'g');
+      var g1t = document.createElementNS(NS, 'g');
 
       svg.setAttribute('width', '100%');
       svg.setAttribute('height', '100%');
@@ -180,12 +208,21 @@ A very lightweight polymer component for drawing line charts.
         ));
       }
       g0.appendChild(g1c);
+      g0.appendChild(g1t);
       points.forEach(function(p) {
         g1c.appendChild(this._drawCircle(
           document.createElementNS(NS, 'circle'),
           p, circleAttrs
         ));
       }.bind(this));
+      if (this.labelAtPoint && this.labelAtPoint.enable) {
+        points.forEach(function(p, i) {
+          g1t.appendChild(this._drawLabelAtPoint(
+            document.createElementNS(NS, 'text'),
+            p, i
+          ));
+        }.bind(this));
+      }
       return svg;
     },
 
@@ -218,7 +255,21 @@ A very lightweight polymer component for drawing line charts.
       return path;
     },
 
-    _rowsAndStylesChanged: function(backgroundRectStyle, chartArea_, circleStyle, origin, pathStyle, rows, xRange, yRange) {
+    _drawLabelAtPoint: function(text, point, index) {
+      var option = this.labelAtPoint;
+      var offset = option.offset || {};
+      var row = this.rows[index];
+      var attrs = toAttributes(option.textStyle);
+      var formatter = option.textFormat || formatLabel;
+      point = this._transformer.convertPoint(point);
+      text.setAttribute('x', point.x + (offset.x || 0));
+      text.setAttribute('y', point.y + (offset.y || -10));
+      setAttributes(text, attrs);
+      text.textContent = formatter(row, index);
+      return text;
+    },
+
+    _paramsChanged: function(backgroundRectStyle, chartArea_, circleStyle, origin, pathStyle, labelAtPoint_, rows, xRange, yRange) {
       this.debounce('draw', function() {
         var container = this.$.container;
         if (this._svg) {
@@ -281,6 +332,10 @@ A very lightweight polymer component for drawing line charts.
         y: isFinite(factorY) ? (r[1] - minY) * factorY + top : constantY
       };
     });
+  }
+
+  function formatLabel(row, index) {
+    return '[' + row + ']';
   }
 
   function getTransformer(origin, chartArea) {
