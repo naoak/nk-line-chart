@@ -65,7 +65,7 @@ A very lightweight polymer component for drawing line charts.
       },
 
       /**
-       * Style for points
+       * (DEPRECATED) Style for points
        */
       circleStyle: {
         type: Object,
@@ -74,7 +74,7 @@ A very lightweight polymer component for drawing line charts.
             fill: '#e08080',
             r: '3',
             stroke: 'none',
-            strokeWidth: 0
+            strokeWidth: 2
           };
         }
       },
@@ -136,6 +136,65 @@ A very lightweight polymer component for drawing line charts.
       },
 
       /**
+       * Option for points
+       *
+       * ```
+       * enable: Whether show points or not
+       * elements: Array of items which define element nodes for points. Currently, the only permittable type is `circle`
+       *
+       * (ex) A point which consists of two different circles.
+       * elements: [
+       *   {
+       *     type: 'circle',
+       *     style: {
+       *       fill: '#fff',
+       *       r: '6',
+       *       stroke: 'none',
+       *       strokeWidth: 0
+       *     }
+       *   },
+       *   {
+       *     type: 'circle',
+       *     style: {
+       *       fill: '#e08080',
+       *       r: '3',
+       *       stroke: 'none',
+       *       strokeWidth: 0
+       *     }
+       *    }
+       *  ]
+       * ```
+       */
+      pointOption: {
+        type: Object,
+        value: function() {
+          return {
+            enable: true,
+            elements: [
+              {
+                type: 'circle',
+                style: {
+                  fill: '#fff',
+                  r: '5',
+                  stroke: '#000',
+                  strokeWidth: 2
+                }
+              },
+              {
+                type: 'circle',
+                style: {
+                  fill: '#e08080',
+                  r: '3',
+                  stroke: 'none',
+                  strokeWidth: 0
+                }
+              }
+            ]
+          };
+        },
+      },
+
+      /**
        * Data rows
        *
        * ```
@@ -182,14 +241,16 @@ A very lightweight polymer component for drawing line charts.
     },
 
     observers: [
-      '_paramsChanged(backgroundRectStyle, chartArea.*, circleStyle, origin, pathStyle, labelAtPoint.*, rows, xRange, yRange)'
+      '_paramsChanged(backgroundRectStyle, chartArea.*, circleStyle, origin, pathStyle, pointOption, labelAtPoint.*, rows, xRange, yRange)'
     ],
 
     _computeTransformer: function(origin, chartArea) {
       return getTransformer(origin, chartArea);
     },
 
-    _draw: function(svg, points, backgroundRectAttrs, circleAttrs, pathAttrs) {
+    _draw: function(svg, points, backgroundRectAttrs, pathAttrs) {
+      var pointOption = this.pointOption;
+      var circleStyle = this.circleStyle;
       var g0 = document.createElementNS(NS, 'g');
       var g1c = document.createElementNS(NS, 'g');
       var g1t = document.createElementNS(NS, 'g');
@@ -209,12 +270,26 @@ A very lightweight polymer component for drawing line charts.
       }
       g0.appendChild(g1c);
       g0.appendChild(g1t);
-      points.forEach(function(p) {
-        g1c.appendChild(this._drawCircle(
-          document.createElementNS(NS, 'circle'),
-          p, circleAttrs
-        ));
-      }.bind(this));
+      if (pointOption && pointOption.enable) {
+        points.forEach(function(p) {
+          pointOption.elements.forEach(function(e) {
+            if (e.type === 'circle') {
+              g1c.appendChild(this._drawCircle(
+                document.createElementNS(NS, e.type),
+                p, toAttributes(e.style)
+              ));
+            }
+          }.bind(this))
+        }.bind(this));
+      }
+      else if (circleStyle) {
+        points.forEach(function(p) {
+          g1c.appendChild(this._drawCircle(
+            document.createElementNS(NS, 'circle'),
+            p, toAttributes(circleStyle)
+          ));
+        }.bind(this));
+      }
       if (this.labelAtPoint && this.labelAtPoint.enable) {
         points.forEach(function(p, i) {
           g1t.appendChild(this._drawLabelAtPoint(
@@ -269,17 +344,19 @@ A very lightweight polymer component for drawing line charts.
       return text;
     },
 
-    _paramsChanged: function(backgroundRectStyle, chartArea_, circleStyle, origin, pathStyle, labelAtPoint_, rows, xRange, yRange) {
+    _paramsChanged: function(backgroundRectStyle, chartArea_, circleStyle, origin, pathStyle, pointOption, labelAtPoint_, rows, xRange, yRange) {
       this.debounce('draw', function() {
         var container = this.$.container;
         if (this._svg) {
           container.removeChild(this._svg);
         }
         this._svg = null;
-        if (rows && this.chartArea && circleStyle && pathStyle) {
+        if (rows && this.chartArea) {
           this._svg = this._draw(
             document.createElementNS(NS, 'svg'),
-            calcPoints(rows, this.chartArea, xRange, yRange), toAttributes(backgroundRectStyle), toAttributes(circleStyle), toAttributes(pathStyle)
+            calcPoints(rows, this.chartArea, xRange, yRange),
+            toAttributes(backgroundRectStyle),
+            toAttributes(pathStyle)
           );
           container.appendChild(this._svg);
         }
