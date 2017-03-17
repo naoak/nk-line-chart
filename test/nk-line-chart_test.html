@@ -451,7 +451,7 @@
           });
         });
 
-        it('The style of points can be changed', function(done) {
+        it('(DEPRECATED) The style of points can be changed', function(done) {
           var container = chart.$.container;
 
           chart.rows = [
@@ -477,6 +477,63 @@
               expect(c.getAttribute('r')).to.equal('5');
               expect(c.getAttribute('stroke')).to.equal('none');
               expect(c.getAttribute('stroke-width')).to.equal('0');
+            });
+            done();
+          });
+        });
+
+        it('The style of points can be changed more flexible', function(done) {
+          var container = chart.$.container;
+
+          chart.rows = [
+            [0, 0], [1, 1]
+          ];
+          chart.chartArea = {
+            top: 10,
+            left: 10,
+            width: 180,
+            height: 80
+          };
+          chart.point = {
+            enable: true,
+            elements: [
+              {
+                type: 'circle',
+                style: {
+                  fill: '#fff',
+                  r: '6',
+                  stroke: '#e88',
+                  strokeWidth: 1.5
+                }
+              },
+              {
+                type: 'circle',
+                style: {
+                  fill: '#e88',
+                  r: '3',
+                  stroke: 'none',
+                  strokeWidth: 0
+                }
+              }
+            ]
+          };
+          chart.async(function() {
+            var svg = container.children[0];
+            var points = Polymer.dom(svg).querySelectorAll('.nk-line-chart-point');
+            expect(points.length).to.equal(2);
+            points.forEach(function(p) {
+              var circles = Polymer.dom(p).querySelectorAll('circle');
+              expect(circles.length).to.equal(2);
+              var c0 = circles[0];
+              var c1 = circles[1];
+              expect(c0.getAttribute('fill')).to.equal('#fff');
+              expect(c0.getAttribute('r')).to.equal('6');
+              expect(c0.getAttribute('stroke')).to.equal('#e88');
+              expect(c0.getAttribute('stroke-width')).to.equal('1.5');
+              expect(c1.getAttribute('fill')).to.equal('#e88');
+              expect(c1.getAttribute('r')).to.equal('3');
+              expect(c1.getAttribute('stroke')).to.equal('none');
+              expect(c1.getAttribute('stroke-width')).to.equal('0');
             });
             done();
           });
@@ -608,7 +665,8 @@
           };
           chart.async(function() {
             var svg = container.children[0];
-            var texts = Polymer.dom(svg).querySelectorAll('text');
+            var pointLabelGroup = Polymer.dom(svg).querySelector('.nk-line-chart-point-label-group');
+            var texts = Polymer.dom(pointLabelGroup).querySelectorAll('.nk-line-chart-point-label');
             expect(texts.length).to.equal(2);
             expect(texts[0].getAttribute('fill')).to.equal('blue');
             expect(texts[1].getAttribute('fill')).to.equal('blue');
