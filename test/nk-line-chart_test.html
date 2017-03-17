@@ -523,7 +523,7 @@
             width: 180,
             height: 80
           };
-          chart.labelAtPoint.enable = true;
+          chart.pointLabel.enable = true;
           chart.async(function() {
             var svg = container.children[0];
             var texts = Polymer.dom(svg).querySelectorAll('text');
@@ -547,8 +547,8 @@
             height: 80
           };
           chart.origin = 'left-bottom';
-          chart.labelAtPoint.enable = true;
-          chart.labelAtPoint.offset = {
+          chart.pointLabel.enable = true;
+          chart.pointLabel.offset = {
             x: 1,
             y: 1
           };
@@ -576,8 +576,8 @@
             width: 180,
             height: 80
           };
-          chart.labelAtPoint.enable = true;
-          chart.labelAtPoint.textFormat = function(row, index) {
+          chart.pointLabel.enable = true;
+          chart.pointLabel.textFormat = function(row, index) {
             return '[' + index + ',' + row + ']';
           };
           chart.async(function() {
@@ -602,8 +602,8 @@
             width: 180,
             height: 80
           };
-          chart.labelAtPoint.enable = true;
-          chart.labelAtPoint.textStyle = {
+          chart.pointLabel.enable = true;
+          chart.pointLabel.textStyle = {
             fill: 'blue'
           };
           chart.async(function() {
