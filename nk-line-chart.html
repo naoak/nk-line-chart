@@ -118,7 +118,7 @@ A very lightweight polymer component for drawing line charts.
        * textStyle: text styles (object)
        * ```
        */
-      labelAtPoint: {
+      pointLabel: {
         type: Object,
         value: function() {
           return {
@@ -241,7 +241,7 @@ A very lightweight polymer component for drawing line charts.
     },
 
     observers: [
-      '_paramsChanged(backgroundRectStyle, chartArea.*, circleStyle, origin, pathStyle, pointOption, labelAtPoint.*, rows, xRange, yRange)'
+      '_paramsChanged(backgroundRectStyle, chartArea.*, circleStyle, origin, pathStyle, pointOption, pointLabel.*, rows, xRange, yRange)'
     ],
 
     _computeTransformer: function(origin, chartArea) {
@@ -290,7 +290,7 @@ A very lightweight polymer component for drawing line charts.
           ));
         }.bind(this));
       }
-      if (this.labelAtPoint && this.labelAtPoint.enable) {
+      if (this.pointLabel && this.pointLabel.enable) {
         points.forEach(function(p, i) {
           g1t.appendChild(this._drawLabelAtPoint(
             document.createElementNS(NS, 'text'),
@@ -331,7 +331,7 @@ A very lightweight polymer component for drawing line charts.
     },
 
     _drawLabelAtPoint: function(text, point, index) {
-      var option = this.labelAtPoint;
+      var option = this.pointLabel;
       var offset = option.offset || {};
       var row = this.rows[index];
       var attrs = toAttributes(option.textStyle);
@@ -344,7 +344,7 @@ A very lightweight polymer component for drawing line charts.
       return text;
     },
 
-    _paramsChanged: function(backgroundRectStyle, chartArea_, circleStyle, origin, pathStyle, pointOption, labelAtPoint_, rows, xRange, yRange) {
+    _paramsChanged: function(backgroundRectStyle, chartArea_, circleStyle, origin, pathStyle, pointOption, pointLabel_, rows, xRange, yRange) {
       this.debounce('draw', function() {
         var container = this.$.container;
         if (this._svg) {
