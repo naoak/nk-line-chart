@@ -146,7 +146,7 @@ A very lightweight polymer component for drawing line charts.
        *
        * ```
        * enable: If false, this option will be ignored and instead `circleStyle` will be adopted.
-       * elements: Array of elements which define styles of data points. Currently, the only permittable type is `circle`
+       * elements: Function or array of elements which define styles of data points. Currently, `circle` is the only permittable type.
        *
        * (ex) A point which consists of two different circles.
        * elements: [
@@ -169,6 +169,32 @@ A very lightweight polymer component for drawing line charts.
        *     }
        *    }
        *  ]
+       *
+       * (ex) Can be a function which returns an array of elements
+       * elements: function(p, i) {
+       *   if (i === this._someIndex) {
+       *     return [
+       *       {
+       *         type: 'circle',
+       *         style: {
+       *           fill: 'red',
+       *           r: '8'
+       *         }
+       *       }
+       *     ];
+       *   }
+       *   else {
+       *     return [
+       *       {
+       *         type: 'circle',
+       *         style: {
+       *           fill: 'blue',
+       *           r: '6'
+       *         }
+       *       }
+       *     ];
+       *   }
+       * }.bind(this)
        * ```
        */
       point: {
@@ -284,10 +310,12 @@ A very lightweight polymer component for drawing line charts.
       g0.appendChild(g1t);
 
       if (pointOpt && pointOpt.enable) {
-        points.forEach(function(p) {
+        var pointElementsIsFunction = typeof(pointOpt.elements) === 'function';
+        points.forEach(function(p, i) {
           var g = document.createElementNS(NS, 'g');
           g.classList.add(BASE_CLASS + '-point');
-          pointOpt.elements.forEach(function(e) {
+          var elements = pointElementsIsFunction ? pointOpt.elements(p, i) : pointOpt.elements;
+          elements.forEach(function(e) {
             if (e.type === 'circle') {
               g.appendChild(this._drawCircle(
                 document.createElementNS(NS, e.type),
