@@ -71,21 +71,6 @@ A very lightweight polymer component for drawing line charts.
       },
 
       /**
-       * (DEPRECATED) Style for points
-       */
-      circleStyle: {
-        type: Object,
-        value: function() {
-          return {
-            fill: '#e08080',
-            r: '3',
-            stroke: 'none',
-            strokeWidth: 2
-          };
-        }
-      },
-
-      /**
        * The origin of coordinates. The possible values are,
        *
        * ```
@@ -142,10 +127,10 @@ A very lightweight polymer component for drawing line charts.
       },
 
       /**
-       * Option for style of data points. This option is superior to `circleStyle` if enabled.
+       * Option for style of data points.
        *
        * ```
-       * enable: If false, this option will be ignored and instead `circleStyle` will be adopted.
+       * enable: If false, this option will be ignored.
        * elements: Function or array of elements which define styles of data points. Currently, `circle` is the only permittable type.
        *
        * (ex) A point which consists of two different circles.
@@ -201,24 +186,15 @@ A very lightweight polymer component for drawing line charts.
         type: Object,
         value: function() {
           return {
-            enable: false,
+            enable: true,
             elements: [
               {
                 type: 'circle',
                 style: {
-                  fill: '#fff',
-                  r: '8',
-                  stroke: '#e08080',
-                  strokeWidth: 1.5
-                }
-              },
-              {
-                type: 'circle',
-                style: {
                   fill: '#e08080',
-                  r: '3.5',
+                  r: '3',
                   stroke: 'none',
-                  strokeWidth: 0
+                  strokeWidth: 2
                 }
               }
             ]
@@ -273,7 +249,7 @@ A very lightweight polymer component for drawing line charts.
     },
 
     observers: [
-      '_paramsChanged(backgroundRectStyle, chartArea.*, circleStyle, origin, pathStyle, point, pointLabel.*, rows, xRange, yRange)'
+      '_paramsChanged(backgroundRectStyle, chartArea.*, origin, pathStyle, point, pointLabel.*, rows, xRange, yRange)'
     ],
 
     _computeTransformer: function(origin, chartArea) {
@@ -284,7 +260,6 @@ A very lightweight polymer component for drawing line charts.
       var backgroundRectAttrs = toAttributes(this.backgroundRectStyle);
       var pathAttrs = toAttributes(this.pathStyle);
       var pointOpt = this.point;
-      var circleStyle = this.circleStyle;
       var circleAttr;
       var pointLabel = this.pointLabel;
       var g0 = document.createElementNS(NS, 'g');
@@ -324,17 +299,6 @@ A very lightweight polymer component for drawing line charts.
             }
           }.bind(this))
           g1c.appendChild(g);
-        }.bind(this));
-      }
-
-      // DEPRECATED
-      else if (circleStyle) {
-        circleAttr = toAttributes(circleStyle);
-        points.forEach(function(p) {
-          g1c.appendChild(this._drawCircle(
-            document.createElementNS(NS, 'circle'),
-            p, circleAttr
-          ));
         }.bind(this));
       }
 
@@ -395,7 +359,7 @@ A very lightweight polymer component for drawing line charts.
       return text;
     },
 
-    _paramsChanged: function(backgroundRectStyle, chartArea_, circleStyle, origin, pathStyle, point, pointLabel_, rows, xRange, yRange) {
+    _paramsChanged: function(backgroundRectStyle, chartArea_, origin, pathStyle, point, pointLabel_, rows, xRange, yRange) {
       this.debounce('draw', function() {
         var container = this.$.container;
         if (this._svg) {

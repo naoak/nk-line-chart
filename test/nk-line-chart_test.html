@@ -451,37 +451,6 @@
           });
         });
 
-        it('(DEPRECATED) The style of points can be changed', function(done) {
-          var container = chart.$.container;
-
-          chart.rows = [
-            [0, 0], [1, 1]
-          ];
-          chart.chartArea = {
-            top: 10,
-            left: 10,
-            width: 180,
-            height: 80
-          };
-          chart.circleStyle = {
-            fill: '#00f',
-            r: '5',
-            stroke: 'none',
-            strokeWidth: '0'
-          };
-          chart.async(function() {
-            var svg = container.children[0];
-            var circles = Polymer.dom(svg).querySelectorAll('circle');
-            circles.forEach(function(c) {
-              expect(c.getAttribute('fill')).to.equal('#00f');
-              expect(c.getAttribute('r')).to.equal('5');
-              expect(c.getAttribute('stroke')).to.equal('none');
-              expect(c.getAttribute('stroke-width')).to.equal('0');
-            });
-            done();
-          });
-        });
-
         it('The style of points can be changed more flexible', function(done) {
           var container = chart.$.container;
 
