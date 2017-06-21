@@ -217,6 +217,35 @@ A very lightweight polymer component for drawing line charts.
       },
 
       /**
+       * Option for x-axis grid lines and labels
+       */
+      xAxis: {
+        type: Object,
+        value: function() {
+          return {
+            enable: false,
+            label: {
+              offset: {
+                x: -4,
+                y: 5
+              },
+              textStyle: {
+                fill: '#333',
+                textAnchor: 'end'
+              }
+            },
+            lineStyle: {
+              fill: 'none',
+              stroke: '#e08080',
+              strokeDasharray: '4,2',
+              strokeWidth: 1
+            },
+            tickInterval: 2
+          }
+        }
+      },
+
+      /**
        * X-axis range of chart area. If not specified, the range will be computed by data rows.
        *
        * ```
@@ -227,6 +256,35 @@ A very lightweight polymer component for drawing line charts.
       xRange: {
         type: Object,
         value: null
+      },
+
+      /**
+       * Option for y-axis grid lines and labels
+       */
+      yAxis: {
+        type: Object,
+        value: function() {
+          return {
+            enable: false,
+            label: {
+              offset: {
+                x: 0,
+                y: 15
+              },
+              textStyle: {
+                fill: '#333',
+                textAnchor: 'middle'
+              }
+            },
+            lineStyle: {
+              fill: 'none',
+              stroke: '#e08080',
+              strokeDasharray: '4,2',
+              strokeWidth: 1
+            },
+            tickInterval: 2
+          }
+        }
       },
 
       /**
@@ -249,24 +307,25 @@ A very lightweight polymer component for drawing line charts.
     },
 
     observers: [
-      '_paramsChanged(backgroundRectStyle, chartArea.*, origin, pathStyle, point, pointLabel.*, rows, xRange, yRange)'
+      '_paramsChanged(backgroundRectStyle, chartArea.*, origin, pathStyle, point, pointLabel.*, rows, xAxis, xRange, yAxis, yRange)'
     ],
 
     _computeTransformer: function(origin, chartArea) {
       return getTransformer(origin, chartArea);
     },
 
-    _draw: function(svg, points) {
+    _draw: function(svg, pf) {
+      var points = pf.points;
       var backgroundRectAttrs = toAttributes(this.backgroundRectStyle);
+      var xAxisOpt = this.xAxis;
+      var yAxisOpt = this.yAxis;
       var pathAttrs = toAttributes(this.pathStyle);
       var pointOpt = this.point;
       var circleAttr;
       var pointLabel = this.pointLabel;
       var g0 = document.createElementNS(NS, 'g');
-      var g1c = document.createElementNS(NS, 'g');
-      g1c.classList.add(BASE_CLASS + '-point-group');
-      var g1t = document.createElementNS(NS, 'g');
-      g1t.classList.add(BASE_CLASS + '-point-label-group');
+      var g1c = addClass(document.createElementNS(NS, 'g'), BASE_CLASS + '-point-group');
+      var g1t = addClass(document.createElementNS(NS, 'g'), BASE_CLASS + '-point-label-group');
 
       svg.setAttribute('width', '100%');
       svg.setAttribute('height', '100%');
@@ -275,9 +334,17 @@ A very lightweight polymer component for drawing line charts.
         document.createElementNS(NS, 'rect'),
         this.chartArea, backgroundRectAttrs
       ));
+
+      if (xAxisOpt && xAxisOpt.enable) {
+        g0.appendChild(this._drawXAxis(addClass(document.createElementNS(NS, 'g'), BASE_CLASS + '-x-axis-group'), xAxisOpt, pf));
+      }
+      if (yAxisOpt && yAxisOpt.enable) {
+        g0.appendChild(this._drawYAxis(addClass(document.createElementNS(NS, 'g'), BASE_CLASS + '-y-axis-group'), yAxisOpt, pf));
+      }
+
       if (points.length > 0) {
         g0.appendChild(this._drawPath(
-          document.createElementNS(NS, 'path'),
+          addClass(document.createElementNS(NS, 'path'), BASE_CLASS + '-path'),
           points[0], pointsToMoves(points), pathAttrs
         ));
       }
@@ -287,8 +354,7 @@ A very lightweight polymer component for drawing line charts.
       if (pointOpt && pointOpt.enable) {
         var pointElementsIsFunction = typeof(pointOpt.elements) === 'function';
         points.forEach(function(p, i) {
-          var g = document.createElementNS(NS, 'g');
-          g.classList.add(BASE_CLASS + '-point');
+          var g = addClass(document.createElementNS(NS, 'g'), BASE_CLASS + '-point');
           var elements = pointElementsIsFunction ? pointOpt.elements(p, i) : pointOpt.elements;
           elements.forEach(function(e) {
             if (e.type === 'circle') {
@@ -305,7 +371,7 @@ A very lightweight polymer component for drawing line charts.
       if (pointLabel && pointLabel.enable) {
         points.forEach(function(p, i) {
           g1t.appendChild(this._drawLabelAtPoint(
-            document.createElementNS(NS, 'text'),
+            addClass(document.createElementNS(NS, 'text'), BASE_CLASS + '-point-label'),
             p, i
           ));
         }.bind(this));
@@ -331,6 +397,86 @@ A very lightweight polymer component for drawing line charts.
       return circle;
     },
 
+    _drawXAxis: function(group, xAxisOpt, pf) {
+      var gridLines = document.createElementNS(NS, 'g');
+      var gridLabels = document.createElementNS(NS, 'g');
+      var interval = xAxisOpt.tickInterval;
+      var start = Math.ceil(pf.vMinY / interval) * interval;
+      var end = Math.floor(pf.vMaxY / interval) * interval;
+      gridLines.classList.add(BASE_CLASS + '-x-axis-grid-line-group');
+      gridLabels.classList.add(BASE_CLASS + '-x-axis-grid-label-group');
+      for (var vy = start; vy <= end; vy += interval) {
+        var cy = isFinite(pf.factorY) ? (vy - pf.vMinY) * pf.factorY + pf.top : pf.constantY
+        var axisPoints = [
+          {
+            vx: pf.vMinX,
+            vy: vy,
+            x: pf.left,
+            y: cy
+          },
+          {
+            vx: pf.vMaxX,
+            vy: vy,
+            x: pf.left + pf.width,
+            y: cy
+          }
+        ];
+        gridLines.appendChild(this._drawPath(
+          addClass(document.createElementNS(NS, 'path'), BASE_CLASS + '-x-axis-grid-line'),
+          axisPoints[0], pointsToMoves(axisPoints), toAttributes(xAxisOpt.lineStyle)
+        ));
+        if (xAxisOpt.label) {
+          gridLabels.appendChild(this._drawLabelAtAxis(
+            addClass(document.createElementNS(NS, 'text'), BASE_CLASS + '-x-axis-grid-label'),
+            axisPoints[0], xAxisOpt.label, 'vy'
+          ));
+        }
+      }
+      group.appendChild(gridLines);
+      group.appendChild(gridLabels);
+      return group;
+    },
+
+    _drawYAxis: function(group, yAxisOpt, pf) {
+      var gridLines = document.createElementNS(NS, 'g');
+      var gridLabels = document.createElementNS(NS, 'g');
+      var interval = yAxisOpt.tickInterval;
+      var start = Math.ceil(pf.vMinX / interval) * interval;
+      var end = Math.floor(pf.vMaxX / interval) * interval;
+      gridLines.classList.add(BASE_CLASS + '-y-axis-grid-line-group');
+      gridLabels.classList.add(BASE_CLASS + '-y-axis-grid-label-group');
+      for (var vx = start; vx <= end; vx += interval) {
+        var cx = isFinite(pf.factorX) ? (vx - pf.vMinX) * pf.factorX + pf.left : pf.constantX
+        var axisPoints = [
+          {
+            vx: vx,
+            vy: pf.vMinY,
+            x: cx,
+            y: pf.top
+          },
+          {
+            vx: vx,
+            vy: pf.vMaxY,
+            x: cx,
+            y: pf.top + pf.height
+          }
+        ];
+        gridLines.appendChild(this._drawPath(
+          addClass(document.createElementNS(NS, 'path'), BASE_CLASS + '-y-axis-grid-line'),
+          axisPoints[0], pointsToMoves(axisPoints), toAttributes(yAxisOpt.lineStyle)
+        ));
+        if (yAxisOpt.label) {
+          gridLabels.appendChild(this._drawLabelAtAxis(
+            addClass(document.createElementNS(NS, 'text'), BASE_CLASS + '-y-axis-grid-label'),
+            axisPoints[0], yAxisOpt.label, 'vx'
+          ));
+        }
+      }
+      group.appendChild(gridLines);
+      group.appendChild(gridLabels);
+      return group;
+    },
+
     _drawPath: function(path, startPoint, moves, attrs) {
       var transformer = this._transformer;
       startPoint = transformer.convertPoint(startPoint);
@@ -338,10 +484,22 @@ A very lightweight polymer component for drawing line charts.
         vector = transformer.convertVector(vector);
         return memo + 'l' + vector.x + ',' + vector.y;
       }, 'M' + startPoint.x + ',' + startPoint.y);
-      path.classList.add(BASE_CLASS + '-path');
       path.setAttribute('d', d);
       setAttributes(path, attrs);
       return path;
+    },
+
+    _drawLabelAtAxis: function(text, point, labelOpt, pointValueName) {
+      var option = labelOpt;
+      var offset = option.offset || {};
+      var attrs = toAttributes(option.textStyle);
+      var formatter = option.textFormat || formatAxisLabel
+      var cp = this._transformer.convertPoint(point);
+      text.setAttribute('x', cp.x + (typeof(offset.x) === 'number' ? offset.x : 0));
+      text.setAttribute('y', cp.y + (typeof(offset.y) === 'number' ? offset.y : 0));
+      setAttributes(text, attrs);
+      text.textContent = formatter(point[pointValueName]);
+      return text;
     },
 
     _drawLabelAtPoint: function(text, point, index) {
@@ -351,15 +509,14 @@ A very lightweight polymer component for drawing line charts.
       var attrs = toAttributes(option.textStyle);
       var formatter = option.textFormat || formatLabel;
       point = this._transformer.convertPoint(point);
-      text.classList.add(BASE_CLASS + '-point-label');
-      text.setAttribute('x', point.x + (offset.x || 0));
-      text.setAttribute('y', point.y + (offset.y || -10));
+      text.setAttribute('x', point.x + (typeof(offset.x) === 'number' ? offset.x : 0));
+      text.setAttribute('y', point.y + (typeof(offset.y) === 'number' ? offset.y : -10));
       setAttributes(text, attrs);
       text.textContent = formatter(row, index);
       return text;
     },
 
-    _paramsChanged: function(backgroundRectStyle, chartArea_, origin, pathStyle, point, pointLabel_, rows, xRange, yRange) {
+    _paramsChanged: function(backgroundRectStyle, chartArea_, origin, pathStyle, point, pointLabel_, rows, xAxis_, xRange, yAxis_, yRange) {
       this.debounce('draw', function() {
         var container = this.$.container;
         if (this._svg) {
@@ -369,7 +526,7 @@ A very lightweight polymer component for drawing line charts.
         if (rows && this.chartArea) {
           this._svg = this._draw(
             document.createElementNS(NS, 'svg'),
-            calcPoints(rows, this.chartArea, xRange, yRange)
+            calcPointsAndFrame(rows, this.chartArea, xRange, yRange)
           );
           container.appendChild(this._svg);
         }
@@ -377,55 +534,80 @@ A very lightweight polymer component for drawing line charts.
     }
   });
 
-  function calcPoints(rows, chartArea, xRange, yRange) {
+  function addClass(node, className) {
+    node.classList.add(className);
+    return node;
+  }
+
+  function calcPointsAndFrame(rows, chartArea, xRange, yRange) {
     var top = chartArea.top || 0;
     var left = chartArea.left || 0;
     var width = chartArea.width;
     var height = chartArea.height;
-    var minX = Number.MAX_VALUE;
-    var minY = Number.MAX_VALUE;
-    var maxX = Number.MIN_VALUE;
-    var maxY = Number.MIN_VALUE;
+    var vMinX = Number.MAX_VALUE;
+    var vMinY = Number.MAX_VALUE;
+    var vMaxX = Number.MIN_VALUE;
+    var vMaxY = Number.MIN_VALUE;
     var factorX;
     var factorY;
     var constantX = width / 2 + left;
     var constantY = height / 2 + top;
 
     rows.forEach(function(r) {
-      if (r[0] < minX) {
-        minX = r[0];
+      if (r[0] < vMinX) {
+        vMinX = r[0];
       }
-      if (r[0] > maxX) {
-        maxX = r[0];
+      if (r[0] > vMaxX) {
+        vMaxX = r[0];
       }
-      if (r[1] < minY) {
-        minY = r[1];
+      if (r[1] < vMinY) {
+        vMinY = r[1];
       }
-      if (r[1] > maxY) {
-        maxY = r[1];
+      if (r[1] > vMaxY) {
+        vMaxY = r[1];
       }
     });
     if (xRange) {
-      minX = typeof(xRange.min) === 'number' ? xRange.min : minX;
-      maxX = typeof(xRange.max) === 'number' ? xRange.max : maxX;
+      vMinX = typeof(xRange.min) === 'number' ? xRange.min : vMinX;
+      vMaxX = typeof(xRange.max) === 'number' ? xRange.max : vMaxX;
     }
     if (yRange) {
-      minY = typeof(yRange.min) === 'number' ? yRange.min : minY;
-      maxY = typeof(yRange.max) === 'number' ? yRange.max : maxY;
+      vMinY = typeof(yRange.min) === 'number' ? yRange.min : vMinY;
+      vMaxY = typeof(yRange.max) === 'number' ? yRange.max : vMaxY;
     }
-    factorX = width / (maxX - minX);
-    factorY = height / (maxY - minY);
+    factorX = width / (vMaxX - vMinX);
+    factorY = height / (vMaxY - vMinY);
 
-    return rows.map(function(r) {
-      return {
-        x: isFinite(factorX) ? (r[0] - minX) * factorX + left : constantX,
-        y: isFinite(factorY) ? (r[1] - minY) * factorY + top : constantY
-      };
-    });
+    return {
+      width: width,
+      height: height,
+      left: left,
+      top: top,
+      constantX: constantX,
+      constantY: constantY,
+      factorX: factorX,
+      factorY: factorY,
+      points: rows.map(function(r) {
+        return {
+          vx: r[0],
+          vy: r[1],
+          x: isFinite(factorX) ? (r[0] - vMinX) * factorX + left : constantX,
+          y: isFinite(factorY) ? (r[1] - vMinY) * factorY + top : constantY
+        };
+      }),
+      vMinX: vMinX,
+      vMinY: vMinY,
+      vMaxX: vMaxX,
+      vMaxY: vMaxY
+    };
   }
 
   function formatLabel(row, index) {
     return '[' + row + ']';
+  }
+
+  function formatAxisLabel(value) {
+    return value;
   }
 
   function getTransformer(origin, chartArea) {

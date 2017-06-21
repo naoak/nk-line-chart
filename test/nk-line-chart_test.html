@@ -698,6 +698,418 @@
             done();
           });
         });
+
+        it('X-axis grid lines are disabled by default', function(done) {
+          var container = chart.$.container;
+
+          chart.rows = [
+            [1, 2], [3, 4]
+          ];
+          chart.chartArea = {
+            top: 10,
+            left: 10,
+            width: 180,
+            height: 80
+          };
+          chart.async(function() {
+            var svg = container.children[0];
+            var axisGroup = Polymer.dom(svg).querySelector('.nk-line-chart-x-axis-group');
+            expect(axisGroup).to.not.be.ok;
+            done();
+          });
+        });
+
+        it('Y-axis grid lines are disabled by default', function(done) {
+          var container = chart.$.container;
+
+          chart.rows = [
+            [1, 2], [3, 4]
+          ];
+          chart.chartArea = {
+            top: 10,
+            left: 10,
+            width: 180,
+            height: 80
+          };
+          chart.async(function() {
+            var svg = container.children[0];
+            var axisGroup = Polymer.dom(svg).querySelector('.nk-line-chart-y-axis-group');
+            expect(axisGroup).to.not.be.ok;
+            done();
+          });
+        });
+
+        it('X-axis grid lines can be enabled', function(done) {
+          var container = chart.$.container;
+
+          chart.rows = [
+            [1, 2], [3, 4]
+          ];
+          chart.chartArea = {
+            top: 10,
+            left: 10,
+            width: 180,
+            height: 80
+          };
+          chart.xAxis.enable = true;
+          chart.async(function() {
+            var svg = container.children[0];
+            var axisGroup = Polymer.dom(svg).querySelector('.nk-line-chart-x-axis-group');
+            expect(axisGroup).to.be.ok;
+            done();
+          });
+        });
+
+        it('Y-axis grid lines can be enabled', function(done) {
+          var container = chart.$.container;
+
+          chart.rows = [
+            [1, 2], [3, 4]
+          ];
+          chart.chartArea = {
+            top: 10,
+            left: 10,
+            width: 180,
+            height: 80
+          };
+          chart.yAxis.enable = true;
+          chart.async(function() {
+            var svg = container.children[0];
+            var axisGroup = Polymer.dom(svg).querySelector('.nk-line-chart-y-axis-group');
+            expect(axisGroup).to.be.ok;
+            done();
+          });
+        });
+
+        it('The style of x-axis grid can be customized', function(done) {
+          var AXIS_GROUP = '.nk-line-chart-x-axis-group';
+          var GRID_LINE_GROUP = '.nk-line-chart-x-axis-grid-line-group';
+          var GRID_LINE = '.nk-line-chart-x-axis-grid-line';
+          var container = chart.$.container;
+
+          chart.rows = [
+            [1, 2], [3, 4]
+          ];
+          chart.chartArea = {
+            top: 10,
+            left: 10,
+            width: 180,
+            height: 80
+          };
+          chart.xAxis = {
+            enable: true,
+            lineStyle: {
+              fill: 'none',
+              stroke: '#80e080',
+              strokeDasharray: '4,2',
+              strokeWidth: 1
+            },
+            tickInterval: 2
+          };
+          chart.async(function() {
+            var svg = container.children[0];
+            var xAxis = Polymer.dom(svg).querySelector(AXIS_GROUP);
+            var gridLineGroup = Polymer.dom(xAxis).querySelector(GRID_LINE_GROUP);
+            var gridLines = Polymer.dom(gridLineGroup).querySelectorAll(GRID_LINE);
+            var line = gridLines[0];
+            expect(line.getAttribute('fill')).to.equal('none');
+            expect(line.getAttribute('stroke')).to.equal('#80e080');
+            expect(line.getAttribute('stroke-dasharray')).to.equal('4,2');
+            expect(line.getAttribute('stroke-width')).to.equal('1');
+            done();
+          });
+        });
+
+        it('The style of y-axis grid can be customized', function(done) {
+          var AXIS_GROUP = '.nk-line-chart-y-axis-group';
+          var GRID_LINE_GROUP = '.nk-line-chart-y-axis-grid-line-group';
+          var GRID_LINE = '.nk-line-chart-y-axis-grid-line';
+          var container = chart.$.container;
+
+          chart.rows = [
+            [1, 2], [3, 4]
+          ];
+          chart.chartArea = {
+            top: 10,
+            left: 10,
+            width: 180,
+            height: 80
+          };
+          chart.yAxis = {
+            enable: true,
+            lineStyle: {
+              fill: 'none',
+              stroke: '#80e080',
+              strokeDasharray: '4,2',
+              strokeWidth: 1
+            },
+            tickInterval: 2
+          };
+          chart.async(function() {
+            var svg = container.children[0];
+            var yAxis = Polymer.dom(svg).querySelector(AXIS_GROUP);
+            var gridLineGroup = Polymer.dom(yAxis).querySelector(GRID_LINE_GROUP);
+            var gridLines = Polymer.dom(gridLineGroup).querySelectorAll(GRID_LINE);
+            var line = gridLines[0];
+            expect(line.getAttribute('fill')).to.equal('none');
+            expect(line.getAttribute('stroke')).to.equal('#80e080');
+            expect(line.getAttribute('stroke-dasharray')).to.equal('4,2');
+            expect(line.getAttribute('stroke-width')).to.equal('1');
+            done();
+          });
+        });
+
+        it('The label at x-axis can be enabled', function(done) {
+          var AXIS_GROUP = '.nk-line-chart-x-axis-group';
+          var GRID_LABEL_GROUP = '.nk-line-chart-x-axis-grid-label-group';
+          var GRID_LABEL = '.nk-line-chart-x-axis-grid-label';
+          var container = chart.$.container;
+
+          chart.rows = [
+            [1, 2], [3, 4]
+          ];
+          chart.chartArea = {
+            top: 10,
+            left: 10,
+            width: 180,
+            height: 80
+          };
+          chart.xAxis = {
+            enable: true,
+            label: {
+              offset: {
+                x: -4,
+                y: 5
+              },
+              textStyle: {
+                fill: '#333',
+                textAnchor: 'end'
+              }
+            },
+            lineStyle: {
+              stroke: '#e08080',
+            },
+            tickInterval: 2
+          };
+          chart.async(function() {
+            var svg = container.children[0];
+            var xAxis = Polymer.dom(svg).querySelector(AXIS_GROUP);
+            var gridLabelGroup = Polymer.dom(xAxis).querySelector(GRID_LABEL_GROUP);
+            var gridLabels = Polymer.dom(gridLabelGroup).querySelectorAll(GRID_LABEL);
+            var label = gridLabels[0];
+            expect(label.getAttribute('fill')).to.equal('#333');
+            expect(label.getAttribute('text-anchor')).to.equal('end');
+            expect(label.textContent).to.equal('2');
+            done();
+          });
+        });
+
+        it('The label at y-axis can be enabled', function(done) {
+          var AXIS_GROUP = '.nk-line-chart-y-axis-group';
+          var GRID_LABEL_GROUP = '.nk-line-chart-y-axis-grid-label-group';
+          var GRID_LABEL = '.nk-line-chart-y-axis-grid-label';
+          var container = chart.$.container;
+
+          chart.rows = [
+            [1, 2], [3, 4]
+          ];
+          chart.chartArea = {
+            top: 10,
+            left: 10,
+            width: 180,
+            height: 80
+          };
+          chart.yAxis = {
+            enable: true,
+            label: {
+              offset: {
+                x: 0,
+                y: 15
+              },
+              textStyle: {
+                fill: '#333',
+                textAnchor: 'middle'
+              }
+            },
+            lineStyle: {
+              stroke: '#e08080',
+            },
+            tickInterval: 2
+          };
+          chart.async(function() {
+            var svg = container.children[0];
+            var yAxis = Polymer.dom(svg).querySelector(AXIS_GROUP);
+            var gridLabelGroup = Polymer.dom(yAxis).querySelector(GRID_LABEL_GROUP);
+            var gridLabels = Polymer.dom(gridLabelGroup).querySelectorAll(GRID_LABEL);
+            var label = gridLabels[0];
+            expect(label.getAttribute('fill')).to.equal('#333');
+            expect(label.getAttribute('text-anchor')).to.equal('middle');
+            expect(label.textContent).to.equal('2');
+            done();
+          });
+        });
+
+        it('Tick interval of x-axis grid lines can be changed', function(done) {
+          var AXIS_GROUP = '.nk-line-chart-x-axis-group';
+          var GRID_LINE_GROUP = '.nk-line-chart-x-axis-grid-line-group';
+          var GRID_LINE = '.nk-line-chart-x-axis-grid-line';
+          var container = chart.$.container;
+
+          chart.rows = [
+            [1, 2], [3, 4]
+          ];
+          chart.chartArea = {
+            top: 10,
+            left: 10,
+            width: 180,
+            height: 80
+          };
+          chart.xAxis = {
+            enable: true,
+            lineStyle: {
+              stroke: '#e08080'
+            },
+            tickInterval: 1
+          };
+          chart.async(function() {
+            var svg = container.children[0];
+            var xAxis = Polymer.dom(svg).querySelector(AXIS_GROUP);
+            var gridLineGroup = Polymer.dom(xAxis).querySelector(GRID_LINE_GROUP);
+            var gridLines = Polymer.dom(gridLineGroup).querySelectorAll(GRID_LINE);
+            expect(gridLines.length).to.equal(3); // 2, 3, 4
+            chart.xAxis = {
+              enable: true,
+              lineStyle: {
+                stroke: '#e08080'
+              },
+              tickInterval: 2
+            };
+            chart.async(function() {
+              svg = container.children[0];
+              xAxis = Polymer.dom(svg).querySelector(AXIS_GROUP);
+              gridLineGroup = Polymer.dom(xAxis).querySelector(GRID_LINE_GROUP);
+              gridLines = Polymer.dom(gridLineGroup).querySelectorAll(GRID_LINE);
+              expect(gridLines.length).to.equal(2); // 2, 4
+              chart.xAxis = {
+                enable: true,
+                lineStyle: {
+                  stroke: '#e08080'
+                },
+                tickInterval: 3
+              };
+              chart.async(function() {
+                svg = container.children[0];
+                xAxis = Polymer.dom(svg).querySelector(AXIS_GROUP);
+                gridLineGroup = Polymer.dom(xAxis).querySelector(GRID_LINE_GROUP);
+                gridLines = Polymer.dom(gridLineGroup).querySelectorAll(GRID_LINE);
+                expect(gridLines.length).to.equal(1); // 3
+                chart.xAxis = {
+                  enable: true,
+                  lineStyle: {
+                    stroke: '#e08080'
+                  },
+                  tickInterval: 4
+                };
+                chart.async(function() {
+                  svg = container.children[0];
+                  xAxis = Polymer.dom(svg).querySelector(AXIS_GROUP);
+                  gridLineGroup = Polymer.dom(xAxis).querySelector(GRID_LINE_GROUP);
+                  gridLines = Polymer.dom(gridLineGroup).querySelectorAll(GRID_LINE);
+                  expect(gridLines.length).to.equal(1); // 4
+                  chart.xAxis = {
+                    enable: true,
+                    lineStyle: {
+                      stroke: '#e08080'
+                    },
+                    tickInterval: 5
+                  };
+                  chart.async(function() {
+                    svg = container.children[0];
+                    xAxis = Polymer.dom(svg).querySelector(AXIS_GROUP);
+                    gridLineGroup = Polymer.dom(xAxis).querySelector(GRID_LINE_GROUP);
+                    gridLines = Polymer.dom(gridLineGroup).querySelectorAll(GRID_LINE);
+                    expect(gridLines.length).to.equal(0); // none
+                    done();
+                  });
+                });
+              });
+            });
+          });
+        });
+
+        it('Tick interval of y-axis grid lines can be changed', function(done) {
+          var AXIS_GROUP = '.nk-line-chart-y-axis-group';
+          var GRID_LINE_GROUP = '.nk-line-chart-y-axis-grid-line-group';
+          var GRID_LINE = '.nk-line-chart-y-axis-grid-line';
+          var container = chart.$.container;
+
+          chart.rows = [
+            [1, 2], [3, 4]
+          ];
+          chart.chartArea = {
+            top: 10,
+            left: 10,
+            width: 180,
+            height: 80
+          };
+          chart.yAxis = {
+            enable: true,
+            lineStyle: {
+              stroke: '#e08080'
+            },
+            tickInterval: 1
+          };
+          chart.async(function() {
+            var svg = container.children[0];
+            var yAxis = Polymer.dom(svg).querySelector(AXIS_GROUP);
+            var gridLineGroup = Polymer.dom(yAxis).querySelector(GRID_LINE_GROUP);
+            var gridLines = Polymer.dom(gridLineGroup).querySelectorAll(GRID_LINE);
+            expect(gridLines.length).to.equal(3); // 1, 2, 3
+            chart.yAxis = {
+              enable: true,
+              lineStyle: {
+                stroke: '#e08080'
+              },
+              tickInterval: 2
+            };
+            chart.async(function() {
+              svg = container.children[0];
+              yAxis = Polymer.dom(svg).querySelector(AXIS_GROUP);
+              gridLineGroup = Polymer.dom(yAxis).querySelector(GRID_LINE_GROUP);
+              gridLines = Polymer.dom(gridLineGroup).querySelectorAll(GRID_LINE);
+              expect(gridLines.length).to.equal(1); // 2
+              chart.yAxis = {
+                enable: true,
+                lineStyle: {
+                  stroke: '#e08080'
+                },
+                tickInterval: 3
+              };
+              chart.async(function() {
+                svg = container.children[0];
+                yAxis = Polymer.dom(svg).querySelector(AXIS_GROUP);
+                gridLineGroup = Polymer.dom(yAxis).querySelector(GRID_LINE_GROUP);
+                gridLines = Polymer.dom(gridLineGroup).querySelectorAll(GRID_LINE);
+                expect(gridLines.length).to.equal(1); // 3
+                chart.yAxis = {
+                  enable: true,
+                  lineStyle: {
+                    stroke: '#e08080'
+                  },
+                  tickInterval: 4
+                };
+                chart.async(function() {
+                  svg = container.children[0];
+                  yAxis = Polymer.dom(svg).querySelector(AXIS_GROUP);
+                  gridLineGroup = Polymer.dom(yAxis).querySelector(GRID_LINE_GROUP);
+                  gridLines = Polymer.dom(gridLineGroup).querySelectorAll(GRID_LINE);
+                  expect(gridLines.length).to.equal(0);
+                  done();
+                });
+              });
+            });
+          });
+        });
       });
     </script>
   </body>
