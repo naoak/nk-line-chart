@@ -27,8 +27,9 @@ A very lightweight polymer component for drawing line charts.
 (function() {
   'use strict';
 
-  var NS = 'http://www.w3.org/2000/svg';
   var BASE_CLASS = 'nk-line-chart';
+  var NON_BUBBLES = {bubbles: false};
+  var NS = 'http://www.w3.org/2000/svg';
 
   Polymer({
 
@@ -399,6 +400,7 @@ A very lightweight polymer component for drawing line charts.
 
     _drawXAxis: function(group, xAxisOpt, pf) {
       var gridLines = document.createElementNS(NS, 'g');
+      var gridLinesData = [];
       var gridLabels = document.createElementNS(NS, 'g');
       var interval = xAxisOpt.tickInterval;
       var start = Math.ceil(pf.vMinY / interval) * interval;
@@ -431,14 +433,28 @@ A very lightweight polymer component for drawing line charts.
             axisPoints[0], xAxisOpt.label, 'vy'
           ));
         }
+        var gridLinePointsData = axisPoints.map(function(point) {
+          var pixel = this._transformer.convertPoint(point);
+          return {
+            px: pixel.x,
+            py: pixel.y,
+            vx: point.vx,
+            vy: point.vy,
+            x: point.x,
+            y: point.y
+          }
+        }.bind(this));
+        gridLinesData.push(gridLinePointsData);
       }
       group.appendChild(gridLines);
       group.appendChild(gridLabels);
+      this.fire('x-axis', {gridLines: gridLinesData}, NON_BUBBLES);
       return group;
     },
 
     _drawYAxis: function(group, yAxisOpt, pf) {
       var gridLines = document.createElementNS(NS, 'g');
+      var gridLinesData = [];
       var gridLabels = document.createElementNS(NS, 'g');
       var interval = yAxisOpt.tickInterval;
       var start = Math.ceil(pf.vMinX / interval) * interval;
@@ -471,9 +487,22 @@ A very lightweight polymer component for drawing line charts.
             axisPoints[0], yAxisOpt.label, 'vx'
           ));
         }
+        var gridLinePointsData = axisPoints.map(function(point) {
+          var pixel = this._transformer.convertPoint(point);
+          return {
+            px: pixel.x,
+            py: pixel.y,
+            vx: point.vx,
+            vy: point.vy,
+            x: point.x,
+            y: point.y
+          }
+        }.bind(this));
+        gridLinesData.push(gridLinePointsData);
       }
       group.appendChild(gridLines);
       group.appendChild(gridLabels);
+      this.fire('y-axis', {gridLines: gridLinesData}, NON_BUBBLES);
       return group;
     },
 
@@ -532,6 +561,42 @@ A very lightweight polymer component for drawing line charts.
         }
       });
     }
+
+    /**
+     * Fires when x-axis grid lines are rendered
+     *
+     * | detail           | type            | meaning                                                     |
+     * |:-----------------|:--------------- |:------------------------------------------------------------|
+     * | gridLines        | Array           | Array of grid lines which contains points for start and end |
+     *
+     *
+     * Example of gridLines
+     * ```
+     * [{"px":10,"py":90,"vx":1,"vy":2,"x":10,"y":10},{"px":190,"py":90,"vx":3,"vy":2,"x":190,"y":10}],
+     * [{"px":10,"py":50,"vx":1,"vy":3,"x":10,"y":50},{"px":190,"py":50,"vx":3,"vy":3,"x":190,"y":50}],
+     * [{"px":10,"py":10,"vx":1,"vy":4,"x":10,"y":90},{"px":190,"py":10,"vx":3,"vy":4,"x":190,"y":90}]
+     * ```
+     *
+     * - px, py: Real pixel coordinates for start or end point after being transformed
+     * - vx, vy: Numeric values for start or end point
+     * - x, y: Pixel coordinates for start or end point before being transformed
+     *
+     * @event x-axis
+     */
+
+    /**
+     * Fires when y-axis grid lines are rendered
+     *
+     * | detail           | type            | meaning                                                     |
+     * |:-----------------|:--------------- |:------------------------------------------------------------|
+     * | gridLines        | Array           | Array of grid lines which contains points for start and end |
+     *
+     * ```
+     *
+     * See detail for `x-axis`
+     *
+     * @event y-axis
+     */
   });
 
   function addClass(node, className) {

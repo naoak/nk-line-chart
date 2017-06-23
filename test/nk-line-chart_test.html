@@ -1110,6 +1110,63 @@
             });
           });
         });
+
+        it('`x-axis` event has gridLines data', function(done) {
+          chart.rows = [
+            [1, 2], [3, 4]
+          ];
+          chart.chartArea = {
+            top: 10,
+            left: 10,
+            width: 180,
+            height: 80
+          };
+          chart.xAxis = {
+            enable: true,
+            lineStyle: {
+              stroke: '#e08080'
+            },
+            tickInterval: 1
+          };
+          chart.addEventListener('x-axis', function(e) {
+            var gridLines = e.detail.gridLines;
+            expect(gridLines).to.deep.equal([
+              [{"px":10,"py":90,"vx":1,"vy":2,"x":10,"y":10},{"px":190,"py":90,"vx":3,"vy":2,"x":190,"y":10}],
+              [{"px":10,"py":50,"vx":1,"vy":3,"x":10,"y":50},{"px":190,"py":50,"vx":3,"vy":3,"x":190,"y":50}],
+              [{"px":10,"py":10,"vx":1,"vy":4,"x":10,"y":90},{"px":190,"py":10,"vx":3,"vy":4,"x":190,"y":90}]
+            ]);
+            done();
+          });
+        });
+
+        it('`y-axis` event has gridLines data', function(done) {
+          chart.rows = [
+            [1, 2], [3, 4]
+          ];
+          chart.chartArea = {
+            top: 10,
+            left: 10,
+            width: 180,
+            height: 80
+          };
+          chart.yAxis = {
+            enable: true,
+            lineStyle: {
+              stroke: '#e08080'
+            },
+            tickInterval: 1
+          };
+          chart.addEventListener('y-axis', function(e) {
+            var gridLines = e.detail.gridLines;
+            expect(gridLines).to.deep.equal([
+              [{"px":10,"py":90,"vx":1,"vy":2,"x":10,"y":10},{"px":10,"py":10,"vx":1,"vy":4,"x":10,"y":90}],
+              [{"px":100,"py":90,"vx":2,"vy":2,"x":100,"y":10},{"px":100,"py":10,"vx":2,"vy":4,"x":100,"y":90}],
+              [{"px":190,"py":90,"vx":3,"vy":2,"x":190,"y":10},{"px":190,"py":10,"vx":3,"vy":4,"x":190,"y":90}]
+            ]);
+            done();
+          });
+        });
+
       });
     </script>
   </body>
