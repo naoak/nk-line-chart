@@ -7,6 +7,7 @@ This source code is distributed under the MIT license.
 -->
 
 <link rel="import" href="../polymer/polymer.html">
+<script src="cspl.js"></script>
 
 <!--
 `nk-line-chart`
@@ -324,7 +325,9 @@ A very lightweight polymer component for drawing line charts.
     },
 
     _draw: function(svg, pf) {
+      console.log(pf);
       var points = pf.points;
+      var splinePoints = pf.splinePoints;
       var backgroundRectAttrs = toAttributes(this.backgroundRectStyle);
       var xAxisOpt = this.xAxis;
       var yAxisOpt = this.yAxis;
@@ -351,10 +354,13 @@ A very lightweight polymer component for drawing line charts.
         g0.appendChild(this._drawYAxis(addClass(document.createElementNS(NS, 'g'), BASE_CLASS + '-y-axis-group'), yAxisOpt, pf));
       }
 
-      if (points.length > 0) {
+      if (splinePoints.length > 0) {
+        console.log(splinePoints);
+        console.log('line length', splinePoints.length);
+        console.log('pointsToMoves', pointsToMoves(splinePoints));
         g0.appendChild(this._drawPath(
           addClass(document.createElementNS(NS, 'path'), BASE_CLASS + '-path'),
-          points[0], pointsToMoves(points), pathAttrs
+          splinePoints[0], pointsToMoves(splinePoints), pathAttrs
         ));
       }
       g0.appendChild(g1c);
@@ -651,6 +657,24 @@ A very lightweight polymer component for drawing line charts.
     factorX = width / (vMaxX - vMinX);
     factorY = height / (vMaxY - vMinY);
 
+    var splinePoints = [];
+
+    (function() {
+      var ks = new Array(rows.length);
+      var xs = rows.map(function(r) { return r[0]; });
+      var ys = rows.map(function(r) { return r[1]; });
+      CSPL.getNaturalKs(xs, ys, ks);
+      console.log('ks', ks);
+      for (var x = vMinX; x <= vMaxX; x += 0.2) {
+        var y = CSPL.evalSpline(x, xs, ys, ks);
+        splinePoints.push({
+          x: x,
+          y: y
+        });
+      }
+    })();
+
+
     return {
       width: width,
       height: height,
@@ -666,6 +690,14 @@ A very lightweight polymer component for drawing line charts.
           vy: r[1],
           x: isFinite(factorX) ? (r[0] - vMinX) * factorX + left : constantX,
           y: isFinite(factorY) ? (r[1] - vMinY) * factorY + top : constantY
+        };
+      }),
+      splinePoints: splinePoints.map(function(p) {
+        return {
+          vx: p.x,
+          vy: p.y,
+          x: isFinite(factorX) ? (p.x - vMinX) * factorX + left : constantX,
+          y: isFinite(factorY) ? (p.y - vMinY) * factorY + top : constantY
         };
       }),
       vMinX: vMinX,
