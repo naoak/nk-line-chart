@@ -1,20 +1,8 @@
 /**
 @license
-Copyright 2016-2017, Naoaki Yamada
+Copyright 2016-2020, Naoaki Yamada
 All rights reserved.
-
 This source code is distributed under the MIT license.
-*/
-/**
-`nk-line-chart`
-A very lightweight polymer component for drawing line charts.
-
-@demo demo/index.html
-*/
-/*
-  FIXME(polymer-modulizer): the above comments were extracted
-  from HTML and may be out of place here. Review them and
-  then delete this comment!
 */
 import '@polymer/polymer/polymer-legacy.js';
 
