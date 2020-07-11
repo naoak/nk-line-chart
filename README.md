@@ -19,6 +19,8 @@ This component directly uses SVG tag to draw charts without graphic libraries.
 ```
 
 ### Basic
+<img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/basic.png" width="340" height="120">
+
 ```html
 <nk-line-chart
   rows='[
@@ -32,9 +34,10 @@ This component directly uses SVG tag to draw charts without graphic libraries.
   }'>
 </nk-line-chart>
 ```
-![basic](https://raw.github.com/wiki/naoak/nk-line-chart/images/basic.png)
 
 ### Label at Point
+<img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/label-at-point.png" width="340" height="120">
+
 ```html
 <nk-line-chart
   rows='[
@@ -58,9 +61,10 @@ This component directly uses SVG tag to draw charts without graphic libraries.
   }'>
 </nk-line-chart>
 ```
-![label at point](https://raw.github.com/wiki/naoak/nk-line-chart/images/label-at-point.png)
 
 ### X-axis Range
+<img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/xaxis-range.png" width="340" height="120">
+
 ```html
 <nk-line-chart
   rows='[
@@ -78,9 +82,10 @@ This component directly uses SVG tag to draw charts without graphic libraries.
   }'>
 </nk-line-chart>
 ```
-![xaxis range](https://raw.github.com/wiki/naoak/nk-line-chart/images/xaxis-range.png)
 
 ### Y-axis Range
+<img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/yaxis-range.png" width="340" height="120">
+
 ```html
 <nk-line-chart
   rows='[
@@ -98,9 +103,10 @@ This component directly uses SVG tag to draw charts without graphic libraries.
   }'>
 </nk-line-chart>
 ```
-![yaxis range](https://raw.github.com/wiki/naoak/nk-line-chart/images/yaxis-range.png)
 
 ### X-axis Grid Lines
+<img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/xaxis-grid.png" width="340" height="120">
+
 ```html
 <nk-line-chart
   rows='[
@@ -136,9 +142,10 @@ This component directly uses SVG tag to draw charts without graphic libraries.
   }'>
 </nk-line-chart>
 ```
-![xaxis grid](https://raw.github.com/wiki/naoak/nk-line-chart/images/xaxis-grid.png)
 
 ### Y-axis Grid Lines
+<img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/yaxis-grid.png" width="340" height="120">
+
 ```html
 <nk-line-chart
   rows='[
@@ -174,9 +181,10 @@ This component directly uses SVG tag to draw charts without graphic libraries.
   }'>
 </nk-line-chart>
 ```
-![yaxis grid](https://raw.github.com/wiki/naoak/nk-line-chart/images/yaxis-grid.png)
 
 ### Origin: left-bottom (cartesian coordinates)
+<img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/origin-left-bottom.png" width="340" height="120">
+
 ```html
 <nk-line-chart
   rows='[
@@ -191,9 +199,10 @@ This component directly uses SVG tag to draw charts without graphic libraries.
   origin="left-bottom">
 </nk-line-chart>
 ```
-![origin left-bottom](https://raw.github.com/wiki/naoak/nk-line-chart/images/origin-left-bottom.png)
 
 ### Origin: left-top (screen coordinates)
+<img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/origin-left-top.png" width="340" height="120">
+
 ```html
 <nk-line-chart
   rows='[
@@ -208,9 +217,10 @@ This component directly uses SVG tag to draw charts without graphic libraries.
   origin="left-top">
 </nk-line-chart>
 ```
-![origin left-top](https://raw.github.com/wiki/naoak/nk-line-chart/images/origin-left-top.png)
 
 ### Custom Style for Points
+<img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/custom-points.png" width="340" height="120">
+
 ```html
 <nk-line-chart
   rows="[
@@ -247,9 +257,10 @@ This component directly uses SVG tag to draw charts without graphic libraries.
   }'>
 </nk-line-chart>
 ```
-![custom points](https://raw.github.com/wiki/naoak/nk-line-chart/images/custom-points.png)
 
 ### Custom Style for Background Rect
+<img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/custom-back.png" width="340" height="120">
+
 ```html
 <nk-line-chart
   rows="[
@@ -270,9 +281,10 @@ This component directly uses SVG tag to draw charts without graphic libraries.
   }'>
 </nk-line-chart>
 ```
-![custom background](https://raw.github.com/wiki/naoak/nk-line-chart/images/custom-back.png)
 
 ### Custom Style for Path
+<img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/custom-path.png" width="340" height="120">
+
 ```html
 <nk-line-chart
   rows="[
@@ -293,7 +305,6 @@ This component directly uses SVG tag to draw charts without graphic libraries.
   }'>
 </nk-line-chart>
 ```
-![custom path](https://raw.github.com/wiki/naoak/nk-line-chart/images/custom-path.png)
 
 ## Install the Polymer-CLI
 
