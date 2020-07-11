@@ -4,338 +4,386 @@
     <title>nk-line-chart demo</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 
-    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <script type="module" src="../../@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
+    <script type="module" src="../../@polymer/iron-demo-helpers/demo-snippet.js"></script>
 
-    <link rel="import" href="../nk-line-chart.html">
+    <script type="module" src="../nk-line-chart.js"></script>
 
-    <style is="custom-style" include="demo-pages-shared-styles">
+    <!-- FIXME(polymer-modulizer):
+        These imperative modules that innerHTML your HTML are
+        a hacky way to be sure that any mixins in included style
+        modules are ready before any elements that reference them are
+        instantiated, otherwise the CSS @apply mixin polyfill won't be
+        able to expand the underlying CSS custom properties.
+        See: https://github.com/Polymer/polymer-modulizer/issues/154
+        -->
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<style is="custom-style" include="demo-pages-shared-styles">
       nk-line-chart {
         width: 340px;
         height: 120px;
         box-shadow: 0px 0px 1px 1px #ccc;
       }
-    </style>
+    </style>`;
+
+document.head.appendChild($_documentContainer.content);
+</script>
   </head>
   <body>
 
-    <div class="vertical-section-container centered">
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container centered">
       <h3>Basic</h3>
       <demo-snippet>
         <template>
-          <nk-line-chart
-            rows='[
+          <nk-line-chart rows="[
               [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-            ]'
-            chart-area='{
-              "top": 10,
-              "left": 10,
-              "width": 320,
-              "height": 100
-            }'>
+            ]" chart-area="{
+              &quot;top&quot;: 10,
+              &quot;left&quot;: 10,
+              &quot;width&quot;: 320,
+              &quot;height&quot;: 100
+            }">
           </nk-line-chart>
         </template>
       </demo-snippet>
-    </div>
+    </div>`;
 
-    <div class="vertical-section-container centered">
+document.body.appendChild($_documentContainer.content);
+</script>
+
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container centered">
       <h3>Label At Point</h3>
       <demo-snippet>
         <template>
-          <nk-line-chart
-            rows='[
+          <nk-line-chart rows="[
               [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-            ]'
-            chart-area='{
-              "top": 20,
-              "left": 20,
-              "width": 300,
-              "height": 80
-            }'
-            point-label='{
-              "enable": true,
-              "offset": {
-                "y": -6
+            ]" chart-area="{
+              &quot;top&quot;: 20,
+              &quot;left&quot;: 20,
+              &quot;width&quot;: 300,
+              &quot;height&quot;: 80
+            }" point-label="{
+              &quot;enable&quot;: true,
+              &quot;offset&quot;: {
+                &quot;y&quot;: -6
               },
-              "textStyle": {
-                "fill": "#000",
-                "textAnchor": "middle"
+              &quot;textStyle&quot;: {
+                &quot;fill&quot;: &quot;#000&quot;,
+                &quot;textAnchor&quot;: &quot;middle&quot;
               }
-            }'>
+            }">
           </nk-line-chart>
         </template>
       </demo-snippet>
-    </div>
+    </div>`;
 
-    <div class="vertical-section-container centered">
+document.body.appendChild($_documentContainer.content);
+</script>
+
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container centered">
       <h3>X-axis Range</h3>
       <demo-snippet>
         <template>
-          <nk-line-chart
-            rows='[
+          <nk-line-chart rows="[
               [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-            ]'
-            chart-area='{
-              "top": 10,
-              "left": 10,
-              "width": 320,
-              "height": 100
-            }'
-            x-range='{
-              "min": 0,
-              "max": 10
-            }'>
+            ]" chart-area="{
+              &quot;top&quot;: 10,
+              &quot;left&quot;: 10,
+              &quot;width&quot;: 320,
+              &quot;height&quot;: 100
+            }" x-range="{
+              &quot;min&quot;: 0,
+              &quot;max&quot;: 10
+            }">
           </nk-line-chart>
         </template>
       </demo-snippet>
-    </div>
+    </div>`;
 
-    <div class="vertical-section-container centered">
+document.body.appendChild($_documentContainer.content);
+</script>
+
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container centered">
       <h3>Y-axis Range</h3>
       <demo-snippet>
         <template>
-          <nk-line-chart
-            rows='[
+          <nk-line-chart rows="[
               [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-            ]'
-            chart-area='{
-              "top": 10,
-              "left": 10,
-              "width": 320,
-              "height": 100
-            }'
-            y-range='{
-              "min": 0,
-              "max": 10
-            }'>
+            ]" chart-area="{
+              &quot;top&quot;: 10,
+              &quot;left&quot;: 10,
+              &quot;width&quot;: 320,
+              &quot;height&quot;: 100
+            }" y-range="{
+              &quot;min&quot;: 0,
+              &quot;max&quot;: 10
+            }">
           </nk-line-chart>
         </template>
       </demo-snippet>
-    </div>
+    </div>`;
 
-    <div class="vertical-section-container centered">
+document.body.appendChild($_documentContainer.content);
+</script>
+
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container centered">
       <h3>X-axis Grid Lines</h3>
       <demo-snippet>
         <template>
-          <nk-line-chart
-            rows='[
+          <nk-line-chart rows="[
               [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-            ]'
-            chart-area='{
-              "top": 20,
-              "left": 20,
-              "width": 300,
-              "height": 80
-            }'
-            x-axis='{
-              "enable": true,
-              "label": {
-                "enable": true,
-                "offset": {
-                  "x": -6,
-                  "y": 5
+            ]" chart-area="{
+              &quot;top&quot;: 20,
+              &quot;left&quot;: 20,
+              &quot;width&quot;: 300,
+              &quot;height&quot;: 80
+            }" x-axis="{
+              &quot;enable&quot;: true,
+              &quot;label&quot;: {
+                &quot;enable&quot;: true,
+                &quot;offset&quot;: {
+                  &quot;x&quot;: -6,
+                  &quot;y&quot;: 5
                 },
-                "textStyle": {
-                  "fontSize": "14px",
-                  "fill": "#333",
-                  "textAnchor": "end"
+                &quot;textStyle&quot;: {
+                  &quot;fontSize&quot;: &quot;14px&quot;,
+                  &quot;fill&quot;: &quot;#333&quot;,
+                  &quot;textAnchor&quot;: &quot;end&quot;
                 }
               },
-              "lineStyle": {
-                "fill": "none",
-                "stroke": "#e08080",
-                "strokeDasharray": "4,2",
-                "strokeWidth": 1
+              &quot;lineStyle&quot;: {
+                &quot;fill&quot;: &quot;none&quot;,
+                &quot;stroke&quot;: &quot;#e08080&quot;,
+                &quot;strokeDasharray&quot;: &quot;4,2&quot;,
+                &quot;strokeWidth&quot;: 1
               },
-              "tickInterval": 2
-            }'>
+              &quot;tickInterval&quot;: 2
+            }">
           </nk-line-chart>
         </template>
       </demo-snippet>
-    </div>
+    </div>`;
 
-    <div class="vertical-section-container centered">
+document.body.appendChild($_documentContainer.content);
+</script>
+
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container centered">
       <h3>Y-axis Grid Lines</h3>
       <demo-snippet>
         <template>
-          <nk-line-chart
-            rows='[
+          <nk-line-chart rows="[
               [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-            ]'
-            chart-area='{
-              "top": 20,
-              "left": 20,
-              "width": 300,
-              "height": 80
-            }'
-            y-axis='{
-              "enable": true,
-              "label": {
-                "enable": true,
-                "offset": {
-                  "x": 0,
-                  "y": 15
+            ]" chart-area="{
+              &quot;top&quot;: 20,
+              &quot;left&quot;: 20,
+              &quot;width&quot;: 300,
+              &quot;height&quot;: 80
+            }" y-axis="{
+              &quot;enable&quot;: true,
+              &quot;label&quot;: {
+                &quot;enable&quot;: true,
+                &quot;offset&quot;: {
+                  &quot;x&quot;: 0,
+                  &quot;y&quot;: 15
                 },
-                "textStyle": {
-                  "fontSize": "14px",
-                  "fill": "#333",
-                  "textAnchor": "middle"
+                &quot;textStyle&quot;: {
+                  &quot;fontSize&quot;: &quot;14px&quot;,
+                  &quot;fill&quot;: &quot;#333&quot;,
+                  &quot;textAnchor&quot;: &quot;middle&quot;
                 }
               },
-              "lineStyle": {
-                "fill": "none",
-                "stroke": "#e08080",
-                "strokeDasharray": "4,2",
-                "strokeWidth": 1
+              &quot;lineStyle&quot;: {
+                &quot;fill&quot;: &quot;none&quot;,
+                &quot;stroke&quot;: &quot;#e08080&quot;,
+                &quot;strokeDasharray&quot;: &quot;4,2&quot;,
+                &quot;strokeWidth&quot;: 1
               },
-              "tickInterval": 2
-            }'>
+              &quot;tickInterval&quot;: 2
+            }">
           </nk-line-chart>
         </template>
       </demo-snippet>
-    </div>
+    </div>`;
 
-    <div class="vertical-section-container centered">
+document.body.appendChild($_documentContainer.content);
+</script>
+
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container centered">
       <h3>Origin: left-bottom (cartesian coordinates)</h3>
       <demo-snippet>
         <template>
-          <nk-line-chart
-            rows='[
+          <nk-line-chart rows="[
               [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-            ]'
-            chart-area='{
-              "top": 10,
-              "left": 10,
-              "width": 320,
-              "height": 100
-            }'
-            origin="left-bottom">
+            ]" chart-area="{
+              &quot;top&quot;: 10,
+              &quot;left&quot;: 10,
+              &quot;width&quot;: 320,
+              &quot;height&quot;: 100
+            }" origin="left-bottom">
           </nk-line-chart>
         </template>
       </demo-snippet>
-    </div>
+    </div>`;
 
-    <div class="vertical-section-container centered">
+document.body.appendChild($_documentContainer.content);
+</script>
+
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container centered">
       <h3>Origin: left-top (screen coordinates)</h3>
       <demo-snippet>
         <template>
-          <nk-line-chart
-            rows='[
+          <nk-line-chart rows="[
               [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-            ]'
-            chart-area='{
-              "top": 10,
-              "left": 10,
-              "width": 320,
-              "height": 100
-            }'
-            origin="left-top">
+            ]" chart-area="{
+              &quot;top&quot;: 10,
+              &quot;left&quot;: 10,
+              &quot;width&quot;: 320,
+              &quot;height&quot;: 100
+            }" origin="left-top">
           </nk-line-chart>
         </template>
       </demo-snippet>
-    </div>
+    </div>`;
 
-    <div class="vertical-section-container centered">
+document.body.appendChild($_documentContainer.content);
+</script>
+
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container centered">
       <h3>Origin: right-top</h3>
       <demo-snippet>
         <template>
-          <nk-line-chart
-            rows='[
+          <nk-line-chart rows="[
               [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-            ]'
-            chart-area='{
-              "top": 10,
-              "left": 10,
-              "width": 320,
-              "height": 100
-            }'
-            origin="right-top">
+            ]" chart-area="{
+              &quot;top&quot;: 10,
+              &quot;left&quot;: 10,
+              &quot;width&quot;: 320,
+              &quot;height&quot;: 100
+            }" origin="right-top">
           </nk-line-chart>
         </template>
       </demo-snippet>
-    </div>
+    </div>`;
 
-    <div class="vertical-section-container centered">
+document.body.appendChild($_documentContainer.content);
+</script>
+
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container centered">
       <h3>Origin: right-bottom</h3>
       <demo-snippet>
         <template>
-          <nk-line-chart
-            rows='[
+          <nk-line-chart rows="[
               [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-            ]'
-            chart-area='{
-              "top": 10,
-              "left": 10,
-              "width": 320,
-              "height": 100
-            }'
-            origin="right-bottom">
+            ]" chart-area="{
+              &quot;top&quot;: 10,
+              &quot;left&quot;: 10,
+              &quot;width&quot;: 320,
+              &quot;height&quot;: 100
+            }" origin="right-bottom">
           </nk-line-chart>
         </template>
       </demo-snippet>
-    </div>
+    </div>`;
 
-    <div class="vertical-section-container centered">
+document.body.appendChild($_documentContainer.content);
+</script>
+
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container centered">
       <h3>Custom Style for points (Array)</h3>
       <demo-snippet>
         <template>
-          <nk-line-chart
-            rows="[
+          <nk-line-chart rows="[
               [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-            ]"
-            chart-area='{
-              "top": 10,
-              "left": 10,
-              "width": 320,
-              "height": 100
-            }'
-            point='{
-              "enable": true,
-              "elements": [
+            ]" chart-area="{
+              &quot;top&quot;: 10,
+              &quot;left&quot;: 10,
+              &quot;width&quot;: 320,
+              &quot;height&quot;: 100
+            }" point="{
+              &quot;enable&quot;: true,
+              &quot;elements&quot;: [
                 {
-                  "type": "circle",
-                  "style": {
-                    "fill": "#fff",
-                    "r": "8",
-                    "stroke": "#e08080",
-                    "strokeWidth": 1.5
+                  &quot;type&quot;: &quot;circle&quot;,
+                  &quot;style&quot;: {
+                    &quot;fill&quot;: &quot;#fff&quot;,
+                    &quot;r&quot;: &quot;8&quot;,
+                    &quot;stroke&quot;: &quot;#e08080&quot;,
+                    &quot;strokeWidth&quot;: 1.5
                   }
                 },
                 {
-                  "type": "circle",
-                  "style": {
-                    "fill": "#e08080",
-                    "r": "3.5",
-                    "stroke": "none",
-                    "strokeWidth": 0
+                  &quot;type&quot;: &quot;circle&quot;,
+                  &quot;style&quot;: {
+                    &quot;fill&quot;: &quot;#e08080&quot;,
+                    &quot;r&quot;: &quot;3.5&quot;,
+                    &quot;stroke&quot;: &quot;none&quot;,
+                    &quot;strokeWidth&quot;: 0
                   }
                 }
               ]
-            }'>
+            }">
           </nk-line-chart>
         </template>
       </demo-snippet>
-    </div>
+    </div>`;
 
-    <div class="vertical-section-container centered">
+document.body.appendChild($_documentContainer.content);
+</script>
+
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container centered">
       <h3>Custom Style for points (Function)</h3>
       <demo-snippet>
         <template>
-          <nk-line-chart
-            id="chartPointFunction"
-            rows="[
+          <nk-line-chart id="chartPointFunction" rows="[
               [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-            ]"
-            chart-area='{
-              "top": 10,
-              "left": 10,
-              "width": 320,
-              "height": 100
-            }'>
+            ]" chart-area="{
+              &quot;top&quot;: 10,
+              &quot;left&quot;: 10,
+              &quot;width&quot;: 320,
+              &quot;height&quot;: 100
+            }">
           </nk-line-chart>
-          <script>// See source code for detail</script>
+          <script>// See source code for detail&lt;/script>
         </template>
         <script>
           document.addEventListener('WebComponentsReady', function() {
@@ -375,61 +423,64 @@
               }
             };
           });
-        </script>
+        &lt;/script>
       </demo-snippet>
-    </div>
+    </div>`;
 
-    <div class="vertical-section-container centered">
-      <h3>Custom Style for Background Rect</h3>
+document.body.appendChild($_documentContainer.content);
+</script>ct</h3>
       <demo-snippet>
         <template>
-          <nk-line-chart
-            rows="[
+          <nk-line-chart rows="[
               [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-            ]"
-            chart-area='{
-              "top": 10,
-              "left": 10,
-              "width": 320,
-              "height": 100
-            }'
-            background-rect-style='{
-              "fill": "#00f",
-              "fillOpacity": 0.1,
-              "stroke": "#00f",
-              "strokeWidth": 5,
-              "strokeOpacity": 0.3
-            }'>
+            ]" chart-area="{
+              &quot;top&quot;: 10,
+              &quot;left&quot;: 10,
+              &quot;width&quot;: 320,
+              &quot;height&quot;: 100
+            }" background-rect-style="{
+              &quot;fill&quot;: &quot;#00f&quot;,
+              &quot;fillOpacity&quot;: 0.1,
+              &quot;stroke&quot;: &quot;#00f&quot;,
+              &quot;strokeWidth&quot;: 5,
+              &quot;strokeOpacity&quot;: 0.3
+            }">
           </nk-line-chart>
         </template>
       </demo-snippet>
-    </div>
+    </div>`;
 
-    <div class="vertical-section-container centered">
+document.body.appendChild($_documentContainer.content);
+</script>
+
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container centered">
       <h3>Custom Style for Path</h3>
       <demo-snippet>
         <template>
-          <nk-line-chart
-            rows="[
+          <nk-line-chart rows="[
               [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-            ]"
-            chart-area='{
-              "top": 10,
-              "left": 10,
-              "width": 320,
-              "height": 100
-            }'
-            path-style='{
-              "stroke": "#8080e0",
-              "strokeWidth": 2,
-              "strokeDasharray": "5, 2",
-              "fillOpacity": 1,
-              "fill": "none"
-            }'>
+            ]" chart-area="{
+              &quot;top&quot;: 10,
+              &quot;left&quot;: 10,
+              &quot;width&quot;: 320,
+              &quot;height&quot;: 100
+            }" path-style="{
+              &quot;stroke&quot;: &quot;#8080e0&quot;,
+              &quot;strokeWidth&quot;: 2,
+              &quot;strokeDasharray&quot;: &quot;5, 2&quot;,
+              &quot;fillOpacity&quot;: 1,
+              &quot;fill&quot;: &quot;none&quot;
+            }">
           </nk-line-chart>
         </template>
       </demo-snippet>
-    </div>
+    </div>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
 
   </body>
 </html>
