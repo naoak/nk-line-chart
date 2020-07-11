@@ -20,19 +20,7 @@
   },
   "main": "nk-line-chart.js",
   "contributors": [
-    "N",
-    "a",
-    "o",
-    "a",
-    "k",
-    "i",
-    " ",
-    "Y",
-    "a",
-    "m",
-    "a",
-    "d",
-    "a"
+    "Naoaki Yamada"
   ],
   "dependencies": {
     "@polymer/polymer": "^3.0.0"
