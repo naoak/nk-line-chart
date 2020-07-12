@@ -320,5 +320,5 @@ open  http://127.0.0.1:<port>/demo/
 ## Running the tests
 
 ```
-polymer test --npm
+npm run test
 ```

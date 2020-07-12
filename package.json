@@ -25,8 +25,18 @@
     "@polymer/polymer": "^3.0.0"
   },
   "devDependencies": {
+    "@open-wc/testing": "^2.5.19",
+    "@open-wc/testing-karma": "^2.0.16",
     "@polymer/iron-demo-helpers": "^3.0.0",
     "@webcomponents/webcomponentsjs": "^2.0.0",
-    "wct-browser-legacy": "^1.0.1"
+    "chai": "^4.2.0",
+    "concurrently": "^5.2.0",
+    "http-server": "^0.12.3",
+    "mocha": "^8.0.1",
+    "sinon": "^9.0.2"
+  },
+  "scripts": {
+    "test": "karma start --coverage",
+    "test:watch": "concurrently \"karma start --coverage --auto-watch=true --single-run=false\" http-server"
   }
 }
