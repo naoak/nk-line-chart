@@ -1,18 +1,19 @@
 import { expect, fixture, nextFrame } from '@open-wc/testing';
-import { createSandbox } from 'sinon';
+import { createSandbox, SinonSandbox } from 'sinon';
 import './nk-line-chart.js';
+import { NkLineChartElement, AxisEventDetail } from './nk-line-chart.js';
 
 describe('nk-line-chart', () => {
-  let chart;
-  let container;
-  let sandbox;
+  let chart: NkLineChartElement;
+  let container: HTMLDivElement;
+  let sandbox: SinonSandbox;
 
   beforeEach(async () => {
     sandbox = createSandbox();
     chart = await fixture('<nk-line-chart></nk-line-chart>');
     chart.style.width = '200px';
     chart.style.height = '100px';
-    container = chart.$.container;
+    container = chart.$.container as HTMLDivElement;
   });
 
   it('SVG tag will be created if rows and chartAreas are set', async () => {
@@ -106,7 +107,7 @@ describe('nk-line-chart', () => {
     const svg = container.children[0];
     const circles = svg.querySelectorAll('circle');
     expect(circles.length).to.equal(3);
-    const [c0, c1, c2] = circles;
+    const [c0, c1, c2] = Array.from(circles);
     expect(c0.getAttribute('cx')).to.equal('0');
     expect(c0.getAttribute('cy')).to.equal('0');
     expect(c1.getAttribute('cx')).to.equal('100');
@@ -128,7 +129,7 @@ describe('nk-line-chart', () => {
     const svg = container.children[0];
     const circles = svg.querySelectorAll('circle');
     expect(circles.length).to.equal(3);
-    const [c0, c1, c2] = circles;
+    const [c0, c1, c2] = Array.from(circles);
     expect(c0.getAttribute('cx')).to.equal('0');
     expect(c0.getAttribute('cy')).to.equal('0');
     expect(c1.getAttribute('cx')).to.equal('100');
@@ -152,7 +153,7 @@ describe('nk-line-chart', () => {
     const svg = container.children[0];
     const circles = svg.querySelectorAll('circle');
     expect(circles.length).to.equal(3);
-    const [c0, c1, c2] = circles;
+    const [c0, c1, c2] = Array.from(circles);
     expect(c0.getAttribute('cx')).to.equal('0');
     expect(c0.getAttribute('cy')).to.equal('0');
     expect(c1.getAttribute('cx')).to.equal('100');
@@ -176,7 +177,7 @@ describe('nk-line-chart', () => {
     const svg = container.children[0];
     const circles = svg.querySelectorAll('circle');
     expect(circles.length).to.equal(3);
-    const [c0, c1, c2] = circles;
+    const [c0, c1, c2] = Array.from(circles);
     expect(c0.getAttribute('cx')).to.equal('10');
     expect(c0.getAttribute('cy')).to.equal('10');
     expect(c1.getAttribute('cx')).to.equal('100');
@@ -204,7 +205,7 @@ describe('nk-line-chart', () => {
     const svg = container.children[0];
     const circles = svg.querySelectorAll('circle');
     expect(circles.length).to.equal(3);
-    const [c0, c1, c2] = circles;
+    const [c0, c1, c2] = Array.from(circles);
     expect(c0.getAttribute('cx')).to.equal('40');
     expect(c0.getAttribute('cy')).to.equal('0');
     expect(c1.getAttribute('cx')).to.equal('80');
@@ -232,7 +233,7 @@ describe('nk-line-chart', () => {
     const svg = container.children[0];
     const circles = svg.querySelectorAll('circle');
     expect(circles.length).to.equal(3);
-    const [c0, c1, c2] = circles;
+    const [c0, c1, c2] = Array.from(circles);
     expect(c0.getAttribute('cx')).to.equal('0');
     expect(c0.getAttribute('cy')).to.equal('20');
     expect(c1.getAttribute('cx')).to.equal('100');
@@ -274,7 +275,7 @@ describe('nk-line-chart', () => {
 
   it('The change of origin invokes the recalculation of transform', async () => {
     chart.rows = [
-      ['0', '0'], ['1', '1']
+      [0, 0], [1, 1]
     ];
     chart.chartArea = {
       top: 10,
@@ -285,7 +286,7 @@ describe('nk-line-chart', () => {
     expect(chart.origin).to.equal('left-bottom');
     await nextFrame();
     let circles = getCircles(container);
-    let [c0, c1] = circles;
+    let [c0, c1] = Array.from(circles);
     expect(c0.getAttribute('cx')).to.equal('10');
     expect(c0.getAttribute('cy')).to.equal('90');
     expect(c1.getAttribute('cx')).to.equal('190');
@@ -327,7 +328,7 @@ describe('nk-line-chart', () => {
     expect(c1.getAttribute('cx')).to.equal('190');
     expect(c1.getAttribute('cy')).to.equal('90');
 
-    function getCircles(container) {
+    function getCircles(container: HTMLDivElement) {
       const svg = container.children[0];
       expect(svg.tagName).to.equal('svg');
       const circles = svg.querySelectorAll('circle');
@@ -403,7 +404,7 @@ describe('nk-line-chart', () => {
     points.forEach(function(p) {
       const circles = p.querySelectorAll('circle');
       expect(circles.length).to.equal(2);
-      const [c0, c1] = circles;
+      const [c0, c1] = Array.from(circles);
       expect(c0.getAttribute('fill')).to.equal('#fff');
       expect(c0.getAttribute('r')).to.equal('6');
       expect(c0.getAttribute('stroke')).to.equal('#e88');
@@ -971,8 +972,9 @@ describe('nk-line-chart', () => {
       },
       tickInterval: 1
     };
-    chart.addEventListener('x-axis', (e) => {
-      const gridLines = e.detail.gridLines;
+    chart.addEventListener('x-axis', (e: any) => {
+      const detail = e.detail as AxisEventDetail;
+      const gridLines = detail.gridLines;
       expect(gridLines).to.deep.equal([
         [{"px":10,"py":90,"vx":1,"vy":2,"x":10,"y":10},{"px":190,"py":90,"vx":3,"vy":2,"x":190,"y":10}],
         [{"px":10,"py":50,"vx":1,"vy":3,"x":10,"y":50},{"px":190,"py":50,"vx":3,"vy":3,"x":190,"y":50}],
@@ -999,8 +1001,9 @@ describe('nk-line-chart', () => {
       },
       tickInterval: 1
     };
-    chart.addEventListener('y-axis', function(e) {
-      const gridLines = e.detail.gridLines;
+    chart.addEventListener('y-axis', (e: any) => {
+      const detail = e.detail as AxisEventDetail;
+      const gridLines = detail.gridLines;
       expect(gridLines).to.deep.equal([
         [{"px":10,"py":90,"vx":1,"vy":2,"x":10,"y":10},{"px":10,"py":10,"vx":1,"vy":4,"x":10,"y":90}],
         [{"px":100,"py":90,"vx":2,"vy":2,"x":100,"y":10},{"px":100,"py":10,"vx":2,"vy":4,"x":100,"y":90}],

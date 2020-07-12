@@ -16,12 +16,12 @@ const NS = 'http://www.w3.org/2000/svg';
 type Constructor<T> = new (...args: any[]) => T;
 type Attrs = {[key in string]: number | string};
 type ChartArea = {
-  top: number;
-  left: number;
+  top?: number;
+  left?: number;
   width: number;
   height: number
 }
-type Origin = 'left-bottom' | 'left-top' | 'right-top' | 'right-bottom'
+type Origin = 'left-bottom' | 'left-top' | 'right-top' | 'right-bottom' | '';
 type Range = {min: number; max: number};
 type Vector2d = [number, number];
 type VectorXY = {x: number, y: number};
@@ -43,14 +43,25 @@ type AxisOptions = {
   label?: LabelOptions;
   lineStyle?: Attrs;
   tickInterval?: number;
-}
+};
 type AxisPoint = {
   x: number;
   y: number;
   vx: number;
   vy: number;
-}
+};
 type PointsAndFrame = ReturnType<typeof calcPointsAndFrame>;
+
+export type AxisEventDetail = {
+  gridLines: {
+    px: number;
+    py: number;
+    vx: number;
+    vy: number;
+    x: number;
+    y: number;
+  }[][];
+};
 
 @customElement('nk-line-chart')
 export class NkLineChartElement extends (LegacyElementMixin(PolymerElement) as (Constructor<PolymerElement> & LegacyElementMixinConstructor)) {

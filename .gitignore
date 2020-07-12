@@ -2,3 +2,4 @@ bower_components
 coverage
 node_modules
 nk-line-chart.js*
+nk-line-chart.spec.js*

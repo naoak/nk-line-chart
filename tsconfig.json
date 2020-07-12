@@ -22,5 +22,5 @@
     "noUnusedParameters": false,
     "preserveConstEnums": true
   },
-  "files": ["nk-line-chart.ts"]
+  "files": ["nk-line-chart.ts", "nk-line-chart.spec.ts"]
 }
