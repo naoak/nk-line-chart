@@ -7,6 +7,10 @@
 <!-- ### Fixed -->
 <!-- ### Removed -->
 
+## [2.2.1] - 2020-07-13
+### Fixed
+- Fixed demo and test commands in the README
+
 ## [2.2.0] - 2020-07-13
 ### Changed
 - Rewrote in typescript.
