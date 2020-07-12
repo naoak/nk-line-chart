@@ -309,14 +309,6 @@ export class NkLineChartElement extends (LegacyElementMixin(PolymerElement) as (
     return getTransformer(this.origin, this.chartArea);
   }
 
-  /*
-  static get observers() {
-    return [
-      '_paramsChanged(backgroundRectStyle, chartArea.*, origin, pathStyle, point, pointLabel.*, rows, xAxis, xRange, yAxis, yRange)'
-    ]
-  }
-  +/
-
   _draw(svg: SVGSVGElement, pf: PointsAndFrame) {
     const points = pf.points;
     const backgroundRectAttrs = toAttributes(this.backgroundRectStyle);

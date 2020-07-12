@@ -8,26 +8,11 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
 
   <script src="https://unpkg.com/@webcomponents/webcomponentsjs@^2.0.0/webcomponents-loader.js"></script>
+  <script type="module" src="./index.ts"></script>
 </head>
 <body unresolved>
-  <script type="module">
-    import '@polymer/iron-demo-helpers/demo-snippet.js';
-    import '@polymer/iron-demo-helpers/demo-pages-shared-styles.js';
-    import '../nk-line-chart.js';
-
-    import {html} from '@polymer/polymer/lib/utils/html-tag.js';
-
-    const template = html`
-    <custom-style>
-      <style is="custom-style" include="demo-pages-shared-styles">
-        nk-line-chart {
-          width: 340px;
-          height: 120px;
-          border: solid 1px #ccc;
-        }
-      </style>
-    </custom-style>`;
-    document.body.appendChild(template.content);
+  <script>
+    document.body.appendChild(window._template.content);
   </script>
 
   <div class="vertical-section-container centered">

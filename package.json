@@ -26,6 +26,7 @@
     "@polymer/polymer": "^3.0.0"
   },
   "devDependencies": {
+    "@open-wc/building-webpack": "^2.13.37",
     "@open-wc/testing": "^2.5.19",
     "@open-wc/testing-karma": "^3.4.7",
     "@polymer/iron-demo-helpers": "^3.0.0",
@@ -35,9 +36,15 @@
     "http-server": "^0.12.3",
     "mocha": "^8.0.1",
     "sinon": "^9.0.2",
-    "typescript": "^3.9.6"
+    "ts-loader": "^8.0.0",
+    "typescript": "^3.9.6",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^5.0.9"
   },
   "scripts": {
+    "demo": "webpack-dev-server --mode development --open --host 0.0.0.0 --port 8080 --disable-host-check",
     "test": "karma start --coverage",
     "test:prune-snapshots": "karma start --prune-snapshots",
     "test:update-snapshots": "karma start --update-snapshots",
