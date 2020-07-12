@@ -7,6 +7,10 @@
 <!-- ### Fixed -->
 <!-- ### Removed -->
 
+## [2.1.1] - 2020-07-12
+### Changed
+- Upgrade @open-wc/testing to v3
+
 ## [2.1.0] - 2020-07-12
 ### Changed
 - Rewrited with PolymerElement.
