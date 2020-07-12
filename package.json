@@ -35,8 +35,10 @@
     "concurrently": "^5.2.0",
     "http-server": "^0.12.3",
     "mocha": "^8.0.1",
+    "rimraf": "^3.0.2",
     "sinon": "^9.0.2",
     "ts-loader": "^8.0.0",
+    "tsc-watch": "^4.2.9",
     "typescript": "^3.9.6",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12",
@@ -44,10 +46,11 @@
     "webpack-merge": "^5.0.9"
   },
   "scripts": {
+    "clean": "rimraf nk-line-chart.js*",
     "demo": "webpack-dev-server --mode development --open --host 0.0.0.0 --port 8080 --disable-host-check",
-    "test": "karma start --coverage",
+    "test": "tsc && karma start --coverage",
     "test:prune-snapshots": "karma start --prune-snapshots",
     "test:update-snapshots": "karma start --update-snapshots",
-    "test:watch": "concurrently \"karma start --coverage --auto-watch=true --single-run=false\" http-server"
+    "test:watch": "tsc-watch --onSuccess \"concurrently 'karma start --coverage --auto-watch=true --single-run=false' 'http-server'\""
   }
 }

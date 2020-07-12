@@ -1,6 +1,6 @@
 import { expect, fixture, nextFrame } from '@open-wc/testing';
 import { createSandbox } from 'sinon';
-import './nk-line-chart.ts';
+import './nk-line-chart.js';
 
 describe('nk-line-chart', () => {
   let chart;
