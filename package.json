@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@open-wc/testing": "^2.5.19",
-    "@open-wc/testing-karma": "^2.0.16",
+    "@open-wc/testing-karma": "^3.4.7",
     "@polymer/iron-demo-helpers": "^3.0.0",
     "@webcomponents/webcomponentsjs": "^2.0.0",
     "chai": "^4.2.0",
