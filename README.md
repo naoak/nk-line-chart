@@ -1,11 +1,9 @@
 # \<nk-line-chart\>
-
 A very lightweight polymer component for drawing line charts.
 
 This component directly uses SVG tag to draw charts without graphic libraries.
 
 ## Demo
-
 ```html
 <custom-style>
   <style is="custom-style">
@@ -307,18 +305,24 @@ This component directly uses SVG tag to draw charts without graphic libraries.
 ```
 
 ## Install the Polymer-CLI
-
 First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
 
 ## Running the demo locally
-
 ```
-polymer serve --npm
-open  http://127.0.0.1:<port>/demo/
+npm run demo
 ```
 
 ## Running the tests
-
 ```
 npm run test
+```
+
+For watch mode,
+```
+npm run test:watch
+```
+
+Testing in watch mode, you can view coverage files from
+```
+open http://localhost:8080/coverage/
 ```
