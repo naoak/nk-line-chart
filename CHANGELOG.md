@@ -7,6 +7,10 @@
 <!-- ### Fixed -->
 <!-- ### Removed -->
 
+## [2.0.1] - 2020-07-12
+### Changed
+- Replaced wct tester with karma.
+
 ## [2.0.0] - 2020-07-12
 ### Changed
 - Added support for Polymer v3 and dropped support for Polymer v1.
