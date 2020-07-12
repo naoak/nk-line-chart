@@ -347,8 +347,11 @@
         <script>// See source code for detail</script>
       </template>
       <script>
-        document.addEventListener('WebComponentsReady', function() {
-          var chart = document.getElementById('chartPointFunction');
+        document.addEventListener('WebComponentsReady', async () => {
+          await new Promise(resolve => {
+            setTimeout(resolve, 500);
+          });
+          const chart = document.getElementById('chartPointFunction');
           chart.point = {
             enable: true,
             elements: function(p, i) {
