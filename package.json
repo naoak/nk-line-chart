@@ -37,6 +37,8 @@
   },
   "scripts": {
     "test": "karma start --coverage",
+    "test:prune-snapshots": "karma start --prune-snapshots",
+    "test:update-snapshots": "karma start --update-snapshots",
     "test:watch": "concurrently \"karma start --coverage --auto-watch=true --single-run=false\" http-server"
   }
 }

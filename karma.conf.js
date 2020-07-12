@@ -1,5 +1,5 @@
-const merge = require('webpack-merge');
-const createDefaultConfig = require('@open-wc/testing-karma/legacy-config.js');
+const merge = require('deepmerge');
+const { createDefaultConfig } = require('@open-wc/testing-karma');
 
 module.exports = config => {
   config.set(
@@ -7,9 +7,13 @@ module.exports = config => {
       files: [
         {
           pattern: 'nk-line-chart.spec.js',
-          // type: 'module',
+          type: 'module'
         }
-      ]
+      ],
+
+      esm: {
+        nodeResolve: true
+      }
     })
   );
   return config;
