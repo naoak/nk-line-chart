@@ -7,6 +7,12 @@
 <!-- ### Fixed -->
 <!-- ### Removed -->
 
+## [2.1.0] - 2020-07-12
+### Changed
+- Rewrited with PolymerElement.
+### Fixed
+- Fixed function demo
+
 ## [2.0.1] - 2020-07-12
 ### Changed
 - Replaced wct tester with karma.
