@@ -1,5 +1,4 @@
-# nk-line-chart [![Build Status](https://travis-ci.com/naoak/nk-line-chart.svg?branch=master)](https://travis-ci.com/naoak/nk-line-chart)
-[![NPM](https://nodei.co/npm/nk-line-chart.png)](https://npmjs.org/package/nk-line-chart)
+# nk-line-chart [![Build Status](https://travis-ci.com/naoak/nk-line-chart.svg?branch=master)](https://travis-ci.com/naoak/nk-line-chart) [![NPM](https://nodei.co/npm/nk-line-chart.png)](https://npmjs.org/package/nk-line-chart)
 A very lightweight polymer component for drawing line charts.
 
 This component directly uses SVG tag to draw charts without any additional graphic libraries.
