@@ -7,6 +7,10 @@
 <!-- ### Fixed -->
 <!-- ### Removed -->
 
+## [2.2.3] - 2020-07-17
+### Added
+- Tweaked publish things.
+
 ## [2.2.2] - 2020-07-17
 ### Added
 - Added travis config.
