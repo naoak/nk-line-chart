@@ -1,432 +1,435 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-  <title>nk-line-chart demo</title>
+  <head>
+    <title>nk-line-chart demo</title>
 
-  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta
+      name="viewport"
+      content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
 
-  <script src="https://unpkg.com/@webcomponents/webcomponentsjs@^2.0.0/webcomponents-loader.js"></script>
-  <script type="module" src="./index.ts"></script>
-</head>
-<body unresolved>
-  <script>
-    document.body.appendChild(window._template.content);
-  </script>
+    <script src="https://unpkg.com/@webcomponents/webcomponentsjs@^2.0.0/webcomponents-loader.js"></script>
+    <script type="module" src="./index.ts"></script>
+  </head>
+  <body unresolved>
+    <script>
+      document.body.appendChild(window._template.content);
+    </script>
 
-  <div class="vertical-section-container centered">
-    <h3>Basic</h3>
-    <demo-snippet>
-      <template>
-        <nk-line-chart
-          rows='[
-            [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-          ]'
-          chart-area='{
-            "top": 10,
-            "left": 10,
-            "width": 320,
-            "height": 100
-          }'>
-        </nk-line-chart>
-      </template>
-    </demo-snippet>
-  </div>
+    <div class="vertical-section-container centered">
+      <h3>Basic</h3>
+      <demo-snippet>
+        <template>
+          <nk-line-chart
+            rows="[
+              [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
+            ]"
+            chartArea='{
+              "top": 10,
+              "left": 10,
+              "width": 320,
+              "height": 100
+            }'>
+          </nk-line-chart>
+        </template>
+      </demo-snippet>
+    </div>
 
-  <div class="vertical-section-container centered">
-    <h3>Label at Point</h3>
-    <demo-snippet>
-      <template>
-        <nk-line-chart
-          rows='[
-            [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-          ]'
-          chart-area='{
-            "top": 20,
-            "left": 20,
-            "width": 300,
-            "height": 80
-          }'
-          point-label='{
-            "enable": true,
-            "offset": {
-              "y": -6
-            },
-            "textStyle": {
-              "fill": "#666",
-              "textAnchor": "middle"
-            }
-          }'>
-        </nk-line-chart>
-      </template>
-    </demo-snippet>
-  </div>
-
-  <div class="vertical-section-container centered">
-    <h3>X-axis Range</h3>
-    <demo-snippet>
-      <template>
-        <nk-line-chart
-          rows='[
-            [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-          ]'
-          chart-area='{
-            "top": 10,
-            "left": 10,
-            "width": 320,
-            "height": 100
-          }'
-          x-range='{
-            "min": 0,
-            "max": 10
-          }'>
-        </nk-line-chart>
-      </template>
-    </demo-snippet>
-  </div>
-
-  <div class="vertical-section-container centered">
-    <h3>Y-axis Range</h3>
-    <demo-snippet>
-      <template>
-        <nk-line-chart
-          rows='[
-            [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-          ]'
-          chart-area='{
-            "top": 10,
-            "left": 10,
-            "width": 320,
-            "height": 100
-          }'
-          y-range='{
-            "min": 0,
-            "max": 10
-          }'>
-        </nk-line-chart>
-      </template>
-    </demo-snippet>
-  </div>
-
-  <div class="vertical-section-container centered">
-    <h3>X-axis Grid Lines</h3>
-    <demo-snippet>
-      <template>
-        <nk-line-chart
-          rows='[
-            [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-          ]'
-          chart-area='{
-            "top": 20,
-            "left": 20,
-            "width": 300,
-            "height": 80
-          }'
-          x-axis='{
-            "enable": true,
-            "label": {
-              "enable": true,
+    <div class="vertical-section-container centered">
+      <h3>Label at Point</h3>
+      <demo-snippet>
+        <template>
+          <nk-line-chart
+            rows="[
+              [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
+            ]"
+            chartArea='{
+              "top": 20,
+              "left": 20,
+              "width": 300,
+              "height": 80
+            }'
+            pointLabel='{
+              "enabled": true,
               "offset": {
-                "x": -6,
-                "y": 5
+                "y": -6
               },
-              "textStyle": {
-                "fontSize": "14px",
+              "textAttrs": {
                 "fill": "#666",
-                "textAnchor": "end"
+                "text-anchor": "middle"
               }
-            },
-            "lineStyle": {
-              "fill": "none",
-              "stroke": "#e08080",
-              "strokeDasharray": "4,2",
-              "strokeWidth": 1
-            },
-            "tickInterval": 2
-          }'>
-        </nk-line-chart>
-      </template>
-    </demo-snippet>
-  </div>
+            }'>
+          </nk-line-chart>
+        </template>
+      </demo-snippet>
+    </div>
 
-  <div class="vertical-section-container centered">
-    <h3>Y-axis Grid Lines</h3>
-    <demo-snippet>
-      <template>
-        <nk-line-chart
-          rows='[
-            [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-          ]'
-          chart-area='{
-            "top": 20,
-            "left": 20,
-            "width": 300,
-            "height": 80
-          }'
-          y-axis='{
-            "enable": true,
-            "label": {
-              "enable": true,
-              "offset": {
-                "x": 0,
-                "y": 15
-              },
-              "textStyle": {
-                "fontSize": "14px",
-                "fill": "#666",
-                "textAnchor": "middle"
-              }
-            },
-            "lineStyle": {
-              "fill": "none",
-              "stroke": "#e08080",
-              "strokeDasharray": "4,2",
-              "strokeWidth": 1
-            },
-            "tickInterval": 2
-          }'>
-        </nk-line-chart>
-      </template>
-    </demo-snippet>
-  </div>
+    <div class="vertical-section-container centered">
+      <h3>X-axis Range</h3>
+      <demo-snippet>
+        <template>
+          <nk-line-chart
+            rows="[
+              [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
+            ]"
+            chartArea='{
+              "top": 10,
+              "left": 10,
+              "width": 320,
+              "height": 100
+            }'
+            xRange='{
+              "min": 0,
+              "max": 10
+            }'>
+          </nk-line-chart>
+        </template>
+      </demo-snippet>
+    </div>
 
-  <div class="vertical-section-container centered">
-    <h3>Origin: left-bottom (cartesian coordinates)</h3>
-    <demo-snippet>
-      <template>
-        <nk-line-chart
-          rows='[
-            [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-          ]'
-          chart-area='{
-            "top": 10,
-            "left": 10,
-            "width": 320,
-            "height": 100
-          }'
-          origin="left-bottom">
-        </nk-line-chart>
-      </template>
-    </demo-snippet>
-  </div>
+    <div class="vertical-section-container centered">
+      <h3>Y-axis Range</h3>
+      <demo-snippet>
+        <template>
+          <nk-line-chart
+            rows="[
+              [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
+            ]"
+            chartArea='{
+              "top": 10,
+              "left": 10,
+              "width": 320,
+              "height": 100
+            }'
+            yRange='{
+              "min": 0,
+              "max": 10
+            }'>
+          </nk-line-chart>
+        </template>
+      </demo-snippet>
+    </div>
 
-  <div class="vertical-section-container centered">
-    <h3>Origin: left-top (screen coordinates)</h3>
-    <demo-snippet>
-      <template>
-        <nk-line-chart
-          rows='[
-            [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-          ]'
-          chart-area='{
-            "top": 10,
-            "left": 10,
-            "width": 320,
-            "height": 100
-          }'
-          origin="left-top">
-        </nk-line-chart>
-      </template>
-    </demo-snippet>
-  </div>
-
-  <div class="vertical-section-container centered">
-    <h3>Origin: right-top</h3>
-    <demo-snippet>
-      <template>
-        <nk-line-chart
-          rows='[
-            [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-          ]'
-          chart-area='{
-            "top": 10,
-            "left": 10,
-            "width": 320,
-            "height": 100
-          }'
-          origin="right-top">
-        </nk-line-chart>
-      </template>
-    </demo-snippet>
-  </div>
-
-  <div class="vertical-section-container centered">
-    <h3>Origin: right-bottom</h3>
-    <demo-snippet>
-      <template>
-        <nk-line-chart
-          rows='[
-            [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-          ]'
-          chart-area='{
-            "top": 10,
-            "left": 10,
-            "width": 320,
-            "height": 100
-          }'
-          origin="right-bottom">
-        </nk-line-chart>
-      </template>
-    </demo-snippet>
-  </div>
-
-  <div class="vertical-section-container centered">
-    <h3>Custom Style for Points (Array)</h3>
-    <demo-snippet>
-      <template>
-        <nk-line-chart
-          rows="[
-            [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-          ]"
-          chart-area='{
-            "top": 10,
-            "left": 10,
-            "width": 320,
-            "height": 100
-          }'
-          point='{
-            "enable": true,
-            "elements": [
-              {
-                "type": "circle",
-                "style": {
-                  "fill": "#fff",
-                  "r": "8",
-                  "stroke": "#e08080",
-                  "strokeWidth": 1.5
+    <div class="vertical-section-container centered">
+      <h3>X-axis Grid Lines</h3>
+      <demo-snippet>
+        <template>
+          <nk-line-chart
+            rows="[
+              [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
+            ]"
+            chartArea='{
+              "top": 20,
+              "left": 20,
+              "width": 300,
+              "height": 80
+            }'
+            xAxis='{
+              "enabled": true,
+              "label": {
+                "enabled": true,
+                "offset": {
+                  "x": -6,
+                  "y": 5
+                },
+                "textAttrs": {
+                  "font-size": "14px",
+                  "fill": "#666",
+                  "text-anchor": "end"
                 }
               },
-              {
-                "type": "circle",
-                "style": {
-                  "fill": "#e08080",
-                  "r": "3.5",
-                  "stroke": "none",
-                  "strokeWidth": 0
+              "lineAttrs": {
+                "fill": "none",
+                "stroke": "#e08080",
+                "stroke-dasharray": "4,2",
+                "strokeWidth": 1
+              },
+              "tickInterval": 2
+            }'>
+          </nk-line-chart>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Y-axis Grid Lines</h3>
+      <demo-snippet>
+        <template>
+          <nk-line-chart
+            rows="[
+              [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
+            ]"
+            chartArea='{
+              "top": 20,
+              "left": 20,
+              "width": 300,
+              "height": 80
+            }'
+            yAxis='{
+              "enabled": true,
+              "label": {
+                "enabled": true,
+                "offset": {
+                  "x": 0,
+                  "y": 15
+                },
+                "textAttrs": {
+                  "font-size": "14px",
+                  "fill": "#666",
+                  "text-anchor": "middle"
+                }
+              },
+              "lineAttrs": {
+                "fill": "none",
+                "stroke": "#e08080",
+                "stroke-dasharray": "4,2",
+                "stroke-width": 1
+              },
+              "tickInterval": 2
+            }'>
+          </nk-line-chart>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Origin: left-bottom (cartesian coordinates)</h3>
+      <demo-snippet>
+        <template>
+          <nk-line-chart
+            rows="[
+              [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
+            ]"
+            chartArea='{
+              "top": 10,
+              "left": 10,
+              "width": 320,
+              "height": 100
+            }'
+            origin="left-bottom">
+          </nk-line-chart>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Origin: left-top (screen coordinates)</h3>
+      <demo-snippet>
+        <template>
+          <nk-line-chart
+            rows="[
+              [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
+            ]"
+            chartArea='{
+              "top": 10,
+              "left": 10,
+              "width": 320,
+              "height": 100
+            }'
+            origin="left-top">
+          </nk-line-chart>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Origin: right-top</h3>
+      <demo-snippet>
+        <template>
+          <nk-line-chart
+            rows="[
+              [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
+            ]"
+            chartArea='{
+              "top": 10,
+              "left": 10,
+              "width": 320,
+              "height": 100
+            }'
+            origin="right-top">
+          </nk-line-chart>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Origin: right-bottom</h3>
+      <demo-snippet>
+        <template>
+          <nk-line-chart
+            rows="[
+              [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
+            ]"
+            chartArea='{
+              "top": 10,
+              "left": 10,
+              "width": 320,
+              "height": 100
+            }'
+            origin="right-bottom">
+          </nk-line-chart>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Custom Style for Points (Array)</h3>
+      <demo-snippet>
+        <template>
+          <nk-line-chart
+            rows="[
+              [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
+            ]"
+            chartArea='{
+              "top": 10,
+              "left": 10,
+              "width": 320,
+              "height": 100
+            }'
+            point='{
+              "enabled": true,
+              "elements": [
+                {
+                  "name": "circle",
+                  "attrs": {
+                    "fill": "#fff",
+                    "r": "8",
+                    "stroke": "#e08080",
+                    "stroke-width": 1.5
+                  }
+                },
+                {
+                  "name": "circle",
+                  "attrs": {
+                    "fill": "#e08080",
+                    "r": "3.5",
+                    "stroke": "none",
+                    "stroke-width": 0
+                  }
+                }
+              ]
+            }'>
+          </nk-line-chart>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Custom Style for Points (Function)</h3>
+      <demo-snippet>
+        <template>
+          <nk-line-chart
+            id="chartPointFunction"
+            rows="[
+              [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
+            ]"
+            chartArea='{
+              "top": 10,
+              "left": 10,
+              "width": 320,
+              "height": 100
+            }'>
+          </nk-line-chart>
+          <script>
+            // See source code for detail
+          </script>
+        </template>
+        <script>
+          document.addEventListener('WebComponentsReady', async () => {
+            await new Promise(resolve => {
+              setTimeout(resolve, 500);
+            });
+            const chart = document.getElementById('chartPointFunction');
+            chart.point = {
+              enabled: true,
+              elements: (p, i) => {
+                if (i === 3) {
+                  return [
+                    {
+                      name: 'circle',
+                      attrs: {
+                        fill: 'rgba(35, 174, 163, 0.2)',
+                        r: '12'
+                      }
+                    },
+                    {
+                      name: 'circle',
+                      attrs: {
+                        fill: '#e08080',
+                        r: '7'
+                      }
+                    }
+                  ];
+                } else {
+                  return [
+                    {
+                      name: 'circle',
+                      attrs: {
+                        fill: '#e08080',
+                        r: '7'
+                      }
+                    }
+                  ];
                 }
               }
-            ]
-          }'>
-        </nk-line-chart>
-      </template>
-    </demo-snippet>
-  </div>
-
-  <div class="vertical-section-container centered">
-    <h3>Custom Style for Points (Function)</h3>
-    <demo-snippet>
-      <template>
-        <nk-line-chart
-          id="chartPointFunction"
-          rows="[
-            [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-          ]"
-          chart-area='{
-            "top": 10,
-            "left": 10,
-            "width": 320,
-            "height": 100
-          }'>
-        </nk-line-chart>
-        <script>// See source code for detail</script>
-      </template>
-      <script>
-        document.addEventListener('WebComponentsReady', async () => {
-          await new Promise(resolve => {
-            setTimeout(resolve, 500);
+            };
           });
-          const chart = document.getElementById('chartPointFunction');
-          chart.point = {
-            enable: true,
-            elements: function(p, i) {
-              if (i === 3) {
-                return [
-                  {
-                    type: "circle",
-                    style: {
-                      fill: "rgba(35, 174, 163, 0.2)",
-                      r: "12"
-                    }
-                  },
-                  {
-                    type: "circle",
-                    style: {
-                      fill: "#e08080",
-                      r: "7"
-                    }
-                  }
-                ];
-              }
-              else {
-                return [
-                  {
-                    type: "circle",
-                    style: {
-                      fill: "#e08080",
-                      r: "7"
-                    }
-                  }
-                ];
-              }
-            }
-          };
-        });
-      </script>
-    </demo-snippet>
-  </div>
+        </script>
+      </demo-snippet>
+    </div>
 
-  <div class="vertical-section-container centered">
-    <h3>Custom Style for Background Rect</h3>
-    <demo-snippet>
-      <template>
-        <nk-line-chart
-          rows="[
-            [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-          ]"
-          chart-area='{
-            "top": 10,
-            "left": 10,
-            "width": 320,
-            "height": 100
-          }'
-          background-rect-style='{
-            "fill": "#00f",
-            "fillOpacity": 0.1,
-            "stroke": "#00f",
-            "strokeWidth": 5,
-            "strokeOpacity": 0.3
-          }'>
-        </nk-line-chart>
-      </template>
-    </demo-snippet>
-  </div>
+    <div class="vertical-section-container centered">
+      <h3>Custom Style for Background Rect</h3>
+      <demo-snippet>
+        <template>
+          <nk-line-chart
+            rows="[
+              [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
+            ]"
+            chartArea='{
+              "top": 10,
+              "left": 10,
+              "width": 320,
+              "height": 100
+            }'
+            backgroundRectAttrs='{
+              "fill": "#00f",
+              "fill-opacity": 0.1,
+              "stroke": "#00f",
+              "stroke-width": 5,
+              "stroke-opacity": 0.3
+            }'>
+          </nk-line-chart>
+        </template>
+      </demo-snippet>
+    </div>
 
-  <div class="vertical-section-container centered">
-    <h3>Custom Style for Path</h3>
-    <demo-snippet>
-      <template>
-        <nk-line-chart
-          rows="[
-            [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-          ]"
-          chart-area='{
-            "top": 10,
-            "left": 10,
-            "width": 320,
-            "height": 100
-          }'
-          path-style='{
-            "stroke": "#8080e0",
-            "strokeWidth": 2,
-            "strokeDasharray": "5, 2",
-            "fillOpacity": 1,
-            "fill": "none"
-          }'>
-        </nk-line-chart>
-      </template>
-    </demo-snippet>
-  </div>
-
-</body>
+    <div class="vertical-section-container centered">
+      <h3>Custom Style for Path</h3>
+      <demo-snippet>
+        <template>
+          <nk-line-chart
+            rows="[
+              [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
+            ]"
+            chartArea='{
+              "top": 10,
+              "left": 10,
+              "width": 320,
+              "height": 100
+            }'
+            pathAttrs='{
+              "stroke": "#8080e0",
+              "stroke-width": 2,
+              "stroke-dasharray": "5, 2",
+              "fill-opacity": 1,
+              "fill": "none"
+            }'>
+          </nk-line-chart>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
 </html>

@@ -1,6 +1,10 @@
 {
   "debug.allowBreakpointsEverywhere": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
   "editor.insertSpaces": true,
+  "editor.renderIndentGuides": true,
+  "editor.renderWhitespace": true,
   "editor.tabSize": 2,
   "eslint.validate": ["javascript", "javascriptreact", "html"],
   "files.encoding": "utf8",
