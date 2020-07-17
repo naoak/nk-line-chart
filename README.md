@@ -1,7 +1,7 @@
 # \<nk-line-chart\>
 A very lightweight polymer component for drawing line charts.
 
-This component directly uses SVG tag to draw charts without graphic libraries.
+This component directly uses SVG tag to draw charts without any additional graphic libraries.
 
 ## Demo
 ```html
