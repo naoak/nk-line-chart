@@ -304,9 +304,6 @@ This component directly uses SVG tag to draw charts without any additional graph
 </nk-line-chart>
 ```
 
-## Install the Polymer-CLI
-First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
-
 ## Running the demo locally
 ```
 npm run demo
