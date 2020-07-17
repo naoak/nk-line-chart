@@ -22,6 +22,7 @@
     "type-detect": "1.0.0"
   },
   "dependencies": {
+    "@open-wc/lit-helpers": "^0.3.10",
     "@polymer/decorators": "^3.0.0",
     "@polymer/polymer": "^3.0.0",
     "lit-element": "^2.3.1"
@@ -47,9 +48,9 @@
     "webpack-merge": "^5.0.9"
   },
   "scripts": {
-    "clean": "rimraf *.d.ts *.tgz nk-line-chart.js* nk-line-chart.spec.js*",
+    "clean": "rimraf *.d.ts *.tgz nk-line-chart.js* lit-nk-line-chart.js* nk-line-chart.spec.js*",
     "build": "tsc -d",
-    "demo": "webpack-dev-server --mode development --open --host 0.0.0.0 --port 8081 --disable-host-check",
+    "demo": "webpack-dev-server --mode development --hot --inline --watch-content-base --open --host 0.0.0.0 --port 8081 --disable-host-check",
     "test": "tsc && karma start --coverage",
     "test:prune-snapshots": "karma start --prune-snapshots",
     "test:update-snapshots": "karma start --update-snapshots",
