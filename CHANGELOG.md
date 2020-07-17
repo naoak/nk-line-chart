@@ -7,6 +7,10 @@
 <!-- ### Fixed -->
 <!-- ### Removed -->
 
+## [2.2.2] - 2020-07-17
+### Added
+- Added travis config.
+
 ## [2.2.1] - 2020-07-13
 ### Fixed
 - Fixed demo and test commands in the README
