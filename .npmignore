@@ -1,0 +1,8 @@
+*.tgz
+.travis.yml
+.vscode
+demo
+karma.conf.js
+nk-line-chart.spec*
+tsconfig.json
+webpack.config.js
