@@ -23,7 +23,9 @@
   },
   "dependencies": {
     "@open-wc/lit-helpers": "^0.3.10",
-    "lit-element": "^2.3.1"
+    "@types/lodash-es": "^4.17.3",
+    "lit-element": "^2.3.1",
+    "lodash-es": "^4.17.15"
   },
   "devDependencies": {
     "@open-wc/building-webpack": "^2.13.37",
