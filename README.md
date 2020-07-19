@@ -7,7 +7,6 @@ A very lightweight polymer component for drawing line charts.
 This component directly uses SVG tag to draw charts without any additional graphic libraries.
 
 ## Demo
-
 ```html
 <style>
   nk-line-chart {
@@ -19,7 +18,6 @@ This component directly uses SVG tag to draw charts without any additional graph
 ```
 
 ### Basic
-
 <img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/basic.png" width="340" height="120">
 
 ```html
@@ -38,7 +36,6 @@ This component directly uses SVG tag to draw charts without any additional graph
 ```
 
 ### Label at Point
-
 <img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/label-at-point.png" width="340" height="120">
 
 ```html
@@ -69,7 +66,6 @@ This component directly uses SVG tag to draw charts without any additional graph
 ```
 
 ### X-axis Range
-
 <img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/xaxis-range.png" width="340" height="120">
 
 ```html
@@ -92,7 +88,6 @@ This component directly uses SVG tag to draw charts without any additional graph
 ```
 
 ### Y-axis Range
-
 <img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/yaxis-range.png" width="340" height="120">
 
 ```html
@@ -115,7 +110,6 @@ This component directly uses SVG tag to draw charts without any additional graph
 ```
 
 ### X-axis Grid Lines
-
 <img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/xaxis-grid.png" width="340" height="120">
 
 ```html
@@ -145,11 +139,13 @@ This component directly uses SVG tag to draw charts without any additional graph
         }
       }
     },
-    "lineAttrs": {
-      "fill": "none",
-      "stroke": "#e08080",
-      "stroke-dasharray": "4,2",
-      "stroke-width": 1
+    "line": {
+      "attrs": {
+        "fill": "none",
+        "stroke": "#e08080",
+        "stroke-dasharray": "4,2",
+        "stroke-width": 1
+      }
     },
     "tickInterval": 2
   }'
@@ -158,7 +154,6 @@ This component directly uses SVG tag to draw charts without any additional graph
 ```
 
 ### Y-axis Grid Lines
-
 <img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/yaxis-grid.png" width="340" height="120">
 
 ```html
@@ -188,11 +183,13 @@ This component directly uses SVG tag to draw charts without any additional graph
         }
       }
     },
-    "lineAttrs": {
-      "fill": "none",
-      "stroke": "#e08080",
-      "stroke-dasharray": "4,2",
-      "stroke-width": 1
+    "line": {
+      "attrs": {
+        "fill": "none",
+        "stroke": "#e08080",
+        "stroke-dasharray": "4,2",
+        "stroke-width": 1
+      }
     },
     "tickInterval": 2
   }'
@@ -201,7 +198,6 @@ This component directly uses SVG tag to draw charts without any additional graph
 ```
 
 ### Origin: left-bottom (cartesian coordinates)
-
 <img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/origin-left-bottom.png" width="340" height="120">
 
 ```html
@@ -221,7 +217,6 @@ This component directly uses SVG tag to draw charts without any additional graph
 ```
 
 ### Origin: left-top (screen coordinates)
-
 <img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/origin-left-top.png" width="340" height="120">
 
 ```html
@@ -241,7 +236,6 @@ This component directly uses SVG tag to draw charts without any additional graph
 ```
 
 ### Custom Style for Points
-
 <img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/custom-points.png" width="340" height="120">
 
 ```html
@@ -283,7 +277,6 @@ This component directly uses SVG tag to draw charts without any additional graph
 ```
 
 ### Custom Style for Background Rect
-
 <img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/custom-back.png" width="340" height="120">
 
 ```html
@@ -309,7 +302,6 @@ This component directly uses SVG tag to draw charts without any additional graph
 ```
 
 ### Custom Style for Path
-
 <img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/custom-path.png" width="340" height="120">
 
 ```html
@@ -335,13 +327,11 @@ This component directly uses SVG tag to draw charts without any additional graph
 ```
 
 ## Running the demo locally
-
 ```
 npm run demo
 ```
 
 ## Running the tests
-
 ```
 npm run test
 ```

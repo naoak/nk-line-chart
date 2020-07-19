@@ -39,7 +39,9 @@ type PointOptions = {
 type AxisOptions = {
   enabled?: boolean;
   label?: LabelOptions;
-  lineAttrs?: Attrs;
+  line?: {
+    attrs?: Attrs;
+  };
   tickInterval?: number;
 };
 type TextFormat = typeof formatLabel;
@@ -121,11 +123,13 @@ export class NkLineChartElement extends LitElement {
         }
       }
     },
-    lineAttrs: {
-      fill: 'none',
-      stroke: '#e08080',
-      'stroke-dasharray': '4,2',
-      'stroke-width': 1
+    line: {
+      attrs: {
+        fill: 'none',
+        stroke: '#e08080',
+        'stroke-dasharray': '4,2',
+        'stroke-width': 1
+      }
     },
     tickInterval: 2
   };
@@ -158,11 +162,13 @@ export class NkLineChartElement extends LitElement {
         }
       }
     },
-    lineAttrs: {
-      fill: 'none',
-      stroke: '#e08080',
-      'stroke-dasharray': '4,2',
-      'stroke-width': 1
+    line: {
+      attrs: {
+        fill: 'none',
+        stroke: '#e08080',
+        'stroke-dasharray': '4,2',
+        'stroke-width': 1
+      }
     },
     tickInterval: 2
   };
@@ -355,6 +361,7 @@ function drawXAxis(
   const interval = axisOpts.tickInterval;
   const start = Math.ceil(pf.vMinY / interval) * interval;
   const end = Math.floor(pf.vMaxY / interval) * interval;
+  const lineAttrs = axisOpts.line?.attrs || {};
   const labelOpts = axisOpts.label;
   const labelOffset = labelOpts?.offset || {};
   const labelTextAttrs = labelOpts?.text?.attrs || {};
@@ -386,12 +393,7 @@ function drawXAxis(
   return svg`<g class="x-axis-group">
     <g class="x-axis-grid-line-group">
       ${tickItems.map(item =>
-        drawPath(
-          'x-axis-grid-line',
-          transformer,
-          item.axisPoints,
-          axisOpts.lineAttrs
-        )
+        drawPath('x-axis-grid-line', transformer, item.axisPoints, lineAttrs)
       )}
     </g>
     <g class="x-axis-grid-label-group">
@@ -422,6 +424,7 @@ function drawYAxis(
   const interval = axisOpts.tickInterval;
   const start = Math.ceil(pf.vMinX / interval) * interval;
   const end = Math.floor(pf.vMaxX / interval) * interval;
+  const lineAttrs = axisOpts.line?.attrs || {};
   const labelOpts = axisOpts.label;
   const labelOffset = labelOpts?.offset || {};
   const labelTextAttrs = labelOpts?.text?.attrs || {};
@@ -453,12 +456,7 @@ function drawYAxis(
   return svg`<g class="y-axis-group">
     <g class="y-axis-grid-line-group">
       ${tickItems.map(item =>
-        drawPath(
-          'y-axis-grid-line',
-          transformer,
-          item.axisPoints,
-          axisOpts.lineAttrs
-        )
+        drawPath('y-axis-grid-line', transformer, item.axisPoints, lineAttrs)
       )}
     </g>
     <g class="y-axis-grid-label-group">

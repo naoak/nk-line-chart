@@ -651,11 +651,13 @@ describe('nk-line-chart', () => {
       };
       chart.xAxis = {
         enabled: true,
-        lineAttrs: {
-          fill: 'none',
-          stroke: '#80e080',
-          'stroke-dasharray': '4,2',
-          'stroke-width': 1
+        line: {
+          attrs: {
+            fill: 'none',
+            stroke: '#80e080',
+            'stroke-dasharray': '4,2',
+            'stroke-width': 1
+          }
         },
         tickInterval: 2
       };
@@ -688,11 +690,13 @@ describe('nk-line-chart', () => {
       };
       chart.yAxis = {
         enabled: true,
-        lineAttrs: {
-          fill: 'none',
-          stroke: '#80e080',
-          'stroke-dasharray': '4,2',
-          'stroke-width': 1
+        line: {
+          attrs: {
+            fill: 'none',
+            stroke: '#80e080',
+            'stroke-dasharray': '4,2',
+            'stroke-width': 1
+          }
         },
         tickInterval: 2
       };
@@ -738,8 +742,10 @@ describe('nk-line-chart', () => {
             }
           }
         },
-        lineAttrs: {
-          stroke: '#e08080'
+        line: {
+          attrs: {
+            stroke: '#e08080'
+          }
         },
         tickInterval: 2
       };
@@ -786,8 +792,10 @@ describe('nk-line-chart', () => {
             }
           }
         },
-        lineAttrs: {
-          stroke: '#e08080'
+        line: {
+          attrs: {
+            stroke: '#e08080'
+          }
         },
         tickInterval: 2
       };
@@ -819,8 +827,10 @@ describe('nk-line-chart', () => {
       };
       chart.xAxis = {
         enabled: true,
-        lineAttrs: {
-          stroke: '#e08080'
+        line: {
+          attrs: {
+            stroke: '#e08080'
+          }
         },
         tickInterval: 1
       };
@@ -832,8 +842,10 @@ describe('nk-line-chart', () => {
       expect(gridLines.length).to.equal(3); // 2, 3, 4
       chart.xAxis = {
         enabled: true,
-        lineAttrs: {
-          stroke: '#e08080'
+        line: {
+          attrs: {
+            stroke: '#e08080'
+          }
         },
         tickInterval: 2
       };
@@ -845,8 +857,10 @@ describe('nk-line-chart', () => {
       expect(gridLines.length).to.equal(2); // 2, 4
       chart.xAxis = {
         enabled: true,
-        lineAttrs: {
-          stroke: '#e08080'
+        line: {
+          attrs: {
+            stroke: '#e08080'
+          }
         },
         tickInterval: 3
       };
@@ -858,8 +872,10 @@ describe('nk-line-chart', () => {
       expect(gridLines.length).to.equal(1); // 3
       chart.xAxis = {
         enabled: true,
-        lineAttrs: {
-          stroke: '#e08080'
+        line: {
+          attrs: {
+            stroke: '#e08080'
+          }
         },
         tickInterval: 4
       };
@@ -871,8 +887,10 @@ describe('nk-line-chart', () => {
       expect(gridLines.length).to.equal(1); // 4
       chart.xAxis = {
         enabled: true,
-        lineAttrs: {
-          stroke: '#e08080'
+        line: {
+          attrs: {
+            stroke: '#e08080'
+          }
         },
         tickInterval: 5
       };
@@ -901,8 +919,10 @@ describe('nk-line-chart', () => {
       };
       chart.yAxis = {
         enabled: true,
-        lineAttrs: {
-          stroke: '#e08080'
+        line: {
+          attrs: {
+            stroke: '#e08080'
+          }
         },
         tickInterval: 1
       };
@@ -914,8 +934,10 @@ describe('nk-line-chart', () => {
       expect(gridLines.length).to.equal(3); // 1, 2, 3
       chart.yAxis = {
         enabled: true,
-        lineAttrs: {
-          stroke: '#e08080'
+        line: {
+          attrs: {
+            stroke: '#e08080'
+          }
         },
         tickInterval: 2
       };
@@ -927,8 +949,10 @@ describe('nk-line-chart', () => {
       expect(gridLines.length).to.equal(1); // 2
       chart.yAxis = {
         enabled: true,
-        lineAttrs: {
-          stroke: '#e08080'
+        line: {
+          attrs: {
+            stroke: '#e08080'
+          }
         },
         tickInterval: 3
       };
@@ -940,8 +964,10 @@ describe('nk-line-chart', () => {
       expect(gridLines.length).to.equal(1); // 3
       chart.yAxis = {
         enabled: true,
-        lineAttrs: {
-          stroke: '#e08080'
+        line: {
+          attrs: {
+            stroke: '#e08080'
+          }
         },
         tickInterval: 4
       };
