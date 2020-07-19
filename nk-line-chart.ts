@@ -6,20 +6,30 @@ This source code is distributed under the MIT license.
 */
 import { LitElement, svg, css, property, customElement } from 'lit-element';
 import { spread } from '@open-wc/lit-helpers';
+import { merge } from 'lodash-es';
 
-type Attrs = { [key in string]: number | string };
-type ChartArea = {
+export type Attrs = { [key in string]: number | string };
+
+export type ChartArea = {
   top?: number;
   left?: number;
   width: number;
   height: number;
 };
-type Origin = 'left-bottom' | 'left-top' | 'right-top' | 'right-bottom' | '';
-type Range = { min: number; max: number };
-type Vector2d = [number, number];
-type VectorXY = { x: number; y: number };
-type MappedXY = { x: number; y: number; vx: number; vy: number };
-type LabelOptions = {
+
+export type Origin =
+  | 'left-bottom'
+  | 'left-top'
+  | 'right-top'
+  | 'right-bottom'
+  | '';
+
+export type Range = { min: number; max: number };
+export type Vector2d = [number, number];
+export type VectorXY = { x: number; y: number };
+export type MappedXY = { x: number; y: number; vx: number; vy: number };
+
+export type LabelOptions = {
   enabled?: boolean;
   offset?: {
     x?: number;
@@ -30,25 +40,42 @@ type LabelOptions = {
     attrs?: Attrs;
   };
 };
-type PointOptions = {
+
+export type PointOptions = {
   enabled?: boolean;
   elements:
-    | { name: string; attrs: Attrs }[]
-    | ((p: MappedXY, i: number) => { name: string; attrs: Attrs }[]);
+    | { name?: string; attrs: Attrs }[]
+    | ((p: MappedXY, i: number) => { name?: string; attrs: Attrs }[]);
 };
-type LineOptions = {
+
+export type LineOptions = {
   attrs: Attrs;
 };
-type BackgroundRectOptions = {
+
+export type BackgroundRectOptions = {
   attrs: Attrs;
 };
-type AxisOptions = {
+
+export type AxisOptions = {
   enabled?: boolean;
   label?: LabelOptions;
   line?: LineOptions;
   tickInterval?: number;
 };
-type TextFormat = typeof formatLabel;
+
+export type OneSeriesOptions = {
+  point?: PointOptions;
+  pointLabel?: LabelOptions;
+  line?: LineOptions;
+};
+
+export type PlotOptions = {
+  common: OneSeriesOptions;
+  series: OneSeriesOptions[];
+} & OneSeriesOptions;
+
+export type TextFormat = typeof formatLabel;
+
 type PointsAndFrame = ReturnType<typeof calcPointsAndFrame>;
 type Transformer = ReturnType<typeof getTransformer>;
 
@@ -58,17 +85,17 @@ const EMPTY_OFFSET: { x?: number; y?: number } = {};
 @customElement('nk-line-chart')
 export class NkLineChartElement extends LitElement {
   /**
-   * Data rows
-   *
+   * Data for lines
    * ```
    * (ex)
    * [
-   *   [0, 0], [1, 1]
+   *   [[0, 0], [1, 1], ...],
+   *   [[-1, -1], [2, 2], ...]
    * ]
    * ```
    */
   @property({ type: Array })
-  rows: Vector2d[];
+  data: Vector2d[][];
 
   /**
    * An object to configure the placement and size of the chart area.
@@ -144,7 +171,7 @@ export class NkLineChartElement extends LitElement {
   };
 
   /**
-   * X-axis range of chart area. If not specified, the range will be computed by data rows.
+   * X-axis range of chart area. If not specified, the range will be computed by data.
    * ```
    * min: X-axis value at the left (right if the origin is right) of chart area
    * max: X-axis value at the right (left if the origin is right) of chart area
@@ -183,7 +210,7 @@ export class NkLineChartElement extends LitElement {
   };
 
   /**
-   * Y-axis range of chart area. If not specified, the range will be computed by data rows.
+   * Y-axis range of chart area. If not specified, the range will be computed by data.
    * ```
    * min: Y-axis value at the bottom (top if the origin is top) of chart area
    * max: Y-axis value at the top (bottom if the origin is top) of chart area
@@ -193,60 +220,7 @@ export class NkLineChartElement extends LitElement {
   yRange: Range = null;
 
   /**
-   * Options for data points.
-   *
-   * ```
-   * enabled: If false, this option will be ignored.
-   * elements: Function or array of elements which define styles of data points. Currently, `circle` is the only permittable type.
-   *
-   * (ex) A point which consists of two different circles.
-   * elements: [
-   *   {
-   *     type: 'circle',
-   *     style: {
-   *       fill: '#fff',
-   *       r: '8',
-   *       stroke: '#e08080',
-   *       strokeWidth: 1.5
-   *     }
-   *   },
-   *   {
-   *     type: 'circle',
-   *     style: {
-   *       fill: '#e08080',
-   *       r: '3.5',
-   *       stroke: 'none',
-   *       strokeWidth: 0
-   *     }
-   *    }
-   *  ]
-   *
-   * (ex) Can be a function which returns an array of elements
-   * elements: function(p, i) {
-   *   if (i === this._someIndex) {
-   *     return [
-   *       {
-   *         type: 'circle',
-   *         style: {
-   *           fill: 'red',
-   *           r: '8'
-   *         }
-   *       }
-   *     ];
-   *   }
-   *   else {
-   *     return [
-   *       {
-   *         type: 'circle',
-   *         style: {
-   *           fill: 'blue',
-   *           r: '6'
-   *         }
-   *       }
-   *     ];
-   *   }
-   * }.bind(this)
-   * ```
+   * Common point options
    */
   @property({ type: Object })
   point: PointOptions = {
@@ -255,7 +229,6 @@ export class NkLineChartElement extends LitElement {
       {
         name: 'circle',
         attrs: {
-          fill: '#e08080',
           r: '3',
           stroke: 'none',
           'stroke-width': 2
@@ -265,13 +238,7 @@ export class NkLineChartElement extends LitElement {
   };
 
   /**
-   * Options for labels at points
-   * ```
-   * enabled: whether show labels or not (boolean)
-   * offset: offset from label ({x, y})
-   * text.format: function for label formatter (function(row, index))
-   * text.attrs: text attributes (object)
-   * ```
+   * Common label options
    */
   @property({ type: Object })
   pointLabel: LabelOptions = {
@@ -289,16 +256,70 @@ export class NkLineChartElement extends LitElement {
   };
 
   /**
-   * Attributes for polygonal lines
+   * Common line options
    */
   @property({ type: Object })
   line: LineOptions = {
     attrs: {
       fill: 'none',
-      stroke: '#e08080',
       'stroke-width': 2
     }
   };
+
+  /**
+   * Each series options for point, pointLabel and line
+   */
+  @property({ type: Array })
+  series: OneSeriesOptions[] = [
+    {
+      point: {
+        elements: [
+          {
+            attrs: {
+              fill: '#e08080'
+            }
+          }
+        ]
+      },
+      line: {
+        attrs: {
+          stroke: '#e08080'
+        }
+      }
+    },
+    {
+      point: {
+        elements: [
+          {
+            attrs: {
+              fill: '#80c080'
+            }
+          }
+        ]
+      },
+      line: {
+        attrs: {
+          stroke: '#80c080'
+        }
+      }
+    },
+    {
+      point: {
+        elements: [
+          {
+            attrs: {
+              fill: '#8080e0'
+            }
+          }
+        ]
+      },
+      line: {
+        attrs: {
+          stroke: '#8080e0'
+        }
+      }
+    }
+  ];
 
   static get styles() {
     return css`
@@ -314,24 +335,27 @@ export class NkLineChartElement extends LitElement {
 
   render() {
     const chartArea = this.chartArea;
-    if (!chartArea || !this.rows) {
+    if (!chartArea || !this.data) {
       return svg``;
     }
 
     const origin = this.origin;
     const transformer = getTransformer(origin, chartArea);
     const pf = calcPointsAndFrame(
-      this.rows,
+      this.data,
       chartArea,
       this.xRange,
       this.yRange
     );
-    const points = pf.points;
-    const pointOpts = this.point;
+    const pointsList = pf.pointsList;
     const xAxisOpts = this.xAxis;
     const yAxisOpts = this.yAxis;
-    const lineAttrs = this.line?.attrs || EMPTY_ATTRS;
     const backgroundRectAttrs = this.backgroundRect?.attrs || EMPTY_ATTRS;
+    const commonOpts = {
+      point: this.point,
+      pointLabel: this.pointLabel,
+      line: this.line
+    };
 
     return svg`
       <svg>
@@ -339,21 +363,42 @@ export class NkLineChartElement extends LitElement {
           ${drawRect(chartArea, backgroundRectAttrs)}
           ${xAxisOpts?.enabled ? drawXAxis(transformer, xAxisOpts, pf) : svg``}
           ${yAxisOpts?.enabled ? drawYAxis(transformer, yAxisOpts, pf) : svg``}
-          ${drawPath('data-line', transformer, points, lineAttrs)}
-          <g class="point-group">
-            ${
-              pointOpts?.enabled
-                ? drawPoints(transformer, pointOpts, points)
-                : svg``
-            }
-          </g>
-          <g class="point-label-group">
-            ${drawLabels(transformer, this.pointLabel, points)}
+          <g class="series-group">
+            ${pointsList.map((points, i) => {
+              const seriesOpts = getSeriesOptions(commonOpts, this.series, i);
+              const lineAttrs = seriesOpts.line?.attrs || EMPTY_ATTRS;
+              const pointOpts = seriesOpts.point;
+              const pointLabel = seriesOpts.pointLabel;
+              return svg`<g class="series" data-series-i=${i}>
+                  ${drawPath('line', transformer, points, lineAttrs)}
+                  <g class="point-group">
+                    ${
+                      pointOpts?.enabled
+                        ? drawPoints(transformer, pointOpts, points)
+                        : svg``
+                    }
+                  </g>
+                  <g class="point-label-group">
+                    ${drawLabels(transformer, pointLabel, points)}
+                  </g>
+                </g>
+                `;
+            })}
           </g>
         </g>
       </svg>
     `;
   }
+}
+
+function getSeriesOptions(
+  commonOptions: OneSeriesOptions,
+  seriesOptions: OneSeriesOptions[],
+  i: number
+) {
+  const series =
+    seriesOptions.length > 0 ? seriesOptions[i % seriesOptions.length] : {};
+  return merge({}, commonOptions, series);
 }
 
 function drawRect(area: ChartArea, attrs: Attrs) {
@@ -526,7 +571,7 @@ function drawPoints(
     return svg`<g class="point">${elements.map(
       e =>
         svg`${
-          e.name === 'circle'
+          !e.name || e.name === 'circle'
             ? svg`<circle
           cx="${cp.x}"
           cy="${cp.y}"
@@ -563,7 +608,7 @@ function drawLabels(
 }
 
 function calcPointsAndFrame(
-  rows: Vector2d[],
+  data: Vector2d[][],
   chartArea: ChartArea,
   xRange: Range,
   yRange: Range
@@ -581,19 +626,21 @@ function calcPointsAndFrame(
   let factorX: number;
   let factorY: number;
 
-  rows.forEach(function (r) {
-    if (r[0] < vMinX) {
-      vMinX = r[0];
-    }
-    if (r[0] > vMaxX) {
-      vMaxX = r[0];
-    }
-    if (r[1] < vMinY) {
-      vMinY = r[1];
-    }
-    if (r[1] > vMaxY) {
-      vMaxY = r[1];
-    }
+  data.forEach(row => {
+    row.forEach(function (p) {
+      if (p[0] < vMinX) {
+        vMinX = p[0];
+      }
+      if (p[0] > vMaxX) {
+        vMaxX = p[0];
+      }
+      if (p[1] < vMinY) {
+        vMinY = p[1];
+      }
+      if (p[1] > vMaxY) {
+        vMaxY = p[1];
+      }
+    });
   });
   if (xRange) {
     vMinX = typeof xRange.min === 'number' ? xRange.min : vMinX;
@@ -615,14 +662,16 @@ function calcPointsAndFrame(
     constantY: constantY,
     factorX: factorX,
     factorY: factorY,
-    points: rows.map(function (r) {
-      return {
-        vx: r[0],
-        vy: r[1],
-        x: isFinite(factorX) ? (r[0] - vMinX) * factorX + left : constantX,
-        y: isFinite(factorY) ? (r[1] - vMinY) * factorY + top : constantY
-      };
-    }) as MappedXY[],
+    pointsList: data.map(points => {
+      return points.map(p => {
+        return {
+          vx: p[0],
+          vy: p[1],
+          x: isFinite(factorX) ? (p[0] - vMinX) * factorX + left : constantX,
+          y: isFinite(factorY) ? (p[1] - vMinY) * factorY + top : constantY
+        } as MappedXY;
+      });
+    }),
     vMinX: vMinX,
     vMinY: vMinY,
     vMaxX: vMaxX,

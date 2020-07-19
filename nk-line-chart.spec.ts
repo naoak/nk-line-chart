@@ -14,10 +14,12 @@ describe('nk-line-chart', () => {
   });
 
   describe('svg', () => {
-    it('should be created if chartArea and rows are specified', async () => {
-      chart.rows = [
-        [0, 0],
-        [1, 1]
+    it('should be created if chartArea and data are specified', async () => {
+      chart.data = [
+        [
+          [0, 0],
+          [1, 1]
+        ]
       ];
       chart.chartArea = {
         width: 200,
@@ -31,10 +33,12 @@ describe('nk-line-chart', () => {
 
   describe('automatic axis range', () => {
     it('Points just fit in the chart area when top and left are not specified', async () => {
-      chart.rows = [
-        [0, 0],
-        [1, 1],
-        [2, 2]
+      chart.data = [
+        [
+          [0, 0],
+          [1, 1],
+          [2, 2]
+        ]
       ];
       chart.chartArea = {
         width: 200,
@@ -55,10 +59,12 @@ describe('nk-line-chart', () => {
     });
 
     it('Points just fit in the chart area when the minimums of x and y are not 0', async () => {
-      chart.rows = [
-        [-1, -1],
-        [0, 0],
-        [1, 1]
+      chart.data = [
+        [
+          [-1, -1],
+          [0, 0],
+          [1, 1]
+        ]
       ];
       chart.chartArea = {
         width: 200,
@@ -79,10 +85,12 @@ describe('nk-line-chart', () => {
     });
 
     it('Points just fit in the chart area even when top and left are not 0', async () => {
-      chart.rows = [
-        [0, 0],
-        [1, 1],
-        [2, 2]
+      chart.data = [
+        [
+          [0, 0],
+          [1, 1],
+          [2, 2]
+        ]
       ];
       chart.chartArea = {
         top: 10,
@@ -107,10 +115,12 @@ describe('nk-line-chart', () => {
 
   describe('axis', () => {
     it('X-axis range can be explicitly set', async () => {
-      chart.rows = [
-        [0, 0],
-        [1, 1],
-        [2, 2]
+      chart.data = [
+        [
+          [0, 0],
+          [1, 1],
+          [2, 2]
+        ]
       ];
       chart.chartArea = {
         top: 0,
@@ -137,10 +147,12 @@ describe('nk-line-chart', () => {
     });
 
     it('Y-axis range can be explicitly set', async () => {
-      chart.rows = [
-        [0, 0],
-        [1, 1],
-        [2, 2]
+      chart.data = [
+        [
+          [0, 0],
+          [1, 1],
+          [2, 2]
+        ]
       ];
       chart.chartArea = {
         top: 0,
@@ -167,9 +179,9 @@ describe('nk-line-chart', () => {
     });
   });
 
-  describe('rows', () => {
-    it('The length of rows can be 0', async () => {
-      chart.rows = [];
+  describe('data', () => {
+    it('The length of data can be 0', async () => {
+      chart.data = [];
       chart.chartArea = {
         width: 200,
         height: 100
@@ -182,8 +194,22 @@ describe('nk-line-chart', () => {
       expect(circles.length).to.equal(0);
     });
 
-    it('A point will be located in the center when the lengh of rows is 1', async () => {
-      chart.rows = [[0, 0]];
+    it('The length of datum can be 0', async () => {
+      chart.data = [[]];
+      chart.chartArea = {
+        width: 200,
+        height: 100
+      };
+      chart.origin = 'left-top';
+      await nextFrame();
+      const svg = container.children[0];
+      expect(svg.tagName).to.equal('svg');
+      const circles = svg.querySelectorAll('circle');
+      expect(circles.length).to.equal(0);
+    });
+
+    it('A point will be located in the center when the lengh of datum is 1', async () => {
+      chart.data = [[[0, 0]]];
       chart.chartArea = {
         width: 200,
         height: 100
@@ -201,9 +227,11 @@ describe('nk-line-chart', () => {
 
   describe('origin', () => {
     it('The change of origin invokes the recalculation of transform', async () => {
-      chart.rows = [
-        [0, 0],
-        [1, 1]
+      chart.data = [
+        [
+          [0, 0],
+          [1, 1]
+        ]
       ];
       chart.chartArea = {
         top: 10,
@@ -268,9 +296,11 @@ describe('nk-line-chart', () => {
 
   describe('attrs', () => {
     it('The attrs of the background can be changed', async () => {
-      chart.rows = [
-        [0, 0],
-        [1, 1]
+      chart.data = [
+        [
+          [0, 0],
+          [1, 1]
+        ]
       ];
       chart.chartArea = {
         top: 10,
@@ -298,9 +328,11 @@ describe('nk-line-chart', () => {
     });
 
     it('The attrs of points can be changed by point.elements (Array)', async () => {
-      chart.rows = [
-        [0, 0],
-        [1, 1]
+      chart.data = [
+        [
+          [0, 0],
+          [1, 1]
+        ]
       ];
       chart.chartArea = {
         top: 10,
@@ -308,7 +340,7 @@ describe('nk-line-chart', () => {
         width: 180,
         height: 80
       };
-      chart.point = {
+      chart.series[0].point = {
         enabled: true,
         elements: [
           {
@@ -351,9 +383,11 @@ describe('nk-line-chart', () => {
     });
 
     it('The attrs of points can be changed by point.elements (Function)', async () => {
-      chart.rows = [
-        [0, 0],
-        [1, 1]
+      chart.data = [
+        [
+          [0, 0],
+          [1, 1]
+        ]
       ];
       chart.chartArea = {
         top: 10,
@@ -361,7 +395,7 @@ describe('nk-line-chart', () => {
         width: 180,
         height: 80
       };
-      chart.point = {
+      chart.series[0].point = {
         enabled: true,
         elements: (p, i) => {
           if (i === 0) {
@@ -407,9 +441,11 @@ describe('nk-line-chart', () => {
     });
 
     it('The attrs of a polygonal line can be changed', async () => {
-      chart.rows = [
-        [0, 0],
-        [1, 1]
+      chart.data = [
+        [
+          [0, 0],
+          [1, 1]
+        ]
       ];
       chart.chartArea = {
         top: 10,
@@ -417,7 +453,7 @@ describe('nk-line-chart', () => {
         width: 180,
         height: 80
       };
-      chart.line = {
+      chart.series[0].line = {
         attrs: {
           fill: 'none',
           'fill-opacity': 1,
@@ -437,9 +473,11 @@ describe('nk-line-chart', () => {
 
   describe('label', () => {
     it('The label at point can be enabled', async () => {
-      chart.rows = [
-        [1, 2],
-        [3, 4]
+      chart.data = [
+        [
+          [1, 2],
+          [3, 4]
+        ]
       ];
       chart.chartArea = {
         top: 10,
@@ -457,9 +495,11 @@ describe('nk-line-chart', () => {
     });
 
     it('The offset of label at point can be changed', async () => {
-      chart.rows = [
-        [1, 2],
-        [3, 4]
+      chart.data = [
+        [
+          [1, 2],
+          [3, 4]
+        ]
       ];
       chart.chartArea = {
         top: 10,
@@ -484,9 +524,11 @@ describe('nk-line-chart', () => {
     });
 
     it('The text formater of label at point can be changed', async () => {
-      chart.rows = [
-        [1, 2],
-        [3, 4]
+      chart.data = [
+        [
+          [1, 2],
+          [3, 4]
+        ]
       ];
       chart.chartArea = {
         top: 10,
@@ -507,9 +549,11 @@ describe('nk-line-chart', () => {
     });
 
     it('The text attrs of label at point can be changed', async () => {
-      chart.rows = [
-        [1, 2],
-        [3, 4]
+      chart.data = [
+        [
+          [1, 2],
+          [3, 4]
+        ]
       ];
       chart.chartArea = {
         top: 10,
@@ -533,9 +577,11 @@ describe('nk-line-chart', () => {
 
   describe('grid lines', () => {
     it('X-axis grid lines are disabled by default', async () => {
-      chart.rows = [
-        [1, 2],
-        [3, 4]
+      chart.data = [
+        [
+          [1, 2],
+          [3, 4]
+        ]
       ];
       chart.chartArea = {
         top: 10,
@@ -550,9 +596,11 @@ describe('nk-line-chart', () => {
     });
 
     it('Y-axis grid lines are disabled by default', async () => {
-      chart.rows = [
-        [1, 2],
-        [3, 4]
+      chart.data = [
+        [
+          [1, 2],
+          [3, 4]
+        ]
       ];
       chart.chartArea = {
         top: 10,
@@ -567,9 +615,11 @@ describe('nk-line-chart', () => {
     });
 
     it('X-axis grid lines can be enabled', async () => {
-      chart.rows = [
-        [1, 2],
-        [3, 4]
+      chart.data = [
+        [
+          [1, 2],
+          [3, 4]
+        ]
       ];
       chart.chartArea = {
         top: 10,
@@ -585,9 +635,11 @@ describe('nk-line-chart', () => {
     });
 
     it('Y-axis grid lines can be enabled', async () => {
-      chart.rows = [
-        [1, 2],
-        [3, 4]
+      chart.data = [
+        [
+          [1, 2],
+          [3, 4]
+        ]
       ];
       chart.chartArea = {
         top: 10,
@@ -603,9 +655,11 @@ describe('nk-line-chart', () => {
     });
 
     it('X-axis options can be null', async () => {
-      chart.rows = [
-        [1, 2],
-        [3, 4]
+      chart.data = [
+        [
+          [1, 2],
+          [3, 4]
+        ]
       ];
       chart.chartArea = {
         top: 10,
@@ -621,9 +675,11 @@ describe('nk-line-chart', () => {
     });
 
     it('Y-axis options can be null', async () => {
-      chart.rows = [
-        [1, 2],
-        [3, 4]
+      chart.data = [
+        [
+          [1, 2],
+          [3, 4]
+        ]
       ];
       chart.chartArea = {
         top: 10,
@@ -643,9 +699,11 @@ describe('nk-line-chart', () => {
       const GRID_LINE_GROUP = '.x-axis-grid-line-group';
       const GRID_LINE = '.x-axis-grid-line';
 
-      chart.rows = [
-        [1, 2],
-        [3, 4]
+      chart.data = [
+        [
+          [1, 2],
+          [3, 4]
+        ]
       ];
       chart.chartArea = {
         top: 10,
@@ -682,9 +740,11 @@ describe('nk-line-chart', () => {
       const GRID_LINE_GROUP = '.y-axis-grid-line-group';
       const GRID_LINE = '.y-axis-grid-line';
 
-      chart.rows = [
-        [1, 2],
-        [3, 4]
+      chart.data = [
+        [
+          [1, 2],
+          [3, 4]
+        ]
       ];
       chart.chartArea = {
         top: 10,
@@ -721,9 +781,11 @@ describe('nk-line-chart', () => {
       const GRID_LABEL_GROUP = '.x-axis-grid-label-group';
       const GRID_LABEL = '.x-axis-grid-label';
 
-      chart.rows = [
-        [1, 2],
-        [3, 4]
+      chart.data = [
+        [
+          [1, 2],
+          [3, 4]
+        ]
       ];
       chart.chartArea = {
         top: 10,
@@ -771,9 +833,11 @@ describe('nk-line-chart', () => {
       const GRID_LABEL_GROUP = '.y-axis-grid-label-group';
       const GRID_LABEL = '.y-axis-grid-label';
 
-      chart.rows = [
-        [1, 2],
-        [3, 4]
+      chart.data = [
+        [
+          [1, 2],
+          [3, 4]
+        ]
       ];
       chart.chartArea = {
         top: 10,
@@ -819,9 +883,11 @@ describe('nk-line-chart', () => {
       const GRID_LINE_GROUP = '.x-axis-grid-line-group';
       const GRID_LINE = '.x-axis-grid-line';
 
-      chart.rows = [
-        [1, 2],
-        [3, 4]
+      chart.data = [
+        [
+          [1, 2],
+          [3, 4]
+        ]
       ];
       chart.chartArea = {
         top: 10,
@@ -911,9 +977,11 @@ describe('nk-line-chart', () => {
       const GRID_LINE_GROUP = '.y-axis-grid-line-group';
       const GRID_LINE = '.y-axis-grid-line';
 
-      chart.rows = [
-        [1, 2],
-        [3, 4]
+      chart.data = [
+        [
+          [1, 2],
+          [3, 4]
+        ]
       ];
       chart.chartArea = {
         top: 10,

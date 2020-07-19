@@ -22,16 +22,33 @@ This component directly uses SVG tag to draw charts without any additional graph
 
 ```html
 <nk-line-chart
-  rows="[
+  data="[[
     [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
+  ]]"
+  chartArea='{
+    "top": 10,
+    "left": 10,
+    "width": 320,
+    "height": 100
+  }'>
+</nk-line-chart>
+```
+
+### Multiple Lines
+<img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/multiple.png" width="340" height="120">
+
+```html
+<nk-line-chart
+  data="[
+    [[0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]],
+    [[0, 8], [1, 7], [2, 6], [3, 5], [4, 4], [5, 3], [6, 2]]
   ]"
   chartArea='{
     "top": 10,
     "left": 10,
     "width": 320,
     "height": 100
-  }'
->
+  }'>
 </nk-line-chart>
 ```
 
@@ -40,9 +57,9 @@ This component directly uses SVG tag to draw charts without any additional graph
 
 ```html
 <nk-line-chart
-  rows="[
+  data="[[
     [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-  ]"
+  ]]"
   chartArea='{
     "top": 20,
     "left": 20,
@@ -60,8 +77,7 @@ This component directly uses SVG tag to draw charts without any additional graph
         "text-anchor": "middle"
       }
     }
-  }'
->
+  }'>
 </nk-line-chart>
 ```
 
@@ -70,9 +86,9 @@ This component directly uses SVG tag to draw charts without any additional graph
 
 ```html
 <nk-line-chart
-  rows="[
+  data="[[
     [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-  ]"
+  ]]"
   chartArea='{
     "top": 10,
     "left": 10,
@@ -82,8 +98,7 @@ This component directly uses SVG tag to draw charts without any additional graph
   xRange='{
     "min": 0,
     "max": 10
-  }'
->
+  }'>
 </nk-line-chart>
 ```
 
@@ -92,9 +107,9 @@ This component directly uses SVG tag to draw charts without any additional graph
 
 ```html
 <nk-line-chart
-  rows="[
+  data="[[
     [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-  ]"
+  ]]"
   chartArea='{
     "top": 10,
     "left": 10,
@@ -104,8 +119,7 @@ This component directly uses SVG tag to draw charts without any additional graph
   yRange='{
     "min": 0,
     "max": 10
-  }'
->
+  }'>
 </nk-line-chart>
 ```
 
@@ -114,9 +128,9 @@ This component directly uses SVG tag to draw charts without any additional graph
 
 ```html
 <nk-line-chart
-  rows="[
+  data="[[
     [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-  ]"
+  ]]"
   chartArea='{
     "top": 20,
     "left": 20,
@@ -148,8 +162,7 @@ This component directly uses SVG tag to draw charts without any additional graph
       }
     },
     "tickInterval": 2
-  }'
->
+  }'>
 </nk-line-chart>
 ```
 
@@ -158,9 +171,9 @@ This component directly uses SVG tag to draw charts without any additional graph
 
 ```html
 <nk-line-chart
-  rows="[
+  data="[[
     [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-  ]"
+  ]]"
   chartArea='{
     "top": 20,
     "left": 20,
@@ -192,8 +205,7 @@ This component directly uses SVG tag to draw charts without any additional graph
       }
     },
     "tickInterval": 2
-  }'
->
+  }'>
 </nk-line-chart>
 ```
 
@@ -202,17 +214,16 @@ This component directly uses SVG tag to draw charts without any additional graph
 
 ```html
 <nk-line-chart
-  rows="[
+  data="[[
     [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-  ]"
+  ]]"
   chartArea='{
     "top": 10,
     "left": 10,
     "width": 320,
     "height": 100
   }'
-  origin="left-bottom"
->
+  origin="left-bottom">
 </nk-line-chart>
 ```
 
@@ -221,17 +232,16 @@ This component directly uses SVG tag to draw charts without any additional graph
 
 ```html
 <nk-line-chart
-  rows="[
+  data="[[
     [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-  ]"
+  ]]"
   chartArea='{
     "top": 10,
     "left": 10,
     "width": 320,
     "height": 100
   }'
-  origin="left-top"
->
+  origin="left-top">
 </nk-line-chart>
 ```
 
@@ -240,39 +250,47 @@ This component directly uses SVG tag to draw charts without any additional graph
 
 ```html
 <nk-line-chart
-  rows="[
+  data="[[
     [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-  ]"
+  ]]"
   chartArea='{
     "top": 10,
     "left": 10,
     "width": 320,
     "height": 100
   }'
-  point='{
-    "enabled": true,
-    "elements": [
-      {
-        "name": "circle",
-        "attrs": {
-          "fill": "#fff",
-          "r": "8",
-          "stroke": "#e08080",
-          "stroke-width": 1.5
-        }
+  series='[
+    {
+      "point": {
+        "enabled": true,
+        "elements": [
+          {
+            "name": "circle",
+            "attrs": {
+              "fill": "#fff",
+              "r": "8",
+              "stroke": "#e08080",
+              "stroke-width": 1.5
+            }
+          },
+          {
+            "name": "circle",
+            "attrs": {
+              "fill": "#e08080",
+              "r": "3.5",
+              "stroke": "none",
+              "stroke-width": 0
+            }
+          }
+        ]
       },
-      {
-        "name": "circle",
+      "line": {
         "attrs": {
-          "fill": "#e08080",
-          "r": "3.5",
-          "stroke": "none",
-          "stroke-width": 0
+          "stroke": "#e08080"
         }
       }
-    ]
-  }'
->
+    }
+  ]'>
 </nk-line-chart>
 ```
 
@@ -281,9 +299,9 @@ This component directly uses SVG tag to draw charts without any additional graph
 
 ```html
 <nk-line-chart
-  rows="[
+  data="[[
     [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-  ]"
+  ]]"
   chartArea='{
     "top": 10,
     "left": 10,
@@ -298,8 +316,7 @@ This component directly uses SVG tag to draw charts without any additional graph
       "stroke-width": 5,
       "stroke-opacity": 0.3
     }
-  }'
->
+  }'>
 </nk-line-chart>
 ```
 
@@ -308,25 +325,35 @@ This component directly uses SVG tag to draw charts without any additional graph
 
 ```html
 <nk-line-chart
-  rows="[
+  data="[[
     [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
-  ]"
+  ]]"
   chartArea='{
     "top": 10,
     "left": 10,
     "width": 320,
     "height": 100
   }'
-  line='{
-    "attrs": {
-      "stroke": "#8080e0",
-      "stroke-width": 2,
-      "stroke-dasharray": "5, 2",
-      "fill-opacity": 1,
-      "fill": "none"
+  series='[{
+    "point": {
+      "elements": [
+        {
+          "attrs": {
+            "fill": "#e08080"
+          }
+        }
+      ]
+    },
+    "line": {
+      "attrs": {
+        "stroke": "#8080e0",
+        "stroke-width": 2,
+        "stroke-dasharray": "5, 2",
+        "fill-opacity": 1,
+        "fill": "none"
+      }
     }
-  }'
->
+  }]'>
 </nk-line-chart>
 ```
 
