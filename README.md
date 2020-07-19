@@ -7,15 +7,13 @@ This component directly uses SVG tag to draw charts without any additional graph
 
 ## Demo
 ```html
-<custom-style>
-  <style is="custom-style">
-    nk-line-chart {
-      width: 340px;
-      height: 120px;
-      border: solid 1px #ccc;
-    }
-  </style>
-</custom-style>
+<style>
+  nk-line-chart {
+    width: 340px;
+    height: 120px;
+    border: solid 1px #ccc;
+  }
+</style>
 ```
 
 ### Basic
