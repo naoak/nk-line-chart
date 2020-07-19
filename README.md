@@ -235,7 +235,7 @@ This component directly uses SVG tag to draw charts without any additional graph
 </nk-line-chart>
 ```
 
-### Custom Style for Points
+### Custom Attributes for Points
 <img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/custom-points.png" width="340" height="120">
 
 ```html
@@ -276,7 +276,7 @@ This component directly uses SVG tag to draw charts without any additional graph
 </nk-line-chart>
 ```
 
-### Custom Style for Background Rect
+### Custom Attributes for Background Rect
 <img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/custom-back.png" width="340" height="120">
 
 ```html
@@ -290,18 +290,20 @@ This component directly uses SVG tag to draw charts without any additional graph
     "width": 320,
     "height": 100
   }'
-  backgroundRectAttrs='{
-    "fill": "#00f",
-    "fill-opacity": 0.1,
-    "stroke": "#00f",
-    "stroke-width": 5,
-    "stroke-opacity": 0.3
+  backgroundRect='{
+    "attrs": {
+      "fill": "#00f",
+      "fill-opacity": 0.1,
+      "stroke": "#00f",
+      "stroke-width": 5,
+      "stroke-opacity": 0.3
+    }
   }'
 >
 </nk-line-chart>
 ```
 
-### Custom Style for Path
+### Custom Attributes for Line
 <img src="https://raw.github.com/wiki/naoak/nk-line-chart/images/custom-path.png" width="340" height="120">
 
 ```html

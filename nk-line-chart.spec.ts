@@ -278,12 +278,14 @@ describe('nk-line-chart', () => {
         width: 180,
         height: 80
       };
-      chart.backgroundRectAttrs = {
-        fill: '#00f',
-        'fill-opacity': 0.1,
-        stroke: '#00f',
-        'stroke-opacity': 0.3,
-        'stroke-width': 5
+      chart.backgroundRect = {
+        attrs: {
+          fill: '#00f',
+          'fill-opacity': 0.1,
+          stroke: '#00f',
+          'stroke-opacity': 0.3,
+          'stroke-width': 5
+        }
       };
       await nextFrame();
       const svg = container.children[0];

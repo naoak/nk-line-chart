@@ -39,6 +39,9 @@ type PointOptions = {
 type LineOptions = {
   attrs: Attrs;
 };
+type BackgroundRectOptions = {
+  attrs: Attrs;
+};
 type AxisOptions = {
   enabled?: boolean;
   label?: LabelOptions;
@@ -104,9 +107,11 @@ export class NkLineChartElement extends LitElement {
    * Attributes for the background rect of the chart area
    */
   @property({ type: Object })
-  backgroundRectAttrs: Attrs = {
-    fill: 'none',
-    stroke: 'none'
+  backgroundRect: BackgroundRectOptions = {
+    attrs: {
+      fill: 'none',
+      stroke: 'none'
+    }
   };
 
   /**
@@ -325,12 +330,13 @@ export class NkLineChartElement extends LitElement {
     const pointOpts = this.point;
     const xAxisOpts = this.xAxis;
     const yAxisOpts = this.yAxis;
-    const lineAttrs = this?.line?.attrs || EMPTY_ATTRS;
+    const lineAttrs = this.line?.attrs || EMPTY_ATTRS;
+    const backgroundRectAttrs = this.backgroundRect?.attrs || EMPTY_ATTRS;
 
     return svg`
       <svg>
         <g class="g0">
-          ${drawRect(chartArea, this.backgroundRectAttrs)}
+          ${drawRect(chartArea, backgroundRectAttrs)}
           ${xAxisOpts?.enabled ? drawXAxis(transformer, xAxisOpts, pf) : svg``}
           ${yAxisOpts?.enabled ? drawYAxis(transformer, yAxisOpts, pf) : svg``}
           ${drawPath('data-line', transformer, points, lineAttrs)}
