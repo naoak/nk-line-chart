@@ -49,7 +49,7 @@
     "demo:serve": "demo/index.html"
   },
   "scripts": {
-    "clean": "rimraf *.d.ts *.tgz nk-line-chart.js* nk-line-chart.spec.js*",
+    "clean": "rimraf *.d.ts *.tgz nk-line-chart.js* nk-line-chart.spec.js* coverage",
     "build": "tsc -d",
     "demo": "npm-watch",
     "demo:serve": "webpack-dev-server --mode development --open --host 0.0.0.0 --port 8081 --disable-host-check",
