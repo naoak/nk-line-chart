@@ -8,6 +8,6 @@ const config = createDefaultConfig({
 
 module.exports = merge(config, {
   module: {
-    rules: [{ test: /\.ts$/, loader: 'ts-loader' }],
+    rules: [{ test: /\.ts$/, loader: 'ts-loader' }]
   }
 });
