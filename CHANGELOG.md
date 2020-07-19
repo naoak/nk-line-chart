@@ -7,6 +7,17 @@
 <!-- ### Fixed -->
 <!-- ### Removed -->
 
+## [3.0.0]
+### Changed
+- Rewrited codes with lit-element.
+- Renamed `*Style` => `*Attrs`.
+- Renamed `elements[].type` => `elements[].name`.
+- Renamed `enable` => `enabled`.
+
+### Removed
+- Dropped auto convertion of camel to dash case for styling attrs.
+- Dropped axis events.
+
 ## [2.2.3] - 2020-07-17
 ### Added
 - Tweaked publish things.
