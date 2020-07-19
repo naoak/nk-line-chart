@@ -6,6 +6,11 @@
 A very lightweight lit-element component for drawing line charts.
 This component directly uses SVG tag to draw charts without any additional graphic libraries.
 
+## Install
+```
+npm install -S nk-line-chart
+```
+
 ## Demo
 ```html
 <style>
