@@ -415,11 +415,13 @@ describe('nk-line-chart', () => {
         width: 180,
         height: 80
       };
-      chart.pathAttrs = {
-        fill: 'none',
-        'fill-opacity': 1,
-        stroke: '#0f0',
-        'stroke-width': 5
+      chart.line = {
+        attrs: {
+          fill: 'none',
+          'fill-opacity': 1,
+          stroke: '#0f0',
+          'stroke-width': 5
+        }
       };
       await nextFrame();
       const svg = container.children[0];

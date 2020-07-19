@@ -31,22 +31,26 @@ type LabelOptions = {
   };
 };
 type PointOptions = {
-  enabled: boolean;
+  enabled?: boolean;
   elements:
     | { name: string; attrs: Attrs }[]
     | ((p: MappedXY, i: number) => { name: string; attrs: Attrs }[]);
 };
+type LineOptions = {
+  attrs: Attrs;
+};
 type AxisOptions = {
   enabled?: boolean;
   label?: LabelOptions;
-  line?: {
-    attrs?: Attrs;
-  };
+  line?: LineOptions;
   tickInterval?: number;
 };
 type TextFormat = typeof formatLabel;
 type PointsAndFrame = ReturnType<typeof calcPointsAndFrame>;
 type Transformer = ReturnType<typeof getTransformer>;
+
+const EMPTY_ATTRS: Attrs = {};
+const EMPTY_OFFSET: { x?: number; y?: number } = {};
 
 @customElement('nk-line-chart')
 export class NkLineChartElement extends LitElement {
@@ -62,15 +66,6 @@ export class NkLineChartElement extends LitElement {
    */
   @property({ type: Array })
   rows: Vector2d[];
-
-  /**
-   * Attributes for the background rect of the chart area
-   */
-  @property({ type: Object })
-  backgroundRectAttrs: Attrs = {
-    fill: 'none',
-    stroke: 'none'
-  };
 
   /**
    * An object to configure the placement and size of the chart area.
@@ -104,6 +99,15 @@ export class NkLineChartElement extends LitElement {
    */
   @property({ type: String })
   origin: Origin = 'left-bottom';
+
+  /**
+   * Attributes for the background rect of the chart area
+   */
+  @property({ type: Object })
+  backgroundRectAttrs: Attrs = {
+    fill: 'none',
+    stroke: 'none'
+  };
 
   /**
    * Options for x-axis grid lines and labels
@@ -182,16 +186,6 @@ export class NkLineChartElement extends LitElement {
    */
   @property({ type: Object })
   yRange: Range = null;
-
-  /**
-   * Attributes for polygonal lines
-   */
-  @property({ type: Object })
-  pathAttrs: Attrs = {
-    fill: 'none',
-    stroke: '#e08080',
-    'stroke-width': 2
-  };
 
   /**
    * Options for data points.
@@ -289,6 +283,18 @@ export class NkLineChartElement extends LitElement {
     }
   };
 
+  /**
+   * Attributes for polygonal lines
+   */
+  @property({ type: Object })
+  line: LineOptions = {
+    attrs: {
+      fill: 'none',
+      stroke: '#e08080',
+      'stroke-width': 2
+    }
+  };
+
   static get styles() {
     return css`
       :host {
@@ -319,6 +325,7 @@ export class NkLineChartElement extends LitElement {
     const pointOpts = this.point;
     const xAxisOpts = this.xAxis;
     const yAxisOpts = this.yAxis;
+    const lineAttrs = this?.line?.attrs || EMPTY_ATTRS;
 
     return svg`
       <svg>
@@ -326,7 +333,7 @@ export class NkLineChartElement extends LitElement {
           ${drawRect(chartArea, this.backgroundRectAttrs)}
           ${xAxisOpts?.enabled ? drawXAxis(transformer, xAxisOpts, pf) : svg``}
           ${yAxisOpts?.enabled ? drawYAxis(transformer, yAxisOpts, pf) : svg``}
-          ${drawPath('data-line', transformer, points, this.pathAttrs)}
+          ${drawPath('data-line', transformer, points, lineAttrs)}
           <g class="point-group">
             ${
               pointOpts?.enabled
@@ -361,10 +368,10 @@ function drawXAxis(
   const interval = axisOpts.tickInterval;
   const start = Math.ceil(pf.vMinY / interval) * interval;
   const end = Math.floor(pf.vMaxY / interval) * interval;
-  const lineAttrs = axisOpts.line?.attrs || {};
+  const lineAttrs = axisOpts.line?.attrs || EMPTY_ATTRS;
   const labelOpts = axisOpts.label;
-  const labelOffset = labelOpts?.offset || {};
-  const labelTextAttrs = labelOpts?.text?.attrs || {};
+  const labelOffset = labelOpts?.offset || EMPTY_OFFSET;
+  const labelTextAttrs = labelOpts?.text?.attrs || EMPTY_ATTRS;
   const isLabelEnabled = labelOpts?.enabled;
   const formatter = labelOpts?.text?.format || formatAxisLabel;
 
@@ -424,10 +431,10 @@ function drawYAxis(
   const interval = axisOpts.tickInterval;
   const start = Math.ceil(pf.vMinX / interval) * interval;
   const end = Math.floor(pf.vMaxX / interval) * interval;
-  const lineAttrs = axisOpts.line?.attrs || {};
+  const lineAttrs = axisOpts.line?.attrs || EMPTY_ATTRS;
   const labelOpts = axisOpts.label;
-  const labelOffset = labelOpts?.offset || {};
-  const labelTextAttrs = labelOpts?.text?.attrs || {};
+  const labelOffset = labelOpts?.offset || EMPTY_OFFSET;
+  const labelTextAttrs = labelOpts?.text?.attrs || EMPTY_ATTRS;
   const isLabelEnabled = labelOpts?.enabled;
   const formatter = labelOpts?.text?.format || formatAxisLabel;
 
@@ -529,8 +536,8 @@ function drawLabels(
   pointLabel: LabelOptions,
   points: MappedXY[]
 ) {
-  const offset = pointLabel.offset || {};
-  const attrs = pointLabel?.text?.attrs || {};
+  const offset = pointLabel.offset || EMPTY_OFFSET;
+  const attrs = pointLabel?.text?.attrs || EMPTY_ATTRS;
   const formatter = pointLabel?.text?.format || formatLabel;
   return svg`${
     pointLabel && pointLabel.enabled

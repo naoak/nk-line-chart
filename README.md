@@ -315,12 +315,14 @@ This component directly uses SVG tag to draw charts without any additional graph
     "width": 320,
     "height": 100
   }'
-  pathAttrs='{
-    "stroke": "#8080e0",
-    "stroke-width": 2,
-    "stroke-dasharray": "5, 2",
-    "fill-opacity": 1,
-    "fill": "none"
+  line='{
+    "attrs": {
+      "stroke": "#8080e0",
+      "stroke-width": 2,
+      "stroke-dasharray": "5, 2",
+      "fill-opacity": 1,
+      "fill": "none"
+    }
   }'
 >
 </nk-line-chart>
