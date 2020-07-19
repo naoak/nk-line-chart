@@ -1,6 +1,9 @@
 *.tgz
+.prettierignore
+.prettierrc
 .travis.yml
 .vscode
+coverage
 demo
 karma.conf.js
 nk-line-chart.spec*
