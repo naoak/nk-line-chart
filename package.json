@@ -23,8 +23,6 @@
   },
   "dependencies": {
     "@open-wc/lit-helpers": "^0.3.10",
-    "@polymer/decorators": "^3.0.0",
-    "@polymer/polymer": "^3.0.0",
     "lit-element": "^2.3.1"
   },
   "devDependencies": {
