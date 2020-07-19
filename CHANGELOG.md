@@ -7,7 +7,7 @@
 <!-- ### Fixed -->
 <!-- ### Removed -->
 
-## [3.0.0]
+## [3.0.0] - 2020-07-20
 ### Added
 - Supported multiple lines.
 - Added `series` property for multiple lines options.
@@ -20,7 +20,7 @@
 - Changed `backgroundRectAttrs` => `backgroundRect.attrs`
 - Changed `rows` => `data` for muliple lines support.
 
-## [3.0.0-alpha.0]
+## [3.0.0-alpha.0] - 2020-07-19
 ### Changed
 - Rewrited codes with lit-element.
 - Renamed `*Style` => `*Attrs`.
