@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.com/naoak/nk-line-chart.svg?branch=master)](https://travis-ci.com/naoak/nk-line-chart)
 [![npm](https://img.shields.io/npm/v/nk-line-chart.svg)](https://npmjs.com/package/nk-line-chart)
 
-A very lightweight polymer component for drawing line charts.
+A very lightweight lit-element component for drawing line charts.
 This component directly uses SVG tag to draw charts without any additional graphic libraries.
 
 ## Demo
