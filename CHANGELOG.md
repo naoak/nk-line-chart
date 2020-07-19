@@ -7,12 +7,16 @@
 <!-- ### Fixed -->
 <!-- ### Removed -->
 
-## [3.0.0]
+## [3.0.0-alpha.0]
 ### Changed
 - Rewrited codes with lit-element.
 - Renamed `*Style` => `*Attrs`.
 - Renamed `elements[].type` => `elements[].name`.
 - Renamed `enable` => `enabled`.
+
+### Fixed
+- Removed iron-demo-helpers to fix vulnerability
+- Fixed watching demo/index.html
 
 ### Removed
 - Dropped auto convertion of camel to dash case for styling attrs.
