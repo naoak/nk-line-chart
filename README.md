@@ -26,7 +26,7 @@ This component directly uses SVG tag to draw charts without any additional graph
   rows='[
     [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
   ]'
-  chart-area='{
+  chartArea='{
     "top": 10,
     "left": 10,
     "width": 320,
@@ -43,20 +43,20 @@ This component directly uses SVG tag to draw charts without any additional graph
   rows='[
     [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
   ]'
-  chart-area='{
+  chartArea='{
     "top": 20,
     "left": 20,
     "width": 300,
     "height": 80
   }'
-  point-label='{
-    "enable": true,
+  pointLabel='{
+    "enabled": true,
     "offset": {
       "y": -6
     },
-    "textStyle": {
+    "textAttrs": {
       "fill": "#666",
-      "textAnchor": "middle"
+      "text-anchor": "middle"
     }
   }'>
 </nk-line-chart>
@@ -70,13 +70,13 @@ This component directly uses SVG tag to draw charts without any additional graph
   rows='[
     [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
   ]'
-  chart-area='{
+  chartArea='{
     "top": 10,
     "left": 10,
     "width": 320,
     "height": 100
   }'
-  x-range='{
+  xRange='{
     "min": 0,
     "max": 10
   }'>
@@ -91,13 +91,13 @@ This component directly uses SVG tag to draw charts without any additional graph
   rows='[
     [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
   ]'
-  chart-area='{
+  chartArea='{
     "top": 10,
     "left": 10,
     "width": 320,
     "height": 100
   }'
-  y-range='{
+  yRange='{
     "min": 0,
     "max": 10
   }'>
@@ -112,31 +112,31 @@ This component directly uses SVG tag to draw charts without any additional graph
   rows='[
     [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
   ]'
-  chart-area='{
+  chartArea='{
     "top": 20,
     "left": 20,
     "width": 300,
     "height": 80
   }'
-  x-axis='{
-    "enable": true,
+  xAxis='{
+    "enabled": true,
     "label": {
-      "enable": true,
+      "enabled": true,
       "offset": {
         "x": -6,
         "y": 5
       },
-      "textStyle": {
-        "fontSize": "14px",
+      "textAttrs": {
+        "font-size": "14px",
         "fill": "#666",
-        "textAnchor": "end"
+        "text-anchor": "end"
       }
     },
-    "lineStyle": {
+    "lineAttrs": {
       "fill": "none",
       "stroke": "#e08080",
-      "strokeDasharray": "4,2",
-      "strokeWidth": 1
+      "stroke-dasharray": "4,2",
+      "stroke-width": 1
     },
     "tickInterval": 2
   }'>
@@ -151,31 +151,31 @@ This component directly uses SVG tag to draw charts without any additional graph
   rows='[
     [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
   ]'
-  chart-area='{
+  chartArea='{
     "top": 20,
     "left": 20,
     "width": 300,
     "height": 80
   }'
-  y-axis='{
-    "enable": true,
+  yAxis='{
+    "enabled": true,
     "label": {
-      "enable": true,
+      "enabled": true,
       "offset": {
         "x": 0,
         "y": 15
       },
-      "textStyle": {
-        "fontSize": "14px",
+      "textAttrs": {
+        "font-size": "14px",
         "fill": "#666",
-        "textAnchor": "middle"
+        "text-anchor": "middle"
       }
     },
-    "lineStyle": {
+    "lineAttrs": {
       "fill": "none",
       "stroke": "#e08080",
-      "strokeDasharray": "4,2",
-      "strokeWidth": 1
+      "stroke-dasharray": "4,2",
+      "stroke-width": 1
     },
     "tickInterval": 2
   }'>
@@ -190,7 +190,7 @@ This component directly uses SVG tag to draw charts without any additional graph
   rows='[
     [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
   ]'
-  chart-area='{
+  chartArea='{
     "top": 10,
     "left": 10,
     "width": 320,
@@ -208,7 +208,7 @@ This component directly uses SVG tag to draw charts without any additional graph
   rows='[
     [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
   ]'
-  chart-area='{
+  chartArea='{
     "top": 10,
     "left": 10,
     "width": 320,
@@ -226,31 +226,31 @@ This component directly uses SVG tag to draw charts without any additional graph
   rows="[
     [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
   ]"
-  chart-area='{
+  chartArea='{
     "top": 10,
     "left": 10,
     "width": 320,
     "height": 100
   }'
   point='{
-    "enable": true,
+    "enabled": true,
     "elements": [
       {
-        "type": "circle",
-        "style": {
+        "name": "circle",
+        "attrs": {
           "fill": "#fff",
           "r": "8",
           "stroke": "#e08080",
-          "strokeWidth": 1.5
+          "stroke-width": 1.5
         }
       },
       {
-        "type": "circle",
-        "style": {
+        "name": "circle",
+        "attrs": {
           "fill": "#e08080",
           "r": "3.5",
           "stroke": "none",
-          "strokeWidth": 0
+          "stroke-width": 0
         }
       }
     ]
@@ -266,18 +266,18 @@ This component directly uses SVG tag to draw charts without any additional graph
   rows="[
     [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
   ]"
-  chart-area='{
+  chartArea='{
     "top": 10,
     "left": 10,
     "width": 320,
     "height": 100
   }'
-  background-rect-style='{
+  backgroundRectAttrs='{
     "fill": "#00f",
-    "fillOpacity": 0.1,
+    "fill-opacity": 0.1,
     "stroke": "#00f",
-    "strokeWidth": 5,
-    "strokeOpacity": 0.3
+    "stroke-width": 5,
+    "stroke-opacity": 0.3
   }'>
 </nk-line-chart>
 ```
@@ -290,17 +290,17 @@ This component directly uses SVG tag to draw charts without any additional graph
   rows="[
     [0, 0], [1, 1], [2, 1], [3, 2], [4, 3], [5, 5], [6, 8]
   ]"
-  chart-area='{
+  chartArea='{
     "top": 10,
     "left": 10,
     "width": 320,
     "height": 100
   }'
-  path-style='{
+  pathAttrs='{
     "stroke": "#8080e0",
-    "strokeWidth": 2,
-    "strokeDasharray": "5, 2",
-    "fillOpacity": 1,
+    "stroke-width": 2,
+    "stroke-dasharray": "5, 2",
+    "fill-opacity": 1,
     "fill": "none"
   }'>
 </nk-line-chart>
@@ -321,7 +321,7 @@ For watch mode,
 npm run test:watch
 ```
 
-Testing in watch mode, you can view coverage files from
+Testing in watch mode, you can view coverage files by
 ```
 open http://localhost:8080/coverage/
 ```
