@@ -25,14 +25,16 @@ type LabelOptions = {
     x?: number;
     y?: number;
   };
-  textFormat?: TextFormat;
-  textAttrs?: Attrs;
+  text?: {
+    format?: TextFormat;
+    attrs?: Attrs;
+  };
 };
 type PointOptions = {
   enabled: boolean;
   elements:
     | { name: string; attrs: Attrs }[]
-    | ((p: AxisPoint, i: number) => { name: string; attrs: Attrs }[]);
+    | ((p: MappedXY, i: number) => { name: string; attrs: Attrs }[]);
 };
 type AxisOptions = {
   enabled?: boolean;
@@ -40,7 +42,6 @@ type AxisOptions = {
   lineAttrs?: Attrs;
   tickInterval?: number;
 };
-type AxisPoint = MappedXY;
 type TextFormat = typeof formatLabel;
 type PointsAndFrame = ReturnType<typeof calcPointsAndFrame>;
 type Transformer = ReturnType<typeof getTransformer>;
@@ -61,7 +62,7 @@ export class NkLineChartElement extends LitElement {
   rows: Vector2d[];
 
   /**
-   * Style for the background rect of the chart area
+   * Attributes for the background rect of the chart area
    */
   @property({ type: Object })
   backgroundRectAttrs: Attrs = {
@@ -113,9 +114,11 @@ export class NkLineChartElement extends LitElement {
         x: -4,
         y: 5
       },
-      textAttrs: {
-        fill: '#333',
-        'text-anchor': 'end'
+      text: {
+        attrs: {
+          fill: '#333',
+          'text-anchor': 'end'
+        }
       }
     },
     lineAttrs: {
@@ -129,7 +132,6 @@ export class NkLineChartElement extends LitElement {
 
   /**
    * X-axis range of chart area. If not specified, the range will be computed by data rows.
-   *
    * ```
    * min: X-axis value at the left (right if the origin is right) of chart area
    * max: X-axis value at the right (left if the origin is right) of chart area
@@ -149,9 +151,11 @@ export class NkLineChartElement extends LitElement {
         x: 0,
         y: 15
       },
-      textAttrs: {
-        fill: '#333',
-        'text-Anchor': 'middle'
+      text: {
+        attrs: {
+          fill: '#333',
+          'text-Anchor': 'middle'
+        }
       }
     },
     lineAttrs: {
@@ -165,7 +169,6 @@ export class NkLineChartElement extends LitElement {
 
   /**
    * Y-axis range of chart area. If not specified, the range will be computed by data rows.
-   *
    * ```
    * min: Y-axis value at the bottom (top if the origin is top) of chart area
    * max: Y-axis value at the top (bottom if the origin is top) of chart area
@@ -175,7 +178,7 @@ export class NkLineChartElement extends LitElement {
   yRange: Range = null;
 
   /**
-   * Style for polygonal lines
+   * Attributes for polygonal lines
    */
   @property({ type: Object })
   pathAttrs: Attrs = {
@@ -185,7 +188,7 @@ export class NkLineChartElement extends LitElement {
   };
 
   /**
-   * Option for style of data points.
+   * Options for data points.
    *
    * ```
    * enabled: If false, this option will be ignored.
@@ -257,13 +260,12 @@ export class NkLineChartElement extends LitElement {
   };
 
   /**
-   * Option for labels at points
-   *
+   * Options for labels at points
    * ```
    * enabled: whether show labels or not (boolean)
-   * textFormat: function for label formatter (function(row, index))
    * offset: offset from label ({x, y})
-   * textStyle: text styles (object)
+   * text.format: function for label formatter (function(row, index))
+   * text.attrs: text attributes (object)
    * ```
    */
   @property({ type: Object })
@@ -272,10 +274,12 @@ export class NkLineChartElement extends LitElement {
     offset: {
       y: -10
     },
-    textFormat: formatLabel,
-    textAttrs: {
-      fill: '#333',
-      'text-anchor': 'middle'
+    text: {
+      format: formatLabel,
+      attrs: {
+        fill: '#333',
+        'text-anchor': 'middle'
+      }
     }
   };
 
@@ -353,11 +357,11 @@ function drawXAxis(
   const end = Math.floor(pf.vMaxY / interval) * interval;
   const labelOpts = axisOpts.label;
   const labelOffset = labelOpts?.offset || {};
-  const labelTextAttrs = labelOpts?.textAttrs;
+  const labelTextAttrs = labelOpts?.text?.attrs || {};
   const isLabelEnabled = labelOpts?.enabled;
-  const formatter = labelOpts?.textFormat || formatAxisLabel;
+  const formatter = labelOpts?.text?.format || formatAxisLabel;
 
-  const tickItems: { cy: number; axisPoints: [AxisPoint, AxisPoint] }[] = [];
+  const tickItems: { cy: number; axisPoints: [MappedXY, MappedXY] }[] = [];
   for (let vy = start; vy <= end; vy += interval) {
     const cy = isFinite(pf.factorY)
       ? (vy - pf.vMinY) * pf.factorY + pf.top
@@ -375,7 +379,7 @@ function drawXAxis(
         x: pf.left + pf.width,
         y: cy
       }
-    ] as [AxisPoint, AxisPoint];
+    ] as [MappedXY, MappedXY];
     tickItems.push({ cy, axisPoints });
   }
 
@@ -420,11 +424,11 @@ function drawYAxis(
   const end = Math.floor(pf.vMaxX / interval) * interval;
   const labelOpts = axisOpts.label;
   const labelOffset = labelOpts?.offset || {};
-  const labelTextAttrs = labelOpts?.textAttrs;
+  const labelTextAttrs = labelOpts?.text?.attrs || {};
   const isLabelEnabled = labelOpts?.enabled;
-  const formatter = labelOpts?.textFormat || formatAxisLabel;
+  const formatter = labelOpts?.text?.format || formatAxisLabel;
 
-  const tickItems: { cx: number; axisPoints: [AxisPoint, AxisPoint] }[] = [];
+  const tickItems: { cx: number; axisPoints: [MappedXY, MappedXY] }[] = [];
   for (let vx = start; vx <= end; vx += interval) {
     const cx = isFinite(pf.factorX)
       ? (vx - pf.vMinX) * pf.factorX + pf.left
@@ -442,7 +446,7 @@ function drawYAxis(
         x: cx,
         y: pf.top + pf.height
       }
-    ] as [AxisPoint, AxisPoint];
+    ] as [MappedXY, MappedXY];
     tickItems.push({ cx, axisPoints });
   }
 
@@ -528,8 +532,8 @@ function drawLabels(
   points: MappedXY[]
 ) {
   const offset = pointLabel.offset || {};
-  const attrs = pointLabel?.textAttrs;
-  const formatter = pointLabel?.textFormat || formatLabel;
+  const attrs = pointLabel?.text?.attrs || {};
+  const formatter = pointLabel?.text?.format || formatLabel;
   return svg`${
     pointLabel && pointLabel.enabled
       ? svg`${points.map((p, i) => {

@@ -7,6 +7,11 @@
 <!-- ### Fixed -->
 <!-- ### Removed -->
 
+## [3.0.0]
+### Changed
+- Changed `textAttrs` => `text.attrs`.
+- Changed `textFormat` => `text.format`.
+
 ## [3.0.0-alpha.0]
 ### Changed
 - Rewrited codes with lit-element.

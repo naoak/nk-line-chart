@@ -491,7 +491,7 @@ describe('nk-line-chart', () => {
         height: 80
       };
       chart.pointLabel.enabled = true;
-      chart.pointLabel.textFormat = function (row, index) {
+      chart.pointLabel.text.format = function (row, index) {
         return '[' + index + ',' + row + ']';
       };
       await nextFrame();
@@ -514,7 +514,7 @@ describe('nk-line-chart', () => {
         height: 80
       };
       chart.pointLabel.enabled = true;
-      chart.pointLabel.textAttrs = {
+      chart.pointLabel.text.attrs = {
         fill: 'blue'
       };
       await nextFrame();
@@ -731,9 +731,11 @@ describe('nk-line-chart', () => {
             x: -4,
             y: 5
           },
-          textAttrs: {
-            fill: '#333',
-            'text-anchor': 'end'
+          text: {
+            attrs: {
+              fill: '#333',
+              'text-anchor': 'end'
+            }
           }
         },
         lineAttrs: {
@@ -777,9 +779,11 @@ describe('nk-line-chart', () => {
             x: 0,
             y: 15
           },
-          textAttrs: {
-            fill: '#333',
-            'text-anchor': 'middle'
+          text: {
+            attrs: {
+              fill: '#333',
+              'text-anchor': 'middle'
+            }
           }
         },
         lineAttrs: {
