@@ -8,12 +8,17 @@
 <!-- ### Removed -->
 
 ## [3.0.0]
+### Added
+- Supported multiple lines.
+- Added `series` property for multiple lines options.
+
 ### Changed
 - Changed `textAttrs` => `text.attrs`.
 - Changed `textFormat` => `text.format`.
 - Changed `lineAttrs` => `line.attrs`.
 - Changed `pathAttrs` => `line.attrs`.
 - Changed `backgroundRectAttrs` => `backgroundRect.attrs`
+- Changed `rows` => `data` for muliple lines support.
 
 ## [3.0.0-alpha.0]
 ### Changed
