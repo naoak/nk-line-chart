@@ -14,18 +14,18 @@ const NON_BUBBLES = {bubbles: false};
 const NS = 'http://www.w3.org/2000/svg';
 
 type Constructor<T> = new (...args: any[]) => T;
-type Attrs = {[key in string]: number | string};
-type ChartArea = {
+export type Attrs = {[key in string]: number | string};
+export type ChartArea = {
   top?: number;
   left?: number;
   width: number;
   height: number
 }
-type Origin = 'left-bottom' | 'left-top' | 'right-top' | 'right-bottom' | '';
-type Range = {min: number; max: number};
-type Vector2d = [number, number];
-type VectorXY = {x: number, y: number};
-type LabelOptions = {
+export type Origin = 'left-bottom' | 'left-top' | 'right-top' | 'right-bottom' | '';
+export type Range = {min: number; max: number};
+export type Vector2d = [number, number];
+export type VectorXY = {x: number, y: number};
+export type LabelOptions = {
   enable?: boolean;
   offset?: {
     x?: number;
@@ -34,17 +34,17 @@ type LabelOptions = {
   textFormat?: typeof formatLabel;
   textStyle?: Attrs;
 }
-type PointOptions = {
+export type PointOptions = {
   enable: boolean;
   elements: {type: string, style: Attrs}[] | ((p: AxisPoint, i: number) => {type: string, style: Attrs}[]);
 };
-type AxisOptions = {
+export type AxisOptions = {
   enable?: boolean,
   label?: LabelOptions;
   lineStyle?: Attrs;
   tickInterval?: number;
 };
-type AxisPoint = {
+export type AxisPoint = {
   x: number;
   y: number;
   vx: number;
