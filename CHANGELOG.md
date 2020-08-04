@@ -35,6 +35,10 @@
 - Dropped auto convertion of camel to dash case for styling attrs.
 - Dropped axis events.
 
+## [2.2.4] - 2020-08-04
+### Added
+- Exported types.
+
 ## [2.2.3] - 2020-07-17
 ### Added
 - Tweaked publish things.
