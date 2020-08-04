@@ -1,6 +1,6 @@
 {
   "name": "nk-line-chart",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "description": "A very lightweight polymer component for drawing line charts.",
   "keywords": [
     "web-components",
