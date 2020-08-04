@@ -7,6 +7,10 @@
 <!-- ### Fixed -->
 <!-- ### Removed -->
 
+## [2.2.4] - 2020-08-04
+### Added
+- Exported types.
+
 ## [2.2.3] - 2020-07-17
 ### Added
 - Tweaked publish things.
